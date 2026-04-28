@@ -5,7 +5,7 @@ services:
     image: postgres:16-alpine
     environment:
       POSTGRES_USER: tradewise
-      POSTGRES_PASSWORD: \
+      POSTGRES_PASSWORD: DoggyBeater
       POSTGRES_DB: tradewise
     volumes:
       - pg_data:/var/lib/postgresql/data
@@ -31,6 +31,12 @@ services:
       - postgres
       - redis
     restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   gateway:
     build: ../gateway
