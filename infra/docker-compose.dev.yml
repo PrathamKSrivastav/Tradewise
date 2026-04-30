@@ -1,0 +1,32 @@
+services:
+  market-engine:
+    build:
+      context: ../market-engine
+      dockerfile: Dockerfile
+    volumes:
+      - ../market-engine:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+    environment:
+      TICK_INTERVAL_SECONDS: "10"
+
+  gateway:
+    build:
+      context: ../gateway
+      dockerfile: Dockerfile
+    volumes:
+      - ../gateway:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  web:
+    build:
+      context: ../web
+      dockerfile: Dockerfile
+    volumes:
+      - ../web:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
+
+  nginx:
+    profiles:
+      - nginx
