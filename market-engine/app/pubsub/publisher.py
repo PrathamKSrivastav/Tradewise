@@ -15,4 +15,6 @@ async def publish_tick(redis: Redis, states: dict[str, StockState]) -> None:
         channel = f"{_CHANNEL_PREFIX}:{symbol}"
         payload = json.dumps(candle)
         await redis.publish(channel, payload)
-        log.debug("published %s → %s", channel, payload)
+        # write last close price so gateway trade endpoint can read it instantly
+        await redis.set(f"last_price:{symbol}", str(candle["close"]))
+        log.debug("published %s → close=%.2f", channel, candle["close"])
