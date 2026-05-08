@@ -4,22 +4,35 @@ import { useState } from "react"
 import { useUserStore } from "../../store/userStore"
 import { useMarketStore } from "../../store/marketStore"
 import { placeTrade } from "../../lib/api"
-import { Button } from "../../components/ui/Button"
-import { Card } from "../../components/ui/Card"
+import clsx from "clsx"
+
 interface Props {
   symbol: string
   onTradeSuccess: () => void
 }
+
+const ORDER_TYPES = ["Market", "Limit", "Stop"]
+
 export function TradePanel({ symbol, onTradeSuccess }: Props) {
   const { token, wallet } = useUserStore()
   const { lastPrice } = useMarketStore()
   const [side, setSide] = useState<"buy" | "sell">("buy")
+  const [orderType, setOrderType] = useState("Market")
   const [quantity, setQuantity] = useState(1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+
   const price = lastPrice[symbol] ?? 0
   const total = Number((price * quantity).toFixed(2))
+  const balance = wallet?.balance ?? 0
+  const maxQty = price > 0 ? Math.floor(balance / price) : 0
+
+  const setPercent = (pct: number) => {
+    if (price === 0 || balance === 0) return
+    setQuantity(Math.max(1, Math.floor((balance * pct) / price)))
+  }
+
   const handleTrade = async () => {
     if (!token || price === 0) return
     setLoading(true)
@@ -35,85 +48,107 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
       setLoading(false)
     }
   }
+
   return (
-    <Card className="p-4 flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <p className="text-xs font-mono text-white/40 tracking-widest">TRADE · {symbol}</p>
-        <p className="text-xs text-white/40">
-          Balance: <span className="text-white font-mono">₹{wallet?.balance.toLocaleString("en-IN") ?? "—"}</span>
-        </p>
-      </div>
-      {/* side toggle */}
-      <div className="grid grid-cols-2 gap-2">
+    <div className="p-4 flex flex-col gap-4">
+      {/* BUY / SELL toggle */}
+      <div className="grid grid-cols-2 gap-0.5 p-0.5 rounded-btn bg-black/30 ring-1 ring-stroke1">
         <button
           onClick={() => setSide("buy")}
-          className={`py-2 rounded-lg text-sm font-bold transition-all ${
-            side === "buy" ? "bg-emerald-500 text-white" : "bg-white/6 text-white/40 hover:bg-white/10"
-          }`}
-        >
-          BUY
-        </button>
+          className={clsx(
+            "h-9 rounded-[6px] text-[13px] font-bold transition",
+            side === "buy" ? "bg-emerald-500 text-[#062a1a]" : "text-ink3 hover:text-ink2"
+          )}
+        >BUY</button>
         <button
           onClick={() => setSide("sell")}
-          className={`py-2 rounded-lg text-sm font-bold transition-all ${
-            side === "sell" ? "bg-red-500 text-white" : "bg-white/6 text-white/40 hover:bg-white/10"
-          }`}
-        >
-          SELL
-        </button>
+          className={clsx(
+            "h-9 rounded-[6px] text-[13px] font-bold transition",
+            side === "sell" ? "bg-rose-500 text-white" : "text-ink3 hover:text-ink2"
+          )}
+        >SELL</button>
       </div>
-      {/* price display */}
-      <div className="flex items-center justify-between bg-white/4 rounded-lg px-3 py-2">
-        <span className="text-xs text-white/40">Market Price</span>
-        <span className="font-mono text-white font-bold">
+
+      {/* Order type */}
+      <div className="flex gap-1">
+        {ORDER_TYPES.map(t => (
+          <button key={t} onClick={() => setOrderType(t)} className={clsx(
+            "flex-1 h-7 rounded-btn text-[11px] font-medium transition",
+            orderType === t ? "bg-white/8 text-ink ring-1 ring-stroke2" : "text-ink3 hover:text-ink2"
+          )}>{t}</button>
+        ))}
+      </div>
+
+      {/* Market price display */}
+      <div className="flex items-center justify-between bg-white/4 rounded-btn px-3 py-2">
+        <span className="text-[11px] text-ink3 font-semibold tracking-[0.1em]">MARKET PRICE</span>
+        <span className="mono text-[14px] num text-ink font-semibold">
           {price > 0 ? `₹${price.toLocaleString("en-IN")}` : "—"}
         </span>
       </div>
-      {/* quantity */}
-      <div className="flex flex-col gap-1">
-        <label className="text-xs text-white/40">Quantity</label>
+
+      {/* Quantity */}
+      <div>
+        <div className="text-[11px] text-ink3 font-semibold tracking-[0.1em] mb-1.5">QUANTITY</div>
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            className="w-8 h-8 rounded-lg bg-white/8 hover:bg-white/14 text-white font-bold transition-all"
-          >
-            −
-          </button>
+            onClick={() => setQuantity(q => Math.max(1, q - 1))}
+            className="w-8 h-8 rounded-btn bg-white/6 hover:bg-white/10 text-ink font-bold text-lg transition flex items-center justify-center"
+          >−</button>
           <input
             type="number"
             min={1}
             value={quantity}
-            onChange={(e) => setQuantity(Math.max(1, Number(e.target.value)))}
-            className="flex-1 bg-white/6 border border-white/10 rounded-lg px-3 py-1.5 text-center font-mono text-white text-sm focus:outline-none focus:border-white/30"
+            onChange={e => setQuantity(Math.max(1, Number(e.target.value)))}
+            className="flex-1 bg-black/30 ring-1 ring-stroke1 rounded-btn px-3 py-1.5 text-center mono text-[14px] text-ink focus:outline-none focus:ring-indigo-500/50"
           />
           <button
-            onClick={() => setQuantity((q) => q + 1)}
-            className="w-8 h-8 rounded-lg bg-white/8 hover:bg-white/14 text-white font-bold transition-all"
-          >
-            +
-          </button>
+            onClick={() => setQuantity(q => q + 1)}
+            className="w-8 h-8 rounded-btn bg-white/6 hover:bg-white/10 text-ink font-bold text-lg transition flex items-center justify-center"
+          >+</button>
+        </div>
+        {/* % presets */}
+        <div className="flex gap-1.5 mt-2">
+          {[{ label: "10%", pct: 0.1 }, { label: "25%", pct: 0.25 }, { label: "50%", pct: 0.5 }, { label: "MAX", pct: 1 }].map(({ label, pct }) => (
+            <button key={label} onClick={() => setPercent(pct)}
+              className="flex-1 h-6 rounded-btn text-[10.5px] font-semibold bg-white/4 hover:bg-white/8 text-ink3 hover:text-ink2 transition">
+              {label}
+            </button>
+          ))}
         </div>
       </div>
-      {/* order summary */}
-      <div className="flex items-center justify-between text-sm">
-        <span className="text-white/40">Order Total</span>
-        <span className="font-mono font-bold text-white">
-          {price > 0 ? `₹${total.toLocaleString("en-IN")}` : "—"}
-        </span>
+
+      {/* Order summary */}
+      <div className="space-y-1.5 bg-white/3 rounded-btn px-3 py-2.5">
+        <div className="flex justify-between text-[12px]">
+          <span className="text-ink3">Est. total</span>
+          <span className="mono num text-ink font-semibold">{price > 0 ? `₹${total.toLocaleString("en-IN")}` : "—"}</span>
+        </div>
+        <div className="flex justify-between text-[11px]">
+          <span className="text-ink3">Available</span>
+          <span className="mono num text-ink2">₹{balance.toLocaleString("en-IN")}</span>
+        </div>
+        <div className="flex justify-between text-[11px]">
+          <span className="text-ink3">Max qty</span>
+          <span className="mono num text-ink2">{maxQty}</span>
+        </div>
       </div>
-      {/* feedback */}
-      {error && <p className="text-xs text-red-400 bg-red-500/10 rounded-lg px-3 py-2">{error}</p>}
-      {success && <p className="text-xs text-emerald-400 bg-emerald-500/10 rounded-lg px-3 py-2">{success}</p>}
-      {/* submit */}
-      <Button
-        variant={side === "buy" ? "buy" : "sell"}
-        loading={loading}
-        disabled={price === 0}
+
+      {error && <p className="text-[12px] text-rose-400 bg-rose-500/10 rounded-btn px-3 py-2">{error}</p>}
+      {success && <p className="text-[12px] text-emerald-400 bg-emerald-500/10 rounded-btn px-3 py-2">{success}</p>}
+
+      <button
         onClick={handleTrade}
-        className="w-full py-3"
+        disabled={loading || price === 0}
+        className={clsx(
+          "h-11 w-full rounded-btn text-[14px] font-bold transition disabled:opacity-40",
+          side === "buy"
+            ? "bg-emerald-500 hover:bg-emerald-500/90 text-[#062a1a] shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]"
+            : "bg-rose-500 hover:bg-rose-500/90 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
+        )}
       >
-        {side === "buy" ? "BUY" : "SELL"} {quantity} × {symbol}
-      </Button>
-    </Card>
+        {loading ? "…" : `${side === "buy" ? "Buy" : "Sell"} ${quantity} × ${symbol}`}
+      </button>
+    </div>
   )
 }

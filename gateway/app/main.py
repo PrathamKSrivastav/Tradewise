@@ -13,9 +13,15 @@ from app.auth.router import router as auth_router
 from app.trades.router import router as trades_router
 from app.market.router import router as market_router
 from app.wallet.router import router as wallet_router
-from app.leaderboard.router import router as leaderboard_router
+from app.leaderboard.router import router as leaderboard_router  # now at /api/leaderboard
 from app.stocks.symbols import SYMBOLS
 from app.rag.router import router as rag_router
+from app.xp.router import router as xp_router
+from app.streak.router import router as streak_router
+from app.quiz.router import router as quiz_router
+from app.badges.router import router as badges_router
+from app.exam.router import router as exam_router
+from app.certificate.router import router as certificate_router
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s — %(message)s",
@@ -54,6 +60,12 @@ app.include_router(market_router)
 app.include_router(wallet_router)
 app.include_router(leaderboard_router)
 app.include_router(rag_router)
+app.include_router(xp_router)
+app.include_router(streak_router)
+app.include_router(quiz_router)
+app.include_router(badges_router)
+app.include_router(exam_router)
+app.include_router(certificate_router)
 @app.websocket("/ws/{symbol}")
 async def websocket_endpoint(ws: WebSocket, symbol: str):
     if symbol not in SYMBOLS:

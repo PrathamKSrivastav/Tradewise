@@ -2,8 +2,41 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, case
 from app.db.models import Trade, User, Wallet
-from app.config import settings
-async def get_leaderboard(session: AsyncSession, limit: int = 20) -> list[dict]:
+
+
+async def get_xp_leaderboard(session: AsyncSession, requesting_user_id: int, limit: int = 50) -> dict:
+    """XP-based leaderboard for the Academy."""
+    result = await session.execute(
+        select(User.id, User.username, User.total_xp, User.current_level)
+        .where(User.is_active == True, User.is_admin == False)
+        .order_by(User.total_xp.desc())
+        .limit(limit)
+    )
+    rows = result.fetchall()
+    board = [
+        {
+            "rank": idx + 1,
+            "userId": r.id,
+            "name": r.username,
+            "totalXP": r.total_xp,
+            "level": r.current_level,
+        }
+        for idx, r in enumerate(rows)
+    ]
+
+    # Find requesting user's rank
+    user_rank_result = await session.execute(
+        select(func.count(User.id))
+        .where(User.is_active == True, User.is_admin == False)
+        .where(User.total_xp > select(User.total_xp).where(User.id == requesting_user_id).scalar_subquery())
+    )
+    user_rank = (user_rank_result.scalar() or 0) + 1
+
+    return {"board": board, "userRank": user_rank}
+
+
+async def get_trader_leaderboard(session: AsyncSession, limit: int = 20) -> list[dict]:
+    """Original PnL-based leaderboard for the Simulator."""
     pnl_subq = (
         select(
             Trade.user_id,

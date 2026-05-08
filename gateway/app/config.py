@@ -9,6 +9,10 @@ class Settings(BaseSettings):
     qdrant_url: str = "http://qdrant:6333"
     qdrant_collection: str = "tradewise_rag"
     openai_api_key: str = ""
+    groq_api_key: str = ""
+    cloudinary_cloud_name: str = ""
+    cloudinary_api_key: str = ""
+    cloudinary_api_secret: str = ""
     initial_wallet_balance: float = 100000.0
     candle_history_limit: int = 390
     class Config:

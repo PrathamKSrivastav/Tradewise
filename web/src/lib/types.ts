@@ -54,3 +54,78 @@ export interface TradeRequest {
   side: "buy" | "sell"
   quantity: number
 }
+
+// Academy
+export interface UserProgress {
+  totalXP: number
+  currentLevel: number
+  currentStreak: number
+  streakMultiplier: number
+  unlockedLevels: number[]
+  badges: string[]
+  completedLessons: string[]
+}
+
+export interface BadgeInfo {
+  id: string
+  label: string
+  description: string
+  earnedAt?: string
+}
+
+export interface BadgesResponse {
+  earned: BadgeInfo[]
+  locked: BadgeInfo[]
+}
+
+export interface QuizQuestion {
+  id: number
+  questionId?: string
+  question: string
+  options: [string, string, string, string]
+  difficulty?: "easy" | "medium" | "hard"
+}
+
+export interface GenerateQuizResponse {
+  sessionId: string
+  questions: QuizQuestion[]
+}
+
+export interface SubmitQuizResponse {
+  score: number
+  passed: boolean
+  xpEarned: number
+  newBadges: string[]
+  correctAnswers: number[]
+  explanations: string[]
+}
+
+export interface ExamStatusResponse {
+  attemptsUsed: number
+  attemptsAllowed: number
+  cooldownUntil: string | null
+  bestScore: number | null
+  passed: boolean
+  certificateUrl: string | null
+}
+
+export interface StartExamResponse {
+  sessionId: string
+  questions: QuizQuestion[]
+  attemptsUsed: number
+  attemptsAllowed: number
+  cooldownUntil: string | null
+}
+
+export interface SubmitExamResponse {
+  score: number
+  passed: boolean
+  correctCount: number
+  totalQuestions: number
+  xpEarned: number
+  newBadges: string[]
+  certificateUrl: string | null
+  attemptsUsed: number
+  attemptsAllowed: number
+  cooldownUntil: string | null
+}

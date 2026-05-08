@@ -42,3 +42,6 @@ export const useUserStore = create<UserState>((set, get) => ({
     set({ user_id: null, username: null, token: null, wallet: null, positions: [] })
   },
 }))
+
+// Convenience selector
+export const selectIsAuthed = (s: ReturnType<typeof useUserStore.getState>) => !!s.token
