@@ -40,3 +40,57 @@ export const maxDrawdown = (prices: number[]) => {
   }
   return maxD;
 };
+
+import type { Candle } from "./types";
+
+export function aggregateCandles(candles: Candle[], intervalMinutes: number): Candle[] {
+  if (intervalMinutes <= 1 || candles.length === 0) return candles;
+
+  const result: Candle[] = [];
+  // Ensure candles are sorted by time
+  const sorted = [...candles].sort((a, b) => a.timestamp - b.timestamp);
+
+  // Group by interval buckets (e.g. 5 min buckets starting from a round time)
+  // We'll group them such that candles within [bucketStart, bucketStart + interval) belong together
+  let currentBucket: Candle[] = [];
+  let bucketStartTime: number | null = null;
+
+  const intervalMs = intervalMinutes * 60 * 1000;
+
+  for (const c of sorted) {
+    const bucketStart = Math.floor(c.timestamp / intervalMs) * intervalMs;
+
+    if (bucketStartTime === null || bucketStart !== bucketStartTime) {
+      // Flush previous bucket
+      if (currentBucket.length > 0) {
+        result.push(mergeCandles(currentBucket, bucketStartTime!));
+      }
+      // Start new bucket
+      currentBucket = [c];
+      bucketStartTime = bucketStart;
+    } else {
+      currentBucket.push(c);
+    }
+  }
+
+  // Final flush
+  if (currentBucket.length > 0) {
+    result.push(mergeCandles(currentBucket, bucketStartTime!));
+  }
+
+  return result;
+}
+
+function mergeCandles(group: Candle[], timestamp: number): Candle {
+  const first = group[0];
+  const last = group[group.length - 1];
+  return {
+    symbol: first.symbol,
+    timestamp: timestamp,
+    open: first.open,
+    high: Math.max(...group.map(c => c.high)),
+    low: Math.min(...group.map(c => c.low)),
+    close: last.close,
+    volume: group.reduce((sum, c) => sum + c.volume, 0),
+  };
+}

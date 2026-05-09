@@ -47,23 +47,26 @@ export function RiskMetricsPanel({ candles, symbol }: Props) {
 
   if (!metrics) {
     return (
-      <div className="p-4 border-t border-stroke1">
-        <div className="text-[11px] text-ink3 font-semibold tracking-[0.1em] mb-3 uppercase">Risk Metrics</div>
-        <div className="text-[12px] text-ink3 italic">Calculating metrics... (need more data)</div>
+      <div className="px-4 py-2 border-t border-stroke1">
+        <div className="text-[9px] text-ink3 font-bold tracking-[0.1em] mb-1 uppercase">Risk Metrics</div>
+        <div className="text-[11px] text-ink3 italic">Calculating...</div>
       </div>
     );
   }
 
   return (
-    <div className="p-4 border-t border-stroke1">
-      <div className="text-[11px] text-ink3 font-semibold tracking-[0.1em] mb-3 uppercase">Risk Metrics (LTM)</div>
+    <div className="px-4 py-2 border-t border-stroke1 bg-white/2">
+      <div className="flex items-center justify-between mb-2">
+        <div className="text-[9px] text-ink3 font-bold tracking-[0.2em] uppercase">Real-time Risk (LTM)</div>
+        <div className="text-[9px] text-indigo-400 font-bold uppercase animate-pulse">Live Analysis</div>
+      </div>
       
-      <div className="grid grid-cols-2 gap-y-4 gap-x-2">
-        <MetricItem label="Volatility (Ann)" value={`${metrics.volatility.toFixed(2)}%`} sub="High" />
-        <MetricItem label="Sharpe Ratio" value={metrics.sharpe.toFixed(2)} sub="Risk-Adj" />
-        <MetricItem label="VaR 95% (1m)" value={`${metrics.var95.toFixed(2)}%`} sub="Potential Loss" />
-        <MetricItem label="Max Drawdown" value={`${metrics.maxDrawdown.toFixed(2)}%`} sub="Peak-to-Trough" />
-        <MetricItem label="Beta (vs Nifty)" value={metrics.beta.toFixed(2)} sub="Systemic" />
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-x-4 gap-y-2">
+        <MetricItem label="Volatility" value={`${metrics.volatility.toFixed(2)}%`} sub="Annualized" />
+        <MetricItem label="Sharpe" value={metrics.sharpe.toFixed(2)} sub="Risk-Adj" />
+        <MetricItem label="VaR 95%" value={`${metrics.var95.toFixed(2)}%`} sub="1m Potential" />
+        <MetricItem label="Max Drawdown" value={`${metrics.maxDrawdown.toFixed(2)}%`} sub="Peak-to-Low" />
+        <MetricItem label="Beta" value={metrics.beta.toFixed(2)} sub="vs Nifty 50" />
       </div>
     </div>
   );
@@ -71,10 +74,10 @@ export function RiskMetricsPanel({ candles, symbol }: Props) {
 
 function MetricItem({ label, value, sub }: { label: string; value: string; sub: string }) {
   return (
-    <div>
-      <div className="text-[10px] text-ink3 font-medium uppercase tracking-wider mb-0.5">{label}</div>
-      <div className="mono text-[16px] font-bold text-ink num">{value}</div>
-      <div className="text-[9px] text-ink3 leading-tight uppercase font-semibold opacity-60 tracking-tighter">{sub}</div>
+    <div className="flex flex-col">
+      <div className="text-[9px] text-ink3 font-bold uppercase tracking-wider mb-0.5 opacity-70">{label}</div>
+      <div className="mono text-[15px] font-black text-ink leading-tight">{value}</div>
+      <div className="text-[8px] text-ink3 uppercase font-medium opacity-50 truncate">{sub}</div>
     </div>
   );
 }

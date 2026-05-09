@@ -8,7 +8,11 @@ import type { Candle } from "../lib/types"
 const WS_BASE = process.env.NEXT_PUBLIC_WS_URL ?? "ws://localhost:8000"
 const RECONNECT_DELAY_MS = 3000
 export function useMarketSocket(symbol: string) {
-  const { pushCandle, setHistory, candles, lastPrice } = useMarketStore()
+  const pushCandle = useMarketStore(s => s.pushCandle)
+  const setHistory = useMarketStore(s => s.setHistory)
+  const symbolCandles = useMarketStore(s => s.candles[symbol] ?? [])
+  const symbolLastPrice = useMarketStore(s => s.lastPrice[symbol] ?? 0)
+
   const { token, updatePositionPrice } = useUserStore()
   const wsRef = useRef<WebSocket | null>(null)
   const retryRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -52,7 +56,7 @@ export function useMarketSocket(symbol: string) {
     }
   }, [symbol])
   return {
-    candles: candles[symbol] ?? [],
-    lastPrice: lastPrice[symbol] ?? 0,
+    candles: symbolCandles,
+    lastPrice: symbolLastPrice,
   }
 }

@@ -21,7 +21,7 @@ export function CandlestickChart({ candles, symbol }: Props) {
   // 1. Initialize Chart
   useEffect(() => {
     if (!containerRef.current) return
-    
+
     const chart = createChart(containerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: "#0a0a0f" },
@@ -34,9 +34,9 @@ export function CandlestickChart({ candles, symbol }: Props) {
       },
       crosshair: { mode: CrosshairMode.Normal },
       rightPriceScale: { borderColor: "rgba(255,255,255,0.08)" },
-      leftPriceScale: { 
+      leftPriceScale: {
         borderColor: "rgba(255,255,255,0.08)",
-        visible: true, // Needed for RSI and MACD
+        visible: true,
       },
       timeScale: {
         borderColor: "rgba(255,255,255,0.08)",
@@ -73,17 +73,17 @@ export function CandlestickChart({ candles, symbol }: Props) {
     }
   }, [])
 
-  // 2. Handle Data Updates
+  // 2. Handle Data Updates (Using proven setData approach from hash 5937c41)
   useEffect(() => {
     if (!seriesRef.current || !chartRef.current || candles.length === 0) return
 
     // Sanitization & Deduplication (by second-timestamp)
     const seen = new Map<number, any>()
     for (const c of candles) {
-      if (!c.timestamp) continue
+      if (!c || !c.timestamp) continue
       const t = c.timestamp > 1e11 ? Math.floor(c.timestamp / 1000) : c.timestamp
       const o = Number(c.open), h = Number(c.high), l = Number(c.low), cl = Number(c.close);
-      
+
       if (isNaN(o) || isNaN(h) || isNaN(l) || isNaN(cl)) continue;
 
       seen.set(t, {
@@ -117,7 +117,7 @@ export function CandlestickChart({ candles, symbol }: Props) {
       try {
         let s = currentMap.get(id)
         if (!s) {
-          s = chart.addLineSeries({ color, lineWidth: 1.5, title, priceScaleId })
+          s = chart!.addLineSeries({ color, lineWidth: 1.5, title, priceScaleId })
           currentMap.set(id, s)
         }
         const lineData = values
@@ -133,7 +133,7 @@ export function CandlestickChart({ candles, symbol }: Props) {
       try {
         let s = currentMap.get(id)
         if (!s) {
-          s = chart.addHistogramSeries({ priceScaleId })
+          s = chart!.addHistogramSeries({ priceScaleId })
           currentMap.set(id, s)
         }
         const histData = values
@@ -155,7 +155,7 @@ export function CandlestickChart({ candles, symbol }: Props) {
     const removeIndicator = (id: string) => {
       const s = currentMap.get(id)
       if (s) {
-        try { chart.removeSeries(s) } catch (e) {}
+        try { chart?.removeSeries(s) } catch (e) {}
         currentMap.delete(id)
       }
     }
@@ -206,11 +206,20 @@ export function CandlestickChart({ candles, symbol }: Props) {
     setActiveIndicators(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
   }
 
+  // Determine label for display
+  const getIntervalLabel = () => {
+    if (candles.length < 2) return "1MIN";
+    const diff = Math.abs(candles[1].timestamp - candles[0].timestamp) / 60000;
+    if (diff >= 1440) return "1DAY";
+    if (diff >= 60) return `${Math.round(diff/60)}HOUR`;
+    return `${Math.round(diff)}MIN`;
+  }
+
   return (
     <div className="w-full rounded-xl overflow-hidden border border-white/8 bg-[#0a0a0f]">
       <div className="flex items-center justify-between px-4 py-2 border-b border-white/8">
         <div className="flex items-center gap-4">
-          <span className="text-xs font-mono text-white/40 tracking-widest uppercase">{symbol} · 1MIN</span>
+          <span className="text-xs font-mono text-white/40 tracking-widest uppercase">{symbol} · {getIntervalLabel()}</span>
           <ChartControls activeIndicators={activeIndicators} onToggle={toggleIndicator} />
         </div>
         <span className="text-xs text-white/30">{candles.length} candles</span>

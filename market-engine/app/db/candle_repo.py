@@ -16,6 +16,13 @@ async def insert_candle(session: AsyncSession, candle: dict) -> None:
     session.add(row)
     await session.commit()
 async def trim_history(session: AsyncSession, symbol: str) -> None:
+    # Only trim if we've exceeded the limit + a small buffer to avoid constant deletes
+    count_res = await session.execute(select(func.count()).select_from(CandleHistory).where(CandleHistory.symbol == symbol))
+    count = count_res.scalar()
+    
+    if count <= settings.candle_history_limit + 10:
+        return
+
     subq = (
         select(CandleHistory.id)
         .where(CandleHistory.symbol == symbol)

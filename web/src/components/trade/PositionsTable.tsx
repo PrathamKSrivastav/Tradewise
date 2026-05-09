@@ -6,39 +6,39 @@ export function PositionsTable() {
   const { positions } = useUserStore()
   if (positions.length === 0) {
     return (
-      <Card className="p-4">
-        <p className="text-xs font-mono text-white/40 tracking-widest mb-3">OPEN POSITIONS</p>
-        <p className="text-sm text-white/25 text-center py-4">No open positions</p>
-      </Card>
+      <div className="p-3">
+        <p className="text-[9px] font-black text-ink3 uppercase tracking-[0.2em] mb-2">Open Positions</p>
+        <p className="text-[11px] text-ink3 text-center py-4 italic opacity-50">No open positions</p>
+      </div>
     )
   }
   return (
-    <Card className="p-4">
-      <p className="text-xs font-mono text-white/40 tracking-widest mb-3">OPEN POSITIONS</p>
-      <div className="flex flex-col gap-2">
+    <div className="p-3">
+      <p className="text-[9px] font-black text-ink3 uppercase tracking-[0.2em] mb-2">Open Positions</p>
+      <div className="flex flex-col gap-1.5">
         {positions.map((p) => {
           const pnl = p.unrealised_pnl ?? 0
           const isProfit = pnl >= 0
           return (
-            <div key={p.symbol} className="flex items-center justify-between bg-white/4 rounded-lg px-3 py-2.5">
+            <div key={p.symbol} className="flex items-center justify-between bg-white/4 ring-1 ring-white/5 rounded-lg px-2.5 py-2 transition hover:bg-white/6 group">
               <div>
-                <p className="text-sm font-semibold text-white">{p.symbol}</p>
-                <p className="text-xs text-white/40">
-                  {p.quantity} × avg ₹{p.avg_buy_price.toLocaleString("en-IN")}
+                <p className="text-[12px] font-black text-white group-hover:text-indigo-400 transition-colors">{p.symbol}</p>
+                <p className="text-[9px] font-bold text-ink3 uppercase tracking-tighter">
+                  {p.quantity} <span className="opacity-50 tracking-normal mx-0.5">at</span> ₹{p.avg_buy_price.toLocaleString()}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-white/40">
-                  {p.current_price ? `₹${p.current_price.toLocaleString("en-IN")}` : "—"}
+                <p className={`text-[12px] font-black mono ${isProfit ? "text-emerald-400" : "text-rose-400"}`}>
+                  {isProfit ? "+" : ""}₹{pnl.toLocaleString()}
                 </p>
-                <p className={`text-sm font-mono font-bold ${isProfit ? "text-emerald-400" : "text-red-400"}`}>
-                  {isProfit ? "+" : ""}₹{pnl.toLocaleString("en-IN")}
-                </p>
+                <div className="text-[8px] font-bold text-ink3 uppercase tracking-tighter opacity-50">
+                  Unrealised
+                </div>
               </div>
             </div>
           )
         })}
       </div>
-    </Card>
+    </div>
   )
-}
+  }

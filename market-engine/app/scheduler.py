@@ -8,6 +8,7 @@ from app.pubsub.publisher import publish_tick
 from app.pubsub.redis_client import get_redis
 from app.db.session import SessionLocal
 from app.db.candle_repo import insert_candle, trim_history
+from app.stocks.ohlcv_builder import build_candle
 log = logging.getLogger(__name__)
 _states: dict[str, StockState] = {}
 _scheduler = AsyncIOScheduler()
@@ -16,11 +17,10 @@ async def _tick() -> None:
     try:
         async with SessionLocal() as session:
             for symbol, state in _states.items():
-                from app.stocks.ohlcv_builder import build_candle
                 candle = build_candle(state)
                 if candle is None:
                     continue
-                await publish_tick(redis, {symbol: state})
+                await publish_tick(redis, candle)
                 await insert_candle(session, candle)
                 await trim_history(session, symbol)
     except Exception as exc:

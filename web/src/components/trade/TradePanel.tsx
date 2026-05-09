@@ -103,15 +103,15 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      <div className="p-4 flex flex-col gap-5 flex-1 overflow-y-auto scrollbar-none">
+      <div className="p-3 flex flex-col gap-3 flex-1 overflow-y-auto scrollbar-none">
         {/* Side Picker */}
-        <div className="flex p-1 rounded-pill bg-black/40 ring-1 ring-white/5">
+        <div className="flex p-0.5 rounded-pill bg-black/40 ring-1 ring-white/5">
           {(["buy", "sell"] as const).map(s => (
             <button
               key={s}
               onClick={() => setSide(s)}
               className={clsx(
-                "flex-1 h-8 rounded-pill text-[11px] font-black uppercase tracking-widest transition-all",
+                "flex-1 h-7 rounded-pill text-[10px] font-black uppercase tracking-widest transition-all",
                 side === s 
                   ? (s === "buy" ? "bg-emerald-500 text-[#062a1a]" : "bg-rose-500 text-white shadow-lg shadow-rose-500/20")
                   : "text-ink3 hover:text-ink2"
@@ -129,7 +129,7 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
               key={t}
               onClick={() => handleOrderTypeChange(t)}
               className={clsx(
-                "flex-1 pb-2 text-[11px] font-bold uppercase tracking-widest transition-all relative",
+                "flex-1 pb-1.5 text-[10px] font-bold uppercase tracking-widest transition-all relative",
                 orderType === t ? "text-indigo-400" : "text-ink3 hover:text-ink2"
               )}
             >
@@ -140,16 +140,16 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
         </div>
 
         {/* Price Section */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           {orderType === "Market" ? (
-            <div className="p-3 rounded-xl bg-white/4 ring-1 ring-white/5 flex justify-between items-center">
-              <span className="text-[10px] font-bold text-ink3 uppercase">Market Price</span>
-              <span className="mono text-[16px] font-bold text-ink">₹{marketPrice.toLocaleString()}</span>
+            <div className="p-2 rounded-lg bg-white/4 ring-1 ring-white/5 flex justify-between items-center">
+              <span className="text-[9px] font-bold text-ink3 uppercase">Market</span>
+              <span className="mono text-[14px] font-bold text-ink text-right">₹{marketPrice.toLocaleString()}</span>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2">
               <div>
-                <label className="text-[10px] font-bold text-ink3 uppercase tracking-wider mb-1.5 block">
+                <label className="text-[9px] font-bold text-ink3 uppercase tracking-wider mb-1 block">
                   {orderType} Price (₹)
                 </label>
                 <div className="relative group">
@@ -157,9 +157,9 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
                     type="number"
                     value={targetPrice}
                     onChange={e => setTargetPrice(Number(e.target.value))}
-                    className="w-full h-11 bg-black/40 ring-1 ring-white/10 rounded-xl px-4 mono text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
+                    className="w-full h-9 bg-black/40 ring-1 ring-white/10 rounded-lg px-3 mono text-[14px] text-ink focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all"
                   />
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[11px] font-bold text-ink3">
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold">
                     {marketPrice > 0 ? (
                       <span className={clsx(targetPrice > marketPrice ? "text-rose-400" : "text-emerald-400")}>
                         {(((targetPrice - marketPrice) / marketPrice) * 100).toFixed(1)}%
@@ -170,12 +170,12 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
               </div>
               
               {/* Offsets */}
-              <div className="flex gap-2">
-                {[-0.05, -0.02, -0.01, 0.01, 0.02, 0.05].map(off => (
+              <div className="flex gap-1">
+                {[-0.02, -0.01, 0.01, 0.02].map(off => (
                   <button
                     key={off}
                     onClick={() => applyOffset(off)}
-                    className="flex-1 h-7 rounded-btn bg-white/5 hover:bg-white/10 text-[10px] font-bold text-ink3 transition ring-1 ring-white/5"
+                    className="flex-1 h-6 rounded-md bg-white/5 hover:bg-white/10 text-[9px] font-bold text-ink3 transition ring-1 ring-white/5"
                   >
                     {off > 0 ? `+${off * 100}%` : `${off * 100}%`}
                   </button>
@@ -184,39 +184,39 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
             </div>
           )}
           
-          <p className="text-[11px] text-ink3 leading-relaxed bg-white/2 p-3 rounded-lg border border-dashed border-white/5">
+          <p className="text-[10px] text-ink3 leading-tight bg-white/2 p-2 rounded-lg border border-dashed border-white/5 italic">
             {hintText}
           </p>
         </div>
 
         {/* Quantity */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <div className="flex justify-between items-end">
-            <label className="text-[10px] font-bold text-ink3 uppercase tracking-wider">Quantity</label>
-            <span className="text-[11px] text-ink3">Max: <span className="text-ink font-bold">{maxQty}</span></span>
+            <label className="text-[9px] font-bold text-ink3 uppercase tracking-wider">Qty</label>
+            <span className="text-[10px] text-ink3">Max: <span className="text-ink font-bold">{maxQty}</span></span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button 
               onClick={() => setQuantity(q => Math.max(1, q - 1))}
-              className="w-11 h-11 rounded-xl bg-white/5 hover:bg-white/10 text-ink text-xl transition ring-1 ring-white/10"
+              className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 text-ink transition ring-1 ring-white/10 flex items-center justify-center font-bold"
             >−</button>
             <input
               type="number"
               value={quantity}
               onChange={e => setQuantity(Math.max(1, Number(e.target.value)))}
-              className="flex-1 h-11 bg-black/40 ring-1 ring-white/10 rounded-xl px-4 text-center mono text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+              className="flex-1 h-9 bg-black/40 ring-1 ring-white/10 rounded-lg px-2 text-center mono text-[14px] text-ink focus:outline-none"
             />
             <button 
               onClick={() => setQuantity(q => q + 1)}
-              className="w-11 h-11 rounded-xl bg-white/5 hover:bg-white/10 text-ink text-xl transition ring-1 ring-white/10"
+              className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 text-ink transition ring-1 ring-white/10 flex items-center justify-center font-bold"
             >+</button>
           </div>
-          <div className="flex gap-1.5">
+          <div className="flex gap-1">
             {[0.25, 0.5, 0.75, 1].map(p => (
               <button
                 key={p}
                 onClick={() => setQuantity(Math.max(1, Math.floor((balance * p) / (effectivePrice || 1))))}
-                className="flex-1 h-6 rounded-md bg-white/4 hover:bg-white/8 text-[9px] font-black text-ink3 uppercase transition"
+                className="flex-1 h-5 rounded bg-white/4 hover:bg-white/8 text-[8px] font-black text-ink3 uppercase transition"
               >
                 {p * 100}%
               </button>
@@ -225,14 +225,14 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
         </div>
 
         {/* Order Summary */}
-        <div className="p-4 rounded-xl bg-indigo-500/5 ring-1 ring-indigo-500/10 space-y-2">
-          <div className="flex justify-between items-center text-[12px]">
-            <span className="text-ink3 font-medium">Estimated Total</span>
-            <span className="mono text-[15px] font-black text-ink">₹{total.toLocaleString()}</span>
+        <div className="p-3 rounded-lg bg-indigo-500/5 ring-1 ring-indigo-500/10 space-y-1">
+          <div className="flex justify-between items-center text-[11px]">
+            <span className="text-ink3">Total</span>
+            <span className="mono text-[14px] font-black text-ink tracking-tight">₹{total.toLocaleString()}</span>
           </div>
-          <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
-            <span className="text-ink3/60">Available Balance</span>
-            <span className="text-ink2">₹{balance.toLocaleString()}</span>
+          <div className="flex justify-between items-center text-[9px] font-bold uppercase">
+            <span className="text-ink3/50 tracking-tighter">Available</span>
+            <span className="text-ink2 tracking-tighter">₹{balance.toLocaleString()}</span>
           </div>
         </div>
 

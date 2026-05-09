@@ -65,7 +65,7 @@ class PendingOrder(Base):
     order_type: Mapped[str] = mapped_column(String(10), nullable=False) # "Limit", "Stop"
     quantity: Mapped[int] = mapped_column(Integer, nullable=False)
     target_price: Mapped[float] = mapped_column(Float, nullable=False)
-    status: Mapped[str] = mapped_column(String(10), default="pending")  # "pending", "executed", "cancelled"
+    status: Mapped[str] = mapped_column(String(10), default="pending", index=True)  # "pending", "executed", "cancelled"
     timestamp: Mapped[int] = mapped_column(BigInteger, nullable=False, index=True)
     user: Mapped["User"] = relationship("User")
 class QuizHistory(Base):
