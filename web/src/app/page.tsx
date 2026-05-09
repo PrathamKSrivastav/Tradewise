@@ -19,62 +19,45 @@ export default function HomePage() {
 
   return (
     <AppLayout>
-      <div style={{ display: "flex", flex: 1, gap: 24, padding: 24, minHeight: 0, overflow: "hidden" }}>
+      <div className="flex flex-col lg:flex-row flex-1 gap-6 p-4 lg:p-6 min-h-0 overflow-y-auto lg:overflow-hidden">
         {/* Markets — 2/3 */}
-        <section style={{ flex: 2, display: "flex", flexDirection: "column", minHeight: 0 }}>
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 16 }}>
+        <section className="flex-[2] flex flex-col min-h-0">
+          <div className="flex flex-wrap items-end justify-between mb-4 gap-4">
             <div>
-              <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.18em", color: "rgba(255,255,255,0.35)", marginBottom: 6 }}>
+              <div className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.2em] text-white/30 mb-1.5">
                 Select a market
               </div>
-              <div style={{ fontSize: 18, fontWeight: 600, letterSpacing: "-0.01em", color: "#e7eaf3" }}>
-                Instruments · Live OHLC
+              <div className="text-[20px] lg:text-[24px] font-black tracking-tight text-white">
+                Instruments · <span className="text-indigo-400">Live OHLC</span>
               </div>
             </div>
-            <div style={{
-              display: "flex", alignItems: "center", gap: 8,
-              padding: "0 12px", height: 32,
-              borderRadius: 9999, background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#34d399" }} />
-              <span style={{ fontSize: 11.5, color: "rgba(255,255,255,0.6)" }}>Market open · NSE</span>
+            <div className="flex items-center gap-2 px-3 h-8 rounded-full bg-white/5 border border-white/10">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[11px] font-bold text-white/60 uppercase tracking-wider">Market open</span>
             </div>
           </div>
-          <div style={{ flex: 1, overflowY: "auto", overflowX: "hidden" }} className="scrollbar-none">
+          <div className="flex-1 overflow-y-auto lg:overflow-x-hidden scrollbar-none min-h-[400px]">
             <StockSelector />
           </div>
         </section>
 
         {/* Leaderboard sidebar — 1/3 */}
-        <aside style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 16 }}>
+        <aside className="flex-1 flex flex-col min-h-0 border-t lg:border-t-0 lg:border-l border-white/5 pt-6 lg:pt-0 lg:pl-6">
+          <div className="flex items-end justify-between mb-4">
             <div>
-              <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.18em", color: "rgba(255,255,255,0.35)", marginBottom: 6 }}>
+              <div className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.2em] text-white/30 mb-1.5">
                 Rankings
               </div>
-              <div style={{ fontSize: 18, fontWeight: 600, letterSpacing: "-0.01em", color: "#e7eaf3" }}>
+              <div className="text-[20px] lg:text-[24px] font-black tracking-tight text-white">
                 This week
               </div>
             </div>
-            <Link href="/leaderboard" style={{
-              display: "flex", alignItems: "center", gap: 4,
-              fontSize: 12, color: "#818cf8", textDecoration: "none",
-            }}>
+            <Link href="/leaderboard" className="flex items-center gap-1 text-[12px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors no-underline">
               Full board
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </Link>
           </div>
-          <div style={{
-            flex: 1,
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            borderRadius: 12,
-            padding: 8,
-            overflowY: "auto",
-          }} className="scrollbar-none">
+          <div className="flex-1 bg-white/[0.03] border border-white/10 rounded-2xl p-2 overflow-y-auto scrollbar-none min-h-[400px]">
             <Leaderboard compact />
           </div>
         </aside>

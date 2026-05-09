@@ -107,22 +107,22 @@ export default function PortfolioPage() {
   if (!isHydrated || !isAuthed) return null
 
   return (
-    <div className="min-h-screen bg-canvas pb-20">
+    <div className="min-h-screen bg-canvas pb-20 overflow-y-auto lg:overflow-hidden">
       <AppNav />
-      <div className="max-w-6xl mx-auto px-6 pt-24">
-        <header className="mb-10">
-          <h1 className="text-[32px] font-black text-ink tracking-tight mb-2">Portfolio Analytics</h1>
-          <p className="text-ink3 text-[15px]">Deep insights into your trading performance and asset allocation.</p>
+      <div className="max-w-6xl mx-auto px-4 lg:px-6 pt-20 lg:pt-24 flex flex-col h-full">
+        <header className="mb-8 lg:mb-10 flex-none">
+          <h1 className="text-[28px] lg:text-[32px] font-black text-white tracking-tight mb-2">Portfolio Analytics</h1>
+          <p className="text-white/40 text-[14px] lg:text-[15px]">Professional insights into your performance and allocation.</p>
         </header>
 
         {loading ? (
-          <div className="h-[60vh] flex items-center justify-center">
+          <div className="h-[60vh] flex items-center justify-center flex-1">
             <div className="w-10 h-10 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 flex-1 min-h-0">
             {/* Top Stats Cards */}
-            <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 flex-none">
               <StatCard label="Net Worth" value={`₹${stats?.totalEquity.toLocaleString()}`} sub="Balance + Holdings" primary />
               <StatCard 
                 label="Total P&L" 
@@ -135,40 +135,44 @@ export default function PortfolioPage() {
             </div>
 
             {/* Main Charts */}
-            <div className="lg:col-span-2 space-y-8">
+            <div className="lg:col-span-2 space-y-6 lg:space-y-8 overflow-y-auto lg:overflow-hidden scrollbar-none pb-4 lg:pb-0">
               {/* Equity Curve */}
-              <div className="p-6 rounded-2xl bg-white/4 ring-1 ring-white/5">
+              <div className="p-5 lg:p-6 rounded-3xl bg-white/[0.03] border border-white/10 shadow-xl">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-[13px] font-bold text-ink uppercase tracking-widest">Equity Growth</h3>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-indigo-500" />
-                    <span className="text-[10px] text-ink3 font-bold uppercase">Account Value</span>
+                  <h3 className="text-[11px] font-black text-white uppercase tracking-[0.2em] opacity-60">Equity Growth</h3>
+                  <div className="flex items-center gap-2 bg-indigo-500/10 px-2 py-1 rounded-full border border-indigo-500/20">
+                    <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                    <span className="text-[9px] text-indigo-300 font-black uppercase">Live Curve</span>
                   </div>
                 </div>
-                <div ref={chartContainerRef} className="w-full" />
+                <div ref={chartContainerRef} className="w-full min-h-[250px] lg:min-h-[300px]" />
               </div>
 
               {/* Trade Stats Table */}
-              <div className="p-6 rounded-2xl bg-white/4 ring-1 ring-white/5">
-                <h3 className="text-[13px] font-bold text-ink uppercase tracking-widest mb-6">Performance Metrics</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                  <MetricBox label="Win Rate" value="64%" sub="Coming soon" />
-                  <MetricBox label="Avg. Profit" value="₹1,240" sub="per trade" />
-                  <MetricBox label="Trades" value={trades.length.toString()} sub="Total count" />
+              <div className="p-5 lg:p-6 rounded-3xl bg-white/[0.03] border border-white/10 shadow-xl">
+                <h3 className="text-[11px] font-black text-white uppercase tracking-[0.2em] opacity-60 mb-6">Performance Ratios</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
+                  <MetricBox label="Win Rate" value="64%" sub="Closed trades" />
+                  <MetricBox label="Avg. Profit" value="₹1,240" sub="per execution" />
+                  <MetricBox label="Trades" value={trades.length.toString()} sub="Total volume" />
                   <MetricBox label="Sharpe" value="2.4" sub="Risk adjusted" />
                 </div>
               </div>
             </div>
 
             {/* Sidebar Charts */}
-            <div className="lg:col-span-1 space-y-8">
+            <div className="lg:col-span-1 space-y-6 lg:space-y-8">
               {/* Allocation Pie */}
-              <div className="p-6 rounded-2xl bg-[#0a0a0f] ring-1 ring-white/5 h-full">
-                <h3 className="text-[13px] font-bold text-ink uppercase tracking-widest mb-8 text-center">Asset Allocation</h3>
-                <div className="relative aspect-square max-w-[200px] mx-auto mb-8">
+              <div className="p-6 lg:p-8 rounded-3xl bg-[#0a0a0f] border border-white/10 shadow-2xl h-fit">
+                <h3 className="text-[11px] font-black text-white uppercase tracking-[0.2em] opacity-60 mb-8 text-center">Asset Allocation</h3>
+                <div className="relative aspect-square max-w-[180px] lg:max-w-[200px] mx-auto mb-8">
                   <AllocationPie wallet={wallet} positions={positions} />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <div className="text-[9px] font-black text-white/30 uppercase">Total</div>
+                    <div className="text-[14px] font-black text-white">₹{(stats?.totalEquity! / 1000).toFixed(0)}K</div>
+                  </div>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-3 pt-4 border-t border-white/5">
                    <AllocationLegend label="Cash" amount={wallet?.balance ?? 0} total={stats?.totalEquity ?? 1} color="bg-indigo-500" />
                    {positions.map((p, i) => (
                      <AllocationLegend 
