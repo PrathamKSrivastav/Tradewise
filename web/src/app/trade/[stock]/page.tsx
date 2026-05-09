@@ -37,6 +37,8 @@ export default function TradePage() {
   const symbol = (params.stock as string).toUpperCase()
   const { candles, lastPrice } = useMarketSocket(symbol)
   const [tf, setTf] = useState("1m")
+  const [mobileTab, setMobileTab] = useState<"chart" | "positions" | "history">("chart")
+  const [showDrawer, setShowDrawer] = useState(false)
 
   const tfToMinutes: Record<string, number> = {
     "1m": 1,
@@ -60,7 +62,6 @@ export default function TradePage() {
   const meta = STOCK_META[symbol] ?? { name: symbol, risk: "LOW" }
   const prevClose = candles.length > 1 ? candles[candles.length - 2].close : null
   const change = prevClose ? ((lastPrice - prevClose) / prevClose) * 100 : 0
-  const changeAbs = prevClose ? lastPrice - prevClose : 0
   const isUp = change >= 0
 
   const lastCandle = candles[candles.length - 1]
@@ -69,30 +70,49 @@ export default function TradePage() {
     <>
       <AppNav />
       <div className="pt-14 h-screen flex flex-col bg-canvas overflow-hidden">
-        {/* Sub-header - Reduced height to h-12 */}
-        <div className="h-12 border-b border-stroke1 bg-canvas/95 backdrop-blur-sm flex items-center px-4 gap-4 flex-none">
+        {/* Header - Stays sticky on top */}
+        <div className="h-12 lg:h-12 border-b border-stroke1 bg-canvas flex items-center px-4 gap-4 flex-none z-20">
           <Link href="/" className="flex items-center gap-1.5 text-[11px] text-ink3 hover:text-ink transition uppercase font-bold tracking-wider">
             <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            Back
+            <span className="hidden sm:inline">Back</span>
           </Link>
-          <div className="w-px h-3 bg-stroke2" />
-          <div className="flex items-center gap-3">
-            <div className="text-[14px] font-bold tracking-tight">{meta.name}</div>
-            <RiskBadge level={meta.risk} />
+          <div className="w-px h-3 bg-stroke2 hidden sm:block" />
+          <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-3">
+            <div className="text-[13px] sm:text-[14px] font-bold tracking-tight leading-none sm:leading-normal">{meta.name}</div>
+            <div className="sm:block transform scale-75 sm:scale-100 origin-left mt-0.5 sm:mt-0">
+              <RiskBadge level={meta.risk} />
+            </div>
           </div>
           {lastPrice > 0 && (
-            <div className="ml-auto flex items-baseline gap-2">
-              <div className="mono text-[18px] font-bold num">₹{lastPrice.toLocaleString("en-IN")}</div>
-              <div className={clsx("mono text-[11px] num font-bold", isUp ? "text-emerald-400" : "text-rose-400")}>
+            <div className="ml-auto flex flex-col sm:flex-row sm:items-baseline gap-0 sm:gap-2 text-right">
+              <div className="mono text-[16px] sm:text-[18px] font-bold num leading-none">₹{lastPrice.toLocaleString("en-IN")}</div>
+              <div className={clsx("mono text-[10px] sm:text-[11px] num font-bold", isUp ? "text-emerald-400" : "text-rose-400")}>
                 {isUp ? "+" : ""}{change.toFixed(2)}%
               </div>
             </div>
           )}
         </div>
 
-        {/* OHLC ribbon - Reduced height to h-8 */}
+        {/* Mobile Tab Switcher */}
+        <div className="flex lg:hidden border-b border-stroke1 bg-elev1 flex-none">
+          {(["chart", "positions", "history"] as const).map(tab => (
+            <button
+              key={tab}
+              onClick={() => setMobileTab(tab)}
+              className={clsx(
+                "flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all relative",
+                mobileTab === tab ? "text-indigo-400" : "text-ink3"
+              )}
+            >
+              {tab}
+              {mobileTab === tab && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />}
+            </button>
+          ))}
+        </div>
+
+        {/* Desktop OHLC ribbon - Hidden on mobile to save space */}
         {lastCandle && (
-          <div className="h-8 border-b border-stroke1 bg-elev1 flex items-center px-4 gap-6 flex-none">
+          <div className="hidden lg:flex h-8 border-b border-stroke1 bg-elev1 items-center px-4 gap-6 flex-none">
             {[
               { label: "O", value: lastCandle.open },
               { label: "H", value: lastCandle.high },
@@ -107,30 +127,44 @@ export default function TradePage() {
           </div>
         )}
 
-        {/* Main content */}
-        <div className="flex-1 flex min-h-0">
-          {/* Left/Main Section */}
-          <div className="flex-1 flex flex-col min-w-0 border-r border-stroke1">
-            {/* Chart Area */}
+        {/* Content Area */}
+        <div className="flex-1 flex min-h-0 relative">
+          {/* Main Column */}
+          <div className={clsx(
+            "flex-1 flex flex-col min-w-0 border-r border-stroke1",
+            mobileTab !== "chart" && "hidden lg:flex"
+          )}>
             <div className="flex-1 relative chart-grid overflow-hidden bg-black/20">
               <CandlestickChart candles={displayCandles} symbol={symbol} />
               {labId && <LabOverlay lessonId={labId} candles={displayCandles} symbol={symbol} />}
             </div>
-
-            {/* Risk Metrics - Horizontal */}
             <div className="flex-none bg-canvas border-t border-stroke1">
               <RiskMetricsPanel symbol={symbol} candles={displayCandles} />
             </div>
-
-            {/* Trade History */}
-            <div className="h-[140px] flex-none border-t border-stroke1 overflow-auto scrollbar-none bg-canvas/50">
+            <div className="h-[140px] hidden lg:block flex-none border-t border-stroke1 overflow-auto scrollbar-none bg-canvas/50">
               <TradeHistory />
             </div>
           </div>
 
-          {/* Right Sidebar - 320px */}
-          <div className="w-[320px] flex-none flex flex-col bg-canvas overflow-hidden">
-            <div className="flex-none overflow-y-auto scrollbar-none border-b border-stroke1">
+          {/* Positions (Mobile View) */}
+          <div className={clsx(
+            "flex-1 lg:hidden bg-canvas overflow-y-auto",
+            mobileTab !== "positions" && "hidden"
+          )}>
+            <PositionsTable />
+          </div>
+
+          {/* History (Mobile View) */}
+          <div className={clsx(
+            "flex-1 lg:hidden bg-canvas overflow-y-auto",
+            mobileTab !== "history" && "hidden"
+          )}>
+            <TradeHistory />
+          </div>
+
+          {/* Sidebar (Desktop) */}
+          <div className="hidden lg:flex w-[320px] flex-none flex-col bg-canvas overflow-hidden">
+            <div className="flex-none border-b border-stroke1">
               <TradePanel symbol={symbol} onTradeSuccess={refresh} />
             </div>
             <div className="flex-1 min-h-0 overflow-y-auto scrollbar-none">
@@ -138,6 +172,31 @@ export default function TradePage() {
             </div>
           </div>
         </div>
+
+        {/* Mobile Bottom Bar */}
+        <div className="lg:hidden h-16 flex-none border-t border-stroke1 bg-canvas/95 backdrop-blur-md px-4 flex items-center gap-3 z-30">
+          <button
+            onClick={() => { setShowDrawer(true) }}
+            className="flex-1 h-11 rounded-xl bg-indigo-500 text-white font-black text-[13px] uppercase tracking-widest shadow-lg shadow-indigo-500/20 active:scale-[0.98] transition-transform"
+          >
+            BUY / SELL
+          </button>
+        </div>
+
+        {/* Mobile Order Drawer Overlay */}
+        {showDrawer && (
+          <>
+            <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden" onClick={() => setShowDrawer(false)} />
+            <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#0d1120] rounded-t-3xl border-t border-stroke1 max-h-[85vh] overflow-y-auto lg:hidden shadow-2xl animate-in slide-in-from-bottom duration-300">
+              <div className="flex justify-center p-3">
+                <div className="w-12 h-1.5 rounded-full bg-white/10" />
+              </div>
+              <div className="px-2 pb-8">
+                <TradePanel symbol={symbol} onTradeSuccess={() => { refresh(); setShowDrawer(false); }} />
+              </div>
+            </div>
+          </>
+        )}
 
         <ChatWidget mode="simulator" symbol={symbol} candles={candles} />
       </div>
