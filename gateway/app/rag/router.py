@@ -13,6 +13,7 @@ from app.db.models import User
 from app.config import settings
 from app.db.session import get_session
 from app.market.service import get_candle_history
+from app.rag.service import get_relevant_context
 
 router = APIRouter(prefix="/rag", tags=["rag"])
 
@@ -46,7 +47,7 @@ class ChatResponse(BaseModel):
     messages_used: int
 
 
-def _simulator_system_prompt(chart_prompt: str, market_context: str) -> str:
+def _simulator_system_prompt(chart_prompt: str, market_context: str, rag_context: str) -> str:
     return f"""You are a patient and encouraging financial tutor for Tradewise, an Indian paper-trading simulator.
 Your goal is to teach the user how to analyze the market and suggest logical "next steps" for their learning or trading.
 
@@ -58,7 +59,11 @@ STRICT GUARD-RAILS:
 INSTRUCTIONS:
 - Explain concepts step-by-step as if teaching a beginner.
 - Use the recent market data provided below to ground your analysis.
+- If relevant technical information is provided in the "EXTRACTED KNOWLEDGE" section, use it to enhance your answer. Trust this knowledge highly.
 - Keep responses under 200 words.
+
+EXTRACTED KNOWLEDGE (RAG):
+{rag_context or "No additional technical documents found for this query."}
 
 RECENT MARKET DATA (Last 10 Ticks):
 {market_context or "No live data available yet."}
@@ -150,9 +155,10 @@ async def chat(
         grounding = f"📚 {body.lesson_title}" if body.lesson_title else "lesson"
     else:
         market_ctx = ""
+        rag_ctx = await get_relevant_context(body.question)
         if body.symbol:
             market_ctx = await _get_market_context(db, body.symbol)
-        system = _simulator_system_prompt(body.chart_prompt, market_ctx)
+        system = _simulator_system_prompt(body.chart_prompt, market_ctx, rag_ctx)
         grounding = "chart"
 
     answer = await _call_groq(system, body.question)
@@ -187,9 +193,10 @@ async def chat_stream(
         system = _lesson_system_prompt(body.lesson_snapshot, body.lesson_title)
     else:
         market_ctx = ""
+        rag_ctx = await get_relevant_context(body.question)
         if body.symbol:
             market_ctx = await _get_market_context(db, body.symbol)
-        system = _simulator_system_prompt(body.chart_prompt, market_ctx)
+        system = _simulator_system_prompt(body.chart_prompt, market_ctx, rag_ctx)
 
     async def _generate():
         async for text in _stream_groq(system, body.question):
