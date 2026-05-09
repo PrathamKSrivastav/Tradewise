@@ -7,16 +7,17 @@ import { AppNav } from "../layout/AppNav"
 import clsx from "clsx"
 
 export function CertificateView() {
-  const { token, userId, username } = useUserStore()
+  const { token, user_id: userId, username } = useUserStore()
+
   const [cert, setCert] = useState<{ certificateUrl: string; score: number; issuedAt: string } | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     async function load() {
-      if (!token || !userId) return
+      if (!token || !user_id) return
       try {
-        const data = await fetchCertificate(token, userId)
+        const data = await fetchCertificate(token, user_id)
         setCert(data)
       } catch (e: any) {
         setError(e.message)
@@ -25,7 +26,8 @@ export function CertificateView() {
       }
     }
     load()
-  }, [token, userId])
+  }, [token, user_id])
+
 
   if (loading) {
     return (

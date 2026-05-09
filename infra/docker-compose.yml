@@ -37,6 +37,8 @@ services:
       context: ../market-engine
       dockerfile: Dockerfile
     env_file: .env
+    ports:
+      - "8001:8001"
     environment:
       DATABASE_URL: postgresql+asyncpg://tradewise:${POSTGRES_PASSWORD}@postgres:5432/tradewise
       REDIS_URL: redis://redis:6379
