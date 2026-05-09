@@ -19,7 +19,15 @@ def _gbm_step(price: float, drift: float, volatility: float, dt: float = 1.0) ->
     return price * np.exp((drift - 0.5 * volatility ** 2) * dt + volatility * np.sqrt(dt) * z)
 def next_price(state: StockState, bias_drift: float = 0.0) -> float:
     profile: StockProfile = PROFILES[state.symbol]
-    effective_drift = profile.drift + state.drift_adjustment + bias_drift
+    
+    # Mean Reversion Logic: Apply a gentle pull back to base_price if we drift too far
+    # This prevents the stock from "always going up" or "crashing to zero" indefinitely.
+    reversion_speed = 0.005 # How fast it pulls back (0.5% of the distance per step)
+    price_diff_pct = (profile.base_price - state.price) / profile.base_price
+    reversion_drift = price_diff_pct * reversion_speed
+    
+    effective_drift = profile.drift + state.drift_adjustment + bias_drift + reversion_drift
+    
     new_price = _gbm_step(state.price, effective_drift, profile.volatility)
     new_price = max(new_price, profile.base_price * 0.10)
     state.price = round(new_price, 2)
