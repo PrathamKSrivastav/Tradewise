@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation"
 import ReactMarkdown from "react-markdown"
 import type { LessonObject } from "@/types/lesson"
 import { Button } from "@/components/ui/Button"
+import { SIPCalculator } from "./SIPCalculator"
 
 interface Props {
   lesson: LessonObject
@@ -79,6 +80,8 @@ export function LessonReader({ lesson, totalLessons, completedIds }: Props) {
           ">
             <ReactMarkdown>{lesson.body}</ReactMarkdown>
           </div>
+
+          {lesson.id === '05-compound-interest-and-sip' && <SIPCalculator />}
 
           {lesson.source && (
             <p className="text-[11px] text-ink3">{lesson.source}</p>

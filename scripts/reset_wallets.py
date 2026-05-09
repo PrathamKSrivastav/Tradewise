@@ -8,7 +8,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "gateway"))
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy import select, delete
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://tradewise:DoggyBeater@localhost:5432/tradewise")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://tradewise:tradewise1234@localhost:5432/tradewise")
 INITIAL_BALANCE = float(os.getenv("INITIAL_WALLET_BALANCE", "100000.0"))
 async def reset(confirm: bool = False):
     if not confirm:

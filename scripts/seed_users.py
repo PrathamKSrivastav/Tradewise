@@ -8,10 +8,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "gateway"))
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy import select
 import bcrypt
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://tradewise:DoggyBeater@localhost:5432/tradewise")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://tradewise:tradewise1234@localhost:5432/tradewise")
 INITIAL_BALANCE = float(os.getenv("INITIAL_WALLET_BALANCE", "100000.0"))
 TEST_USERS = [
-    {"username": f"trader{i:02d}", "email": f"trader{i:02d}@tradewise.test", "password": "test1234"}
+    {"username": f"trader{i:02d}", "email": f"trader{i:02d}@tradewise.com", "password": "test1234"}
     for i in range(1, 21)
 ]
 async def seed():

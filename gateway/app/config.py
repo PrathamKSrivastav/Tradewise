@@ -2,7 +2,7 @@
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 class Settings(BaseSettings):
-    database_url: str = "postgresql+asyncpg://tradewise:changeme@postgres:5432/tradewise"
+    database_url: str = "postgresql+asyncpg://tradewise:tradewise1234@postgres:5432/tradewise"
     redis_url: str = "redis://redis:6379"
     jwt_secret: str = "change-this-to-a-long-random-string"
     jwt_expire_minutes: int = 10080

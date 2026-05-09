@@ -5,8 +5,8 @@ from sqlalchemy import select
 from redis.asyncio import Redis
 from app.auth.deps import get_current_user
 from app.db.session import get_session
-from app.db.models import User, Trade, Position
-from app.trades.schemas import TradeRequest, TradeResponse, PositionOut
+from app.db.models import User, Trade, Position, PendingOrder
+from app.trades.schemas import TradeRequest, TradeResponse, PositionOut, PendingOrderOut
 from app.trades.service import execute_trade
 from app.pubsub.redis_client import get_redis
 router = APIRouter(prefix="/trade", tags=["trade"])
@@ -21,6 +21,32 @@ async def place_trade(
         return await execute_trade(session, redis, user.id, body)
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+
+
+@router.get("/pending", response_model=list[PendingOrderOut])
+async def get_pending_orders(
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
+):
+    result = await session.execute(
+        select(PendingOrder).where(PendingOrder.user_id == user.id, PendingOrder.status == "pending")
+    )
+    orders = result.scalars().all()
+    return [
+        PendingOrderOut(
+            id=o.id,
+            symbol=o.symbol,
+            side=o.side,
+            order_type=o.order_type,
+            quantity=o.quantity,
+            target_price=o.target_price,
+            status=o.status,
+            timestamp=o.timestamp,
+        )
+        for o in orders
+    ]
+
+
 @router.get("/positions", response_model=list[PositionOut])
 async def get_positions(
     user: User = Depends(get_current_user),

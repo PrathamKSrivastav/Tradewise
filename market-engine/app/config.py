@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings
 from functools import lru_cache
 from zoneinfo import ZoneInfo
 class Settings(BaseSettings):
-    database_url: str = "postgresql+asyncpg://tradewise:DefaultPassword1234@postgres:5432/tradewise"
+    database_url: str = "postgresql+asyncpg://tradewise:tradewiser1234@postgres:5432/tradewise"
     redis_url: str = "redis://redis:6379"
     tick_interval_seconds: int = 60
     candle_history_limit: int = 390

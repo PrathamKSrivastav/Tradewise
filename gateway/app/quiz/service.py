@@ -2,6 +2,7 @@
 import json
 import random
 import uuid
+import logging
 from typing import Any
 from groq import AsyncGroq
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,6 +13,13 @@ from app.quiz.schemas import QuizQuestion
 from app.xp.service import award_xp
 from app.badges.service import check_badges
 
+# Configure logging to both console and file for easier debugging
+logger = logging.getLogger(__name__)
+file_handler = logging.FileHandler("quiz_service.log")
+file_handler.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(name)s — %(message)s"))
+logger.addHandler(file_handler)
+logger.setLevel(logging.INFO)
+
 _client: AsyncGroq | None = None
 
 # In-memory session store: sessionId -> {lessonId, questions, answers_key}
@@ -21,6 +29,8 @@ _sessions: dict[str, dict[str, Any]] = {}
 def _get_client() -> AsyncGroq:
     global _client
     if _client is None:
+        if not settings.groq_api_key:
+            logger.error("GROQ_API_KEY is not set in settings")
         _client = AsyncGroq(api_key=settings.groq_api_key)
     return _client
 
@@ -54,62 +64,131 @@ async def generate_quiz(
     difficulty: str,
     db: AsyncSession,
 ) -> dict:
+    logger.info(f"Generating quiz for lesson={lesson_id}, user={user_id}, difficulty={difficulty}, seed_count={len(quiz_seeds)}")
+    
+    if not quiz_seeds:
+        logger.warning(f"No seeds provided for lesson {lesson_id}")
+        raise ValueError("Cannot generate quiz: No seeds provided")
+
     # Determine adaptive difficulty from last quiz score
-    result = await db.execute(
-        select(QuizHistory)
-        .where(QuizHistory.user_id == user_id, QuizHistory.lesson_id == lesson_id)
-        .order_by(QuizHistory.last_attempt_at.desc())
-        .limit(1)
-    )
-    last = result.scalar_one_or_none()
-    if last:
-        if last.score > 80:
-            difficulty = 'hard'
-        elif last.score < 60:
-            difficulty = 'easy'
+    try:
+        result = await db.execute(
+            select(QuizHistory)
+            .where(QuizHistory.user_id == user_id, QuizHistory.lesson_id == lesson_id)
+            .order_by(QuizHistory.last_attempt_at.desc())
+            .limit(1)
+        )
+        last = result.scalar_one_or_none()
+        if last:
+            if last.score > 80:
+                difficulty = 'hard'
+            elif last.score < 60:
+                difficulty = 'easy'
+            logger.info(f"Adaptive difficulty applied: {difficulty} (last score: {last.score})")
+    except Exception as e:
+        logger.error(f"Error fetching quiz history: {e}")
+        # Continue with provided difficulty
 
     count = min(10, len(quiz_seeds))
     seeds_json = json.dumps(quiz_seeds, indent=2)
 
-    client = _get_client()
-    response = await client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        max_completion_tokens=8192,
-        temperature=1,
-        top_p=1,
-        messages=[{
-            "role": "user",
-            "content": GENERATE_PROMPT.format(count=count, difficulty=difficulty, seeds=seeds_json),
-        }],
-    )
+    try:
+        client = _get_client()
+        response = await client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            max_completion_tokens=8192,
+            temperature=1,
+            top_p=1,
+            messages=[{
+                "role": "user",
+                "content": GENERATE_PROMPT.format(count=count, difficulty=difficulty, seeds=seeds_json),
+            }],
+        )
 
-    raw = response.choices[0].message.content.strip()
-    questions_data = json.loads(raw)
+        raw = response.choices[0].message.content.strip()
+        logger.info(f"Groq raw response: {raw}")
 
-    # Shuffle options so the correct answer isn't always in a fixed position
-    questions: list[QuizQuestion] = []
-    answers_key: list[int] = []
-    for i, q in enumerate(questions_data):
-        options = q["options"]
-        correct_text = options[q["correct"]]
-        random.shuffle(options)
-        new_correct_idx = options.index(correct_text)
-        questions.append(QuizQuestion(
-            id=i,
-            question=q["question"],
-            options=options,
-            difficulty=q["difficulty"],
-        ))
-        answers_key.append(new_correct_idx)
+        # Robust JSON extraction
+        if "```json" in raw:
+            raw = raw.split("```json")[1].split("```")[0].strip()
+        elif "```" in raw:
+            raw = raw.split("```")[1].split("```")[0].strip()
+        
+        try:
+            questions_data = json.loads(raw)
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to decode JSON from Groq: {e}. Raw content: {raw}")
+            raise ValueError(f"AI returned invalid JSON: {str(e)}")
+        
+        if not isinstance(questions_data, list):
+            # Sometimes LLM wraps the list in an object
+            if isinstance(questions_data, dict):
+                for key in ["questions", "quiz", "data"]:
+                    if key in questions_data and isinstance(questions_data[key], list):
+                        questions_data = questions_data[key]
+                        break
+            
+            if not isinstance(questions_data, list):
+                logger.error(f"Expected list from LLM, got {type(questions_data)}")
+                raise ValueError("Invalid quiz format received from AI (expected a list)")
 
-    session_id = str(uuid.uuid4())
-    _sessions[session_id] = {
-        "lessonId": lesson_id,
-        "userId": user_id,
-        "answersKey": answers_key,
-    }
+        # Shuffle options so the correct answer isn't always in a fixed position
+        questions: list[QuizQuestion] = []
+        answers_key: list[int] = []
+        for i, q in enumerate(questions_data):
+            try:
+                if not isinstance(q, dict):
+                    continue
+                    
+                question_text = q.get("question", "No question provided")
+                options = q.get("options", [])
+                correct_idx = q.get("correct", 0)
+                
+                if not options or not isinstance(options, list):
+                    logger.warning(f"Question {i} has no options")
+                    continue
+                    
+                if not isinstance(correct_idx, int) or correct_idx >= len(options):
+                    logger.warning(f"Correct index {correct_idx} out of range or not int for options {options}")
+                    correct_idx = 0
+                    
+                correct_text = options[correct_idx]
+                # Create a copy of options to shuffle
+                shuffled_options = list(options)
+                random.shuffle(shuffled_options)
+                new_correct_idx = shuffled_options.index(correct_text)
+                
+                # Ensure difficulty is valid for Pydantic model
+                q_diff = str(q.get("difficulty", difficulty)).lower()
+                if q_diff not in ['easy', 'medium', 'hard']:
+                    q_diff = difficulty
+                    
+                questions.append(QuizQuestion(
+                    id=i,
+                    question=question_text,
+                    options=shuffled_options,
+                    difficulty=q_diff,
+                ))
+                answers_key.append(new_correct_idx)
+            except Exception as item_err:
+                logger.warning(f"Skipping malformed quiz item {i}: {item_err}")
 
-    return {"sessionId": session_id, "lessonId": lesson_id, "questions": questions}
+        if not questions:
+            raise ValueError("AI failed to generate any valid quiz questions")
+
+        session_id = str(uuid.uuid4())
+        _sessions[session_id] = {
+            "lessonId": lesson_id,
+            "userId": user_id,
+            "answersKey": answers_key,
+        }
+
+        logger.info(f"Quiz generated successfully: sessionId={session_id}, questions={len(questions)}")
+        return {"sessionId": session_id, "lessonId": lesson_id, "questions": questions}
+
+    except Exception as e:
+        logger.error(f"Error in generate_quiz: {e}", exc_info=True)
+        raise e
 
 
 async def submit_quiz(

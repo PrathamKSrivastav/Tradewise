@@ -1,13 +1,15 @@
 // web/src/app/trade/[stock]/page.tsx
 "use client"
 import { useEffect, useState } from "react"
-import { useRouter, useParams } from "next/navigation"
+import { useRouter, useParams, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "../../../hooks/useAuth"
 import { useWallet } from "../../../hooks/useWallet"
 import { useMarketSocket } from "../../../hooks/useMarketSocket"
 import { CandlestickChart } from "../../../components/chart/CandlestickChart"
+import { LabOverlay } from "../../../components/trade/LabOverlay"
 import { TradePanel } from "../../../components/trade/TradePanel"
+import { RiskMetricsPanel } from "../../../components/trade/RiskMetricsPanel"
 import { PositionsTable } from "../../../components/trade/PositionsTable"
 import { TradeHistory } from "../../../components/trade/TradeHistory"
 import { ChatWidget } from "../../../components/chatbot/ChatWidget"
@@ -29,6 +31,8 @@ export default function TradePage() {
   const { refresh } = useWallet()
   const router = useRouter()
   const params = useParams()
+  const searchParams = useSearchParams()
+  const labId = searchParams.get("lab")
   const symbol = (params.stock as string).toUpperCase()
   const { candles, lastPrice } = useMarketSocket(symbol)
   const [tf, setTf] = useState("1D")
@@ -104,11 +108,13 @@ export default function TradePage() {
           {/* Chart area */}
           <div className="flex-1 border-r border-stroke1 min-w-0 chart-grid relative">
             <CandlestickChart candles={candles} symbol={symbol} />
+            {labId && <LabOverlay lessonId={labId} candles={candles} symbol={symbol} />}
           </div>
 
           {/* Right panel - 320px */}
           <div className="w-[320px] flex-none flex flex-col overflow-auto scrollbar-none">
             <TradePanel symbol={symbol} onTradeSuccess={refresh} />
+            <RiskMetricsPanel symbol={symbol} candles={candles} />
             <div className="border-t border-stroke1">
               <PositionsTable />
             </div>

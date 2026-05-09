@@ -53,6 +53,19 @@ export interface TradeRequest {
   symbol: string
   side: "buy" | "sell"
   quantity: number
+  order_type?: string
+  target_price?: number
+}
+
+export interface PendingOrder {
+  id: number
+  symbol: string
+  side: "buy" | "sell"
+  order_type: "Limit" | "Stop"
+  quantity: number
+  target_price: number
+  status: string
+  timestamp: number
 }
 
 // Academy

@@ -54,6 +54,20 @@ class Position(Base):
     symbol: Mapped[str] = mapped_column(String(20), nullable=False)
     quantity: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     avg_buy_price: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+
+
+class PendingOrder(Base):
+    __tablename__ = "pending_orders"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    symbol: Mapped[str] = mapped_column(String(20), nullable=False, index=True)
+    side: Mapped[str] = mapped_column(String(4), nullable=False)        # "buy", "sell"
+    order_type: Mapped[str] = mapped_column(String(10), nullable=False) # "Limit", "Stop"
+    quantity: Mapped[int] = mapped_column(Integer, nullable=False)
+    target_price: Mapped[float] = mapped_column(Float, nullable=False)
+    status: Mapped[str] = mapped_column(String(10), default="pending")  # "pending", "executed", "cancelled"
+    timestamp: Mapped[int] = mapped_column(BigInteger, nullable=False, index=True)
+    user: Mapped["User"] = relationship("User")
 class QuizHistory(Base):
     __tablename__ = "quiz_history"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)

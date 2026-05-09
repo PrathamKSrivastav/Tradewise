@@ -5,7 +5,11 @@ class TradeRequest(BaseModel):
     symbol: str
     side: str
     quantity: int
+    order_type: str = "Market"  # "Market", "Limit", "Stop"
+    target_price: float | None = None
+
     @field_validator("symbol")
+
     @classmethod
     def valid_symbol(cls, v: str) -> str:
         if v not in SYMBOLS:
@@ -38,3 +42,14 @@ class PositionOut(BaseModel):
     avg_buy_price: float
     current_price: float | None = None
     unrealised_pnl: float | None = None
+
+
+class PendingOrderOut(BaseModel):
+    id: int
+    symbol: str
+    side: str
+    order_type: str
+    quantity: int
+    target_price: float
+    status: str
+    timestamp: int

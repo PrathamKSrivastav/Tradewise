@@ -2,7 +2,7 @@
 import type {
   Candle, LeaderboardEntry, Position, Stock, Trade, TradeRequest, Wallet,
   UserProgress, BadgesResponse, GenerateQuizResponse, SubmitQuizResponse,
-  ExamStatusResponse, StartExamResponse, SubmitExamResponse,
+  ExamStatusResponse, StartExamResponse, SubmitExamResponse, PendingOrder,
 } from "./types"
 
 const BASE = process.env.NEXT_PUBLIC_GATEWAY_URL ?? "http://localhost:8000"
@@ -50,6 +50,8 @@ export const placeTrade = (body: TradeRequest, token: string) =>
 export const fetchPositions = (token: string) => request<Position[]>("/trade/positions", {}, token)
 
 export const fetchTradeHistory = (token: string) => request<Trade[]>("/trade/history", {}, token)
+
+export const fetchPendingOrders = (token: string) => request<PendingOrder[]>("/trade/pending", {}, token)
 
 // ── Leaderboard ───────────────────────────────────────────────────────────────
 export const fetchLeaderboard = (token: string, limit = 20) =>

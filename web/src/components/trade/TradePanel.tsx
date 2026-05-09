@@ -1,9 +1,10 @@
 // web/src/components/trade/TradePanel.tsx
 "use client"
-import { useState } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useUserStore } from "../../store/userStore"
 import { useMarketStore } from "../../store/marketStore"
-import { placeTrade } from "../../lib/api"
+import { placeTrade, fetchPendingOrders } from "../../lib/api"
+import type { PendingOrder } from "../../lib/types"
 import clsx from "clsx"
 
 interface Props {
@@ -16,32 +17,83 @@ const ORDER_TYPES = ["Market", "Limit", "Stop"]
 export function TradePanel({ symbol, onTradeSuccess }: Props) {
   const { token, wallet } = useUserStore()
   const { lastPrice } = useMarketStore()
+  
   const [side, setSide] = useState<"buy" | "sell">("buy")
   const [orderType, setOrderType] = useState("Market")
   const [quantity, setQuantity] = useState(1)
+  const [targetPrice, setTargetPrice] = useState<number>(0)
+  
+  const [pendingOrders, setPendingOrders] = useState<PendingOrder[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
 
-  const price = lastPrice[symbol] ?? 0
-  const total = Number((price * quantity).toFixed(2))
-  const balance = wallet?.balance ?? 0
-  const maxQty = price > 0 ? Math.floor(balance / price) : 0
+  const marketPrice = lastPrice[symbol] ?? 0
 
-  const setPercent = (pct: number) => {
-    if (price === 0 || balance === 0) return
-    setQuantity(Math.max(1, Math.floor((balance * pct) / price)))
+  // Fetch pending orders
+  const loadPending = async () => {
+    if (!token) return
+    try {
+      const all = await fetchPendingOrders(token)
+      setPendingOrders(all.filter(o => o.symbol === symbol))
+    } catch (e) {
+      console.error("Failed to load pending orders", e)
+    }
   }
 
+  useEffect(() => { loadPending() }, [symbol, token])
+
+  // Logic hint text
+  const hintText = useMemo(() => {
+    if (orderType === "Market") return `Order will execute immediately at the best available price (~₹${marketPrice.toLocaleString()}).`
+    if (orderType === "Limit") {
+      return side === "buy" 
+        ? `Order will only execute if price falls to ₹${targetPrice.toLocaleString()} or lower.`
+        : `Order will only execute if price rises to ₹${targetPrice.toLocaleString()} or higher.`
+    }
+    if (orderType === "Stop") {
+      return side === "buy"
+        ? `Order triggers a buy if price breaks above ₹${targetPrice.toLocaleString()}.`
+        : `Order triggers a sell if price drops below ₹${targetPrice.toLocaleString()}.`
+    }
+    return ""
+  }, [orderType, side, targetPrice, marketPrice])
+
+  const handleOrderTypeChange = (type: string) => {
+    setOrderType(type)
+    if (targetPrice === 0 || targetPrice === marketPrice) setTargetPrice(marketPrice)
+  }
+
+  const applyOffset = (pct: number) => {
+    if (marketPrice === 0) return
+    const newPrice = marketPrice * (1 + pct)
+    setTargetPrice(Number(newPrice.toFixed(2)))
+  }
+
+  const effectivePrice = orderType === "Market" ? marketPrice : targetPrice
+  const total = Number((effectivePrice * quantity).toFixed(2))
+  const balance = wallet?.balance ?? 0
+  const maxQty = effectivePrice > 0 ? Math.floor(balance / effectivePrice) : 0
+
   const handleTrade = async () => {
-    if (!token || price === 0) return
+    if (!token || (orderType === "Market" && marketPrice === 0)) return
     setLoading(true)
     setError(null)
     setSuccess(null)
     try {
-      const res = await placeTrade({ symbol, side, quantity }, token)
-      setSuccess(`${side === "buy" ? "Bought" : "Sold"} ${quantity} × ${symbol} @ ₹${res.price.toLocaleString("en-IN")}`)
+      await placeTrade({ 
+        symbol, side, quantity, 
+        order_type: orderType, 
+        target_price: orderType === "Market" ? undefined : targetPrice 
+      }, token)
+      
+      if (orderType === "Market") {
+        setSuccess(`${side.toUpperCase()} order executed.`)
+      } else {
+        setSuccess(`${orderType} ${side} order placed at ₹${targetPrice.toLocaleString()}.`)
+      }
       onTradeSuccess()
+      loadPending()
     } catch (e: any) {
       setError(e.message)
     } finally {
@@ -50,105 +102,178 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
   }
 
   return (
-    <div className="p-4 flex flex-col gap-4">
-      {/* BUY / SELL toggle */}
-      <div className="grid grid-cols-2 gap-0.5 p-0.5 rounded-btn bg-black/30 ring-1 ring-stroke1">
-        <button
-          onClick={() => setSide("buy")}
-          className={clsx(
-            "h-9 rounded-[6px] text-[13px] font-bold transition",
-            side === "buy" ? "bg-emerald-500 text-[#062a1a]" : "text-ink3 hover:text-ink2"
-          )}
-        >BUY</button>
-        <button
-          onClick={() => setSide("sell")}
-          className={clsx(
-            "h-9 rounded-[6px] text-[13px] font-bold transition",
-            side === "sell" ? "bg-rose-500 text-white" : "text-ink3 hover:text-ink2"
-          )}
-        >SELL</button>
-      </div>
-
-      {/* Order type */}
-      <div className="flex gap-1">
-        {ORDER_TYPES.map(t => (
-          <button key={t} onClick={() => setOrderType(t)} className={clsx(
-            "flex-1 h-7 rounded-btn text-[11px] font-medium transition",
-            orderType === t ? "bg-white/8 text-ink ring-1 ring-stroke2" : "text-ink3 hover:text-ink2"
-          )}>{t}</button>
-        ))}
-      </div>
-
-      {/* Market price display */}
-      <div className="flex items-center justify-between bg-white/4 rounded-btn px-3 py-2">
-        <span className="text-[11px] text-ink3 font-semibold tracking-[0.1em]">MARKET PRICE</span>
-        <span className="mono text-[14px] num text-ink font-semibold">
-          {price > 0 ? `₹${price.toLocaleString("en-IN")}` : "—"}
-        </span>
-      </div>
-
-      {/* Quantity */}
-      <div>
-        <div className="text-[11px] text-ink3 font-semibold tracking-[0.1em] mb-1.5">QUANTITY</div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setQuantity(q => Math.max(1, q - 1))}
-            className="w-8 h-8 rounded-btn bg-white/6 hover:bg-white/10 text-ink font-bold text-lg transition flex items-center justify-center"
-          >−</button>
-          <input
-            type="number"
-            min={1}
-            value={quantity}
-            onChange={e => setQuantity(Math.max(1, Number(e.target.value)))}
-            className="flex-1 bg-black/30 ring-1 ring-stroke1 rounded-btn px-3 py-1.5 text-center mono text-[14px] text-ink focus:outline-none focus:ring-indigo-500/50"
-          />
-          <button
-            onClick={() => setQuantity(q => q + 1)}
-            className="w-8 h-8 rounded-btn bg-white/6 hover:bg-white/10 text-ink font-bold text-lg transition flex items-center justify-center"
-          >+</button>
-        </div>
-        {/* % presets */}
-        <div className="flex gap-1.5 mt-2">
-          {[{ label: "10%", pct: 0.1 }, { label: "25%", pct: 0.25 }, { label: "50%", pct: 0.5 }, { label: "MAX", pct: 1 }].map(({ label, pct }) => (
-            <button key={label} onClick={() => setPercent(pct)}
-              className="flex-1 h-6 rounded-btn text-[10.5px] font-semibold bg-white/4 hover:bg-white/8 text-ink3 hover:text-ink2 transition">
-              {label}
+    <div className="flex flex-col h-full overflow-hidden">
+      <div className="p-4 flex flex-col gap-5 flex-1 overflow-y-auto scrollbar-none">
+        {/* Side Picker */}
+        <div className="flex p-1 rounded-pill bg-black/40 ring-1 ring-white/5">
+          {(["buy", "sell"] as const).map(s => (
+            <button
+              key={s}
+              onClick={() => setSide(s)}
+              className={clsx(
+                "flex-1 h-8 rounded-pill text-[11px] font-black uppercase tracking-widest transition-all",
+                side === s 
+                  ? (s === "buy" ? "bg-emerald-500 text-[#062a1a]" : "bg-rose-500 text-white shadow-lg shadow-rose-500/20")
+                  : "text-ink3 hover:text-ink2"
+              )}
+            >
+              {s}
             </button>
           ))}
         </div>
+
+        {/* Type Tabs */}
+        <div className="flex border-b border-white/5">
+          {ORDER_TYPES.map(t => (
+            <button
+              key={t}
+              onClick={() => handleOrderTypeChange(t)}
+              className={clsx(
+                "flex-1 pb-2 text-[11px] font-bold uppercase tracking-widest transition-all relative",
+                orderType === t ? "text-indigo-400" : "text-ink3 hover:text-ink2"
+              )}
+            >
+              {t}
+              {orderType === t && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500" />}
+            </button>
+          ))}
+        </div>
+
+        {/* Price Section */}
+        <div className="space-y-3">
+          {orderType === "Market" ? (
+            <div className="p-3 rounded-xl bg-white/4 ring-1 ring-white/5 flex justify-between items-center">
+              <span className="text-[10px] font-bold text-ink3 uppercase">Market Price</span>
+              <span className="mono text-[16px] font-bold text-ink">₹{marketPrice.toLocaleString()}</span>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <div>
+                <label className="text-[10px] font-bold text-ink3 uppercase tracking-wider mb-1.5 block">
+                  {orderType} Price (₹)
+                </label>
+                <div className="relative group">
+                  <input
+                    type="number"
+                    value={targetPrice}
+                    onChange={e => setTargetPrice(Number(e.target.value))}
+                    className="w-full h-11 bg-black/40 ring-1 ring-white/10 rounded-xl px-4 mono text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
+                  />
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[11px] font-bold text-ink3">
+                    {marketPrice > 0 ? (
+                      <span className={clsx(targetPrice > marketPrice ? "text-rose-400" : "text-emerald-400")}>
+                        {(((targetPrice - marketPrice) / marketPrice) * 100).toFixed(1)}%
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Offsets */}
+              <div className="flex gap-2">
+                {[-0.05, -0.02, -0.01, 0.01, 0.02, 0.05].map(off => (
+                  <button
+                    key={off}
+                    onClick={() => applyOffset(off)}
+                    className="flex-1 h-7 rounded-btn bg-white/5 hover:bg-white/10 text-[10px] font-bold text-ink3 transition ring-1 ring-white/5"
+                  >
+                    {off > 0 ? `+${off * 100}%` : `${off * 100}%`}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          <p className="text-[11px] text-ink3 leading-relaxed bg-white/2 p-3 rounded-lg border border-dashed border-white/5">
+            {hintText}
+          </p>
+        </div>
+
+        {/* Quantity */}
+        <div className="space-y-3">
+          <div className="flex justify-between items-end">
+            <label className="text-[10px] font-bold text-ink3 uppercase tracking-wider">Quantity</label>
+            <span className="text-[11px] text-ink3">Max: <span className="text-ink font-bold">{maxQty}</span></span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setQuantity(q => Math.max(1, q - 1))}
+              className="w-11 h-11 rounded-xl bg-white/5 hover:bg-white/10 text-ink text-xl transition ring-1 ring-white/10"
+            >−</button>
+            <input
+              type="number"
+              value={quantity}
+              onChange={e => setQuantity(Math.max(1, Number(e.target.value)))}
+              className="flex-1 h-11 bg-black/40 ring-1 ring-white/10 rounded-xl px-4 text-center mono text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+            />
+            <button 
+              onClick={() => setQuantity(q => q + 1)}
+              className="w-11 h-11 rounded-xl bg-white/5 hover:bg-white/10 text-ink text-xl transition ring-1 ring-white/10"
+            >+</button>
+          </div>
+          <div className="flex gap-1.5">
+            {[0.25, 0.5, 0.75, 1].map(p => (
+              <button
+                key={p}
+                onClick={() => setQuantity(Math.max(1, Math.floor((balance * p) / (effectivePrice || 1))))}
+                className="flex-1 h-6 rounded-md bg-white/4 hover:bg-white/8 text-[9px] font-black text-ink3 uppercase transition"
+              >
+                {p * 100}%
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Order Summary */}
+        <div className="p-4 rounded-xl bg-indigo-500/5 ring-1 ring-indigo-500/10 space-y-2">
+          <div className="flex justify-between items-center text-[12px]">
+            <span className="text-ink3 font-medium">Estimated Total</span>
+            <span className="mono text-[15px] font-black text-ink">₹{total.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+            <span className="text-ink3/60">Available Balance</span>
+            <span className="text-ink2">₹{balance.toLocaleString()}</span>
+          </div>
+        </div>
+
+        {error && <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[12px] font-medium">{error}</div>}
+        {success && <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[12px] font-medium">{success}</div>}
+
+        <button
+          onClick={handleTrade}
+          disabled={loading || (orderType === "Market" && marketPrice === 0)}
+          className={clsx(
+            "h-12 w-full rounded-xl text-[14px] font-black uppercase tracking-[0.1em] transition-all shadow-xl disabled:opacity-30",
+            side === "buy" 
+              ? "bg-emerald-500 hover:bg-emerald-400 text-[#062a1a] shadow-emerald-500/10" 
+              : "bg-rose-500 hover:bg-rose-400 text-white shadow-rose-500/10"
+          )}
+        >
+          {loading ? "Processing..." : `${side} ${quantity} ${symbol}`}
+        </button>
       </div>
 
-      {/* Order summary */}
-      <div className="space-y-1.5 bg-white/3 rounded-btn px-3 py-2.5">
-        <div className="flex justify-between text-[12px]">
-          <span className="text-ink3">Est. total</span>
-          <span className="mono num text-ink font-semibold">{price > 0 ? `₹${total.toLocaleString("en-IN")}` : "—"}</span>
+      {/* Pending Orders Sidebar Footer */}
+      {pendingOrders.length > 0 && (
+        <div className="border-t border-white/5 bg-white/2 p-4 max-h-[30%] overflow-y-auto">
+          <h4 className="text-[10px] font-black text-ink3 uppercase tracking-[0.2em] mb-3">Pending Orders</h4>
+          <div className="space-y-2">
+            {pendingOrders.map(order => (
+              <div key={order.id} className="flex justify-between items-center p-2 rounded-lg bg-black/20 ring-1 ring-white/5">
+                <div>
+                  <div className="text-[11px] font-bold text-ink">
+                    <span className={clsx(order.side === "buy" ? "text-emerald-400" : "text-rose-400")}>
+                      {order.side.toUpperCase()}
+                    </span> {order.quantity} @ ₹{order.target_price.toLocaleString()}
+                  </div>
+                  <div className="text-[9px] text-ink3 uppercase font-medium">{order.order_type}</div>
+                </div>
+                <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="flex justify-between text-[11px]">
-          <span className="text-ink3">Available</span>
-          <span className="mono num text-ink2">₹{balance.toLocaleString("en-IN")}</span>
-        </div>
-        <div className="flex justify-between text-[11px]">
-          <span className="text-ink3">Max qty</span>
-          <span className="mono num text-ink2">{maxQty}</span>
-        </div>
-      </div>
-
-      {error && <p className="text-[12px] text-rose-400 bg-rose-500/10 rounded-btn px-3 py-2">{error}</p>}
-      {success && <p className="text-[12px] text-emerald-400 bg-emerald-500/10 rounded-btn px-3 py-2">{success}</p>}
-
-      <button
-        onClick={handleTrade}
-        disabled={loading || price === 0}
-        className={clsx(
-          "h-11 w-full rounded-btn text-[14px] font-bold transition disabled:opacity-40",
-          side === "buy"
-            ? "bg-emerald-500 hover:bg-emerald-500/90 text-[#062a1a] shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]"
-            : "bg-rose-500 hover:bg-rose-500/90 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
-        )}
-      >
-        {loading ? "…" : `${side === "buy" ? "Buy" : "Sell"} ${quantity} × ${symbol}`}
-      </button>
+      )}
     </div>
   )
 }

@@ -13,8 +13,10 @@ const BADGE_META: Record<string, { emoji: string; label: string; description: st
 }
 
 export function BadgeShelf({ data }: { data: BadgesResponse }) {
-  const earnedIds = new Set(data.earned.map((b) => b.id))
+  const earnedIds = new Set(data?.earned?.map((b) => b.id) || [])
   const allIds = Object.keys(BADGE_META)
+
+  if (!data) return null;
 
   return (
     <div className="grid grid-cols-4 gap-3">

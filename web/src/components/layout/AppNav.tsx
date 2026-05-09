@@ -8,6 +8,8 @@ const NAV = [
   { href: "/",            label: "Simulator"   },
   { href: "/academy",     label: "Academy"     },
   { href: "/leaderboard", label: "Leaderboard" },
+  { href: "/profile",     label: "Profile"     },
+  { href: "/certificate", label: "Certificate" },
 ]
 
 export function AppNav() {
