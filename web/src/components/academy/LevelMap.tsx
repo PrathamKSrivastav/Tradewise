@@ -47,7 +47,7 @@ export function LevelMap({ progress }: { progress: UserProgress }) {
           <div
             key={level}
             className={`relative rounded-xl border bg-gradient-to-br p-5 transition-all ${
-              unlocked ? colorClass : "border-white/8 bg-white/3 opacity-50"
+              unlocked ? colorClass : "border-white/8 bg-white/3"
             }`}
           >
             {completed && (
@@ -86,13 +86,19 @@ export function LevelMap({ progress }: { progress: UserProgress }) {
                   </div>
                 )}
 
-                {unlocked && lessons.length > 0 && (
-                  <Link
-                    href={`/academy/${level}`}
-                    className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-white/70 hover:text-white transition-colors"
-                  >
-                    {completed ? "Review" : inProgress ? "Continue →" : "Start →"}
-                  </Link>
+                {lessons.length > 0 && (
+                  unlocked ? (
+                    <Link
+                      href={`/academy/${level}`}
+                      className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-white/70 hover:text-white transition-colors"
+                    >
+                      {completed ? "Review" : inProgress ? "Continue →" : "Start →"}
+                    </Link>
+                  ) : (
+                    <div className="mt-3 inline-flex items-center gap-1 text-xs text-white/25 cursor-not-allowed">
+                      🔒 Locked
+                    </div>
+                  )
                 )}
               </div>
             </div>

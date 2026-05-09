@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { useQueryClient } from "@tanstack/react-query"
 import clsx from "clsx"
 import type { LessonObject } from "@/types/lesson"
 import type { QuizQuestion, SubmitQuizResponse } from "@/lib/types"
@@ -13,6 +14,7 @@ const LETTERS = ["A", "B", "C", "D"]
 export function QuizEngine({ lesson }: { lesson: LessonObject }) {
   const router = useRouter()
   const { token, user_id: userId } = useUserStore()
+  const queryClient = useQueryClient()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [sessionId, setSessionId] = useState("")
@@ -46,9 +48,12 @@ export function QuizEngine({ lesson }: { lesson: LessonObject }) {
     if (!token) return
     setSubmitting(true)
     try {
-      const res = await submitQuiz(token, userId!, sessionId, finalAnswers, lesson.id)
+      const res = await submitQuiz(token, userId!, sessionId, finalAnswers, lesson.id, lesson.xpReward)
       setResult(res)
-      if (typeof window !== "undefined") localStorage.setItem(`quiz_score_${lesson.id}`, String(res.score))
+      if (res.passed) {
+        // Invalidate progress so lesson list and XP re-fetch from DB
+        queryClient.invalidateQueries({ queryKey: ["progress"] })
+      }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "submission failed")
     } finally {
@@ -194,7 +199,7 @@ function QuizResult({ result, lesson, onRetry }: { result: SubmitQuizResponse; l
 
         <div>
           <h2 className="text-[22px] font-semibold">{passed ? "Well done!" : "Keep studying!"}</h2>
-          <p className="text-[13px] text-ink2 mt-1">{result.correctAnswers.length} correct answers</p>
+          <p className="text-[13px] text-ink2 mt-1">{result.correctCount} / {result.totalQuestions} correct</p>
         </div>
 
         {passed && (
@@ -204,7 +209,7 @@ function QuizResult({ result, lesson, onRetry }: { result: SubmitQuizResponse; l
               <span className="text-amber-400">⚡</span>
               <span className="mono text-indigo-400 font-semibold">+{result.xpEarned} XP earned</span>
             </div>
-            {result.newBadges.length > 0 && (
+            {(result.newBadges?.length ?? 0) > 0 && (
               <div className="text-[12.5px] text-amber-400">🏅 New badges: {result.newBadges.join(", ")}</div>
             )}
           </div>

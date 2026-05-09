@@ -73,8 +73,10 @@ async def generate_quiz(
 
     client = _get_client()
     response = await client.chat.completions.create(
-        model="llama3-8b-8192",
-        max_tokens=2048,
+        model="llama-3.3-70b-versatile",
+        max_completion_tokens=8192,
+        temperature=1,
+        top_p=1,
         messages=[{
             "role": "user",
             "content": GENERATE_PROMPT.format(count=count, difficulty=difficulty, seeds=seeds_json),

@@ -37,8 +37,9 @@ async def get_user_progress(user_id: int, db: AsyncSession) -> dict:
         "currentLevel": user.current_level,
         "currentStreak": user.current_streak,
         "streakMultiplier": float(user.streak_multiplier),
-        "unlockedLevels": user.unlocked_levels,
-        "badges": user.badges,
+        "unlockedLevels": user.unlocked_levels or [1],
+        "badges": user.badges or [],
+        "completedLessons": user.completed_lessons or [],
     }
 
 async def award_xp(user_id: int, lesson_xp_reward: int, score: int, db: AsyncSession) -> dict:
@@ -48,8 +49,7 @@ async def award_xp(user_id: int, lesson_xp_reward: int, score: int, db: AsyncSes
         raise ValueError("User not found")
 
     multiplier = float(user.streak_multiplier)
-    perfect_bonus = 10 if score == 100 else 0
-    xp_earned = int(lesson_xp_reward * multiplier) + perfect_bonus
+    xp_earned = int(lesson_xp_reward * multiplier)
 
     new_total = user.total_xp + xp_earned
     new_unlocked = _compute_unlocked_levels(new_total)

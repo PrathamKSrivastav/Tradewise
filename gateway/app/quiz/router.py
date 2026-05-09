@@ -50,13 +50,12 @@ async def submit(
     db: AsyncSession = Depends(get_session),
     _: User = Depends(get_current_user),
 ):
-    lesson_xp = _LESSON_XP.get(body.lessonId, 20)
     try:
         return await submit_quiz(
             body.sessionId,
             body.lessonId,
             body.userId,
-            lesson_xp,
+            body.xpReward,
             body.answers,
             db,
         )

@@ -96,8 +96,9 @@ export interface SubmitQuizResponse {
   passed: boolean
   xpEarned: number
   newBadges: string[]
-  correctAnswers: number[]
-  explanations: string[]
+  correctCount: number
+  totalQuestions: number
+  streakMultiplier: number
 }
 
 export interface ExamStatusResponse {

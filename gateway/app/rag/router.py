@@ -4,7 +4,7 @@ from typing import AsyncIterator, Optional
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-import anthropic
+from groq import AsyncGroq
 
 from app.auth.deps import get_current_user
 from app.db.models import User
@@ -12,18 +12,17 @@ from app.config import settings
 
 router = APIRouter(prefix="/rag", tags=["rag"])
 
-_client: Optional[anthropic.AsyncAnthropic] = None
+_client: Optional[AsyncGroq] = None
 
 
-def _get_client() -> anthropic.AsyncAnthropic:
+def _get_client() -> AsyncGroq:
     global _client
     if _client is None:
-        _client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
+        _client = AsyncGroq(api_key=settings.groq_api_key)
     return _client
 
 
 # ── In-memory session counters (per user, resets on server restart) ────────────
-# Maps user_id → message count for current session
 _session_counts: dict[int, int] = {}
 MAX_MESSAGES_PER_SESSION = 20
 
@@ -31,9 +30,9 @@ MAX_MESSAGES_PER_SESSION = 20
 class ChatRequest(BaseModel):
     question: str
     chart_prompt: str = ""
-    mode: str = "simulator"          # "simulator" | "lesson"
-    lesson_snapshot: str = ""        # serialised lesson context (lesson mode only)
-    lesson_title: str = ""           # for grounding label
+    mode: str = "simulator"
+    lesson_snapshot: str = ""
+    lesson_title: str = ""
 
 
 class ChatResponse(BaseModel):
@@ -72,15 +71,33 @@ LESSON CONTEXT:
 {lesson_snapshot or "No lesson context provided."}"""
 
 
-async def _stream_claude(system: str, question: str) -> AsyncIterator[str]:
+async def _call_groq(system: str, question: str) -> str:
     client = _get_client()
-    async with client.messages.stream(
-        model="claude-sonnet-4-6",
-        max_tokens=400,
-        system=system,
-        messages=[{"role": "user", "content": question}],
-    ) as stream:
-        async for text in stream.text_stream:
+    response = await client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        max_completion_tokens=400,
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user", "content": question},
+        ],
+    )
+    return response.choices[0].message.content or ""
+
+
+async def _stream_groq(system: str, question: str) -> AsyncIterator[str]:
+    client = _get_client()
+    stream = await client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        max_completion_tokens=400,
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user", "content": question},
+        ],
+        stream=True,
+    )
+    async for chunk in stream:
+        text = chunk.choices[0].delta.content
+        if text:
             yield text
 
 
@@ -91,7 +108,6 @@ async def chat(
 ):
     user_id = current_user.id
 
-    # Rate-limit check
     count = _session_counts.get(user_id, 0)
     if count >= MAX_MESSAGES_PER_SESSION:
         return ChatResponse(
@@ -109,13 +125,7 @@ async def chat(
         system = _simulator_system_prompt(body.chart_prompt)
         grounding = "chart"
 
-    # Collect streamed response into a single string (non-streaming endpoint for simplicity)
-    # SSE streaming version available at /rag/chat/stream
-    chunks: list[str] = []
-    async for chunk in _stream_claude(system, body.question):
-        chunks.append(chunk)
-
-    answer = "".join(chunks).strip()
+    answer = await _call_groq(system, body.question)
     if not answer:
         answer = "I couldn't generate a response. Please try rephrasing your question."
 
@@ -148,8 +158,7 @@ async def chat_stream(
         system = _simulator_system_prompt(body.chart_prompt)
 
     async def _generate():
-        async for text in _stream_claude(system, body.question):
-            # SSE format
+        async for text in _stream_groq(system, body.question):
             escaped = text.replace("\n", "\\n")
             yield f"data: {escaped}\n\n"
         yield "data: [DONE]\n\n"

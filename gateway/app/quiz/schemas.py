@@ -27,7 +27,8 @@ class SubmitRequest(BaseModel):
     sessionId: str
     lessonId: str
     userId: int
-    answers: list[int]  # index 0-3 for each question
+    answers: list[int]
+    xpReward: int = 20
 
 
 class SubmitResponse(BaseModel):

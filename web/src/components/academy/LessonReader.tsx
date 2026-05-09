@@ -1,11 +1,8 @@
 "use client"
-import { useState } from "react"
 import { useRouter } from "next/navigation"
 import ReactMarkdown from "react-markdown"
 import type { LessonObject } from "@/types/lesson"
 import { Button } from "@/components/ui/Button"
-import { useUserStore } from "@/store/userStore"
-import { awardXP } from "@/lib/api"
 
 interface Props {
   lesson: LessonObject
@@ -15,17 +12,10 @@ interface Props {
 
 export function LessonReader({ lesson, totalLessons, completedIds }: Props) {
   const router = useRouter()
-  const { token, user_id: userId } = useUserStore()
-  const [completing, setCompleting] = useState(false)
   const alreadyCompleted = completedIds.includes(lesson.id)
   const lessonIndex = lesson.order
 
-  const handleComplete = async () => {
-    if (!token) return
-    setCompleting(true)
-    try {
-      await awardXP(token, userId!, lesson.id, lesson.xpReward, 0)
-    } catch { /* Don't block navigation if XP call fails */ }
+  const handleComplete = () => {
     router.push(`/academy/quiz/${lesson.id}`)
   }
 
@@ -103,7 +93,7 @@ export function LessonReader({ lesson, totalLessons, completedIds }: Props) {
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
               Back
             </button>
-            <Button onClick={handleComplete} loading={completing} size="lg" variant="primary" iconRight={
+            <Button onClick={handleComplete} size="lg" variant="primary" iconRight={
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             }>
               {alreadyCompleted ? "Retake Quiz" : "Complete & Take Quiz"}

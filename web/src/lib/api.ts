@@ -98,10 +98,11 @@ export const submitQuiz = (
   sessionId: string,
   answers: number[],
   lessonId: string,
+  xpReward = 20,
 ) =>
   request<SubmitQuizResponse>(
     "/api/quiz/submit",
-    { method: "POST", body: JSON.stringify({ sessionId, lessonId, userId, answers }) },
+    { method: "POST", body: JSON.stringify({ sessionId, lessonId, userId, answers, xpReward }) },
     token,
   )
 

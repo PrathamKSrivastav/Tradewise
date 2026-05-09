@@ -5,7 +5,7 @@ import uuid
 from datetime import datetime, timezone, timedelta
 from typing import Any
 
-from anthropic import AsyncAnthropic
+from groq import AsyncGroq
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 
@@ -20,14 +20,14 @@ COOLDOWN_DAYS = 7
 PASS_THRESHOLD = 75      # %
 EXAM_QUESTION_COUNT = 60
 
-_client: AsyncAnthropic | None = None
+_client: AsyncGroq | None = None
 _sessions: dict[str, dict[str, Any]] = {}
 
 
-def _get_client() -> AsyncAnthropic:
+def _get_client() -> AsyncGroq:
     global _client
     if _client is None:
-        _client = AsyncAnthropic(api_key=settings.anthropic_api_key)
+        _client = AsyncGroq(api_key=settings.groq_api_key)
     return _client
 
 
@@ -104,17 +104,16 @@ async def start_exam(user_id: int, seeds: list[dict], db: AsyncSession) -> dict:
     seeds_json = json.dumps(seeds, indent=2)
 
     client = _get_client()
-    message = await client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=8192,
-        system="You are a precise exam generator. Output only valid JSON arrays.",
-        messages=[{
-            "role": "user",
-            "content": EXAM_PROMPT.format(count=count, seeds=seeds_json),
-        }],
+    message = await client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        max_completion_tokens=8192,
+        messages=[
+            {"role": "system", "content": "You are a precise exam generator. Output only valid JSON arrays."},
+            {"role": "user", "content": EXAM_PROMPT.format(count=count, seeds=seeds_json)},
+        ],
     )
 
-    raw = message.content[0].text.strip()
+    raw = message.choices[0].message.content.strip()
     questions_data = json.loads(raw)
 
     questions = []
