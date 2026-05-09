@@ -9,7 +9,7 @@ import type { UserProgress, BadgesResponse } from "../../lib/types"
 import clsx from "clsx"
 
 export default function ProfilePage() {
-  const { token, user_id, username, isAuthed, signOut } = useAuth()
+  const { token, user_id, username, isAuthed, isHydrated, signOut } = useAuth()
   const [progress, setProgress] = useState<UserProgress | null>(null)
   const [badges, setBadges] = useState<BadgesResponse | null>(null)
   const [loading, setLoading] = useState(true)
@@ -33,7 +33,13 @@ export default function ProfilePage() {
     if (isAuthed) load()
   }, [token, user_id, isAuthed])
 
-  if (!isAuthed) return null
+  useEffect(() => {
+    if (isHydrated && !isAuthed) {
+      window.location.href = "/login"
+    }
+  }, [isAuthed, isHydrated])
+
+  if (!isHydrated || !isAuthed) return null
 
   return (
     <div className="min-h-screen bg-canvas">

@@ -8,14 +8,14 @@ import { Leaderboard } from "../components/Leaderboard"
 import { AppLayout } from "../components/layout/AppLayout"
 
 export default function HomePage() {
-  const { isAuthed } = useAuth()
+  const { isAuthed, isHydrated } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    if (!isAuthed) router.push("/login")
-  }, [isAuthed, router])
+    if (isHydrated && !isAuthed) router.push("/login")
+  }, [isAuthed, isHydrated, router])
 
-  if (!isAuthed) return null
+  if (!isHydrated || !isAuthed) return null
 
   return (
     <AppLayout>

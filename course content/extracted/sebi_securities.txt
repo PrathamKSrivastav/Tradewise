@@ -1,0 +1,1350 @@
+--- PAGE 1 ---
+Booklet on
+SECURITIES
+MARKET
+UNDERSTANDING FROM
+INVESTOR’S PERSPECTIVE
+IPFT
+--- PAGE 2 ---
+Disclaimer:
+While every effort has been made to avoid errors or omission in this publication, publishers are not
+liable for any damage or loss to anyone,of any kind, in any manner from use of this material.
+Prepared Jointly by:
+Securities and Exchange Board of India
+BSE Limited
+National Securities Depository Limited
+National Stock Exchange of India Limited
+Central Depository Services (India) Limited
+Metropolitan Stock Exchange of India Limited
+Printed by:
+SEBI
+Date: 23rd Nov, 2020
+Note for Reader:
+This booklet is aimed at providing you in brief, basic information about the securities market. In case
+of further queries, you may visit online material at websites of SEBI, BSE, NSE, MSEI, NSDL and CDSL.
+“The information contained in this material is for only educational and awareness purposes related to
+securities market and shall be used for non-profitable, educational and awareness activities for
+general public only.
+No part of this material can be reproduced or copied in any form or by any means or reproduced on
+any disc, tape, perforate media or other information storage device, etc. without acknowledging the
+SEBI or Stock Exchange or Depositories.
+SEBI or Stock Exchange or Depositories shall not be responsible for any damage or loss to any one, of
+any manner, from use of this material.
+Every effort has been made to avoid errors or omissions in this material. For recent market
+developments and initiatives, readers are requested to refer to recent laws, guidelines, directives
+framed thereunder and other relevant documents, as being declared from time to time. For any
+suggestions or feedback, please email us at visitsebi@sebi.gov.in.
+--- PAGE 3 ---
+Index Page No.
+Introduction to Securities Market
+1 Regulatory Framework for Securities Market 02
+2 What are Securities and Securities Market? 03
+3 Primary Market and Secondary Market 05
+4 Who are the Market Infrastructure Institutions and Market 07
+Intermediaries in the Securities Market?
+Basics of Investing
+5 Key Risks in Investing in Securities Market 09
+6 How to Mitigate the Risk? 10
+Account Opening Process
+7 Pre-requisites for Investing in Securities Market 10
+8 Procedure for opening an account: Know Your Client (KYC) Process 11
+9 Basic Services Demat Account (BSDA) 12
+10 Power of Attorney 13
+11 Nomination 14
+How do I Invest in Securities Market?
+12 Investment through Primary Market 14
+13 Process of investing in Primary Market 15
+14 Application Supported by Blocked Amount (ASBA) 16
+15 Investment through Secondary Market 16
+16 Trading Days and Trading & Settlement of trades 17
+17 Contract Note 18
+18 SMS and Email alert to Investors 19
+19 Running Account Authorization 20
+20 Trade Verification 20
+21 What is Margin Money? 21
+22 Statement of Account from Stock Broker and Depository 21
+Participants
+23 Consolidated Account Statement (CAS) 22
+24 Derivatives Market 22
+Mutual Funds and ETFs
+25 Mutual Funds 23
+26 How to invest in Mutual Funds? 24
+27 Product labelling in Mutual Funds 24
+28 Exchange Traded Funds (ETFs) 25
+Grievance Redressal in Securities Market
+29 SEBI Complaints Redress System (SCORES) 25
+30 Investor Services Cell of Stock Exchange and Depository 26
+31 Arbitration Mechanism 27
+--- PAGE 4 ---
+Information about Unclaimed Shares/ Unpaid Dividend Amount – IEPF 27
+ANNEXURE
+32 Annexure – I Do’s and Don’t’s of Investing/ trading in securities 28
+Introduction to Securities Market
+market
+1 Regulatory Framework for Securities Market 02 33 Annexure – II Rights and Obligations of Investors 30
+2 What are Securities and Securities Market? 03 34 Annexure – III Caution against Unregistered Investment Advisers 31
+3 Primary Market and Secondary Market 05 35 Annexure – IV Unified Payment Interface (UPI) in ASBA 34
+4 Who are the Market Infrastructure Institutions and Market 07 36 Annexure – V Glossary 35
+Intermediaries in the Securities Market?
+Basics of Investing
+5 Key Risks in Investing in Securities Market 09
+6 How to Mitigate the Risk? 10
+Account Opening Process
+7 Pre-requisites for Investing in Securities Market 10
+8 Procedure for opening an account: Know Your Client (KYC) Process 11
+9 Basic Services Demat Account (BSDA) 12
+10 Power of Attorney 13
+11 Nomination 14
+How do I Invest in Securities Market?
+12 Investment through Primary Market 14
+13 Process of investing in Primary Market 15
+14 Application Supported by Blocked Amount (ASBA) 16
+15 Investment through Secondary Market 16
+16 Trading Days and Trading & Settlement of trades 17
+17 Contract Note 18
+18 SMS and Email alert to Investors 19
+19 Running Account Authorization 20
+20 Trade Verification 20
+21 What is Margin Money? 21
+22 Statement of Account from Stock Broker and Depository 21
+Participants
+23 Consolidated Account Statement (CAS) 22
+24 Derivatives Market 22
+Mutual Funds and ETFs
+25 Mutual Funds 23
+26 How to invest in Mutual Funds? 24
+27 Product labelling in Mutual Funds 24
+28 Exchange Traded Funds (ETFs) 25
+Grievance Redressal in Securities Market
+29 SEBI Complaints Redress System (SCORES) 25
+30 Investor Services Cell of Stock Exchange and Depository 26
+31 Arbitration Mechanism 27
+--- PAGE 5 ---
+Introduction to Securities Market
+Issued by
+IPFT
+Greetings and Namaste…
+Are you an investor who wants to invest in the shares of a company
+and in Mutual Funds in the securities market?
+If so, you may like to understand the basics of investing in the securities market.
+This booklet does not serve as a guide for any specific investment, but it gives basic information
+about the securities market. This booklet is not regarding investments in entities under the
+framework of other Regulators such as Reserve Bank of India (RBI), Insurance Regulatory and
+Development Authority of India (IRDAI), Pension Fund Regulatory and Development Authority
+(PFRDA), Ministry of Corporate Affairs (MCA), etc.
+Page 01
+--- PAGE 6 ---
+1
+Regulatory Framework for Securities Markets
+`
+`
+`
+SELL BUY
+`
+`
+`
+The regulation of buying, selling and dealing in securities such as shares of a company, units of
+mutual funds, Derivatives, etc. and stock exchanges, commodity derivative exchanges and
+depositories comes within the purview of Securities and Exchange Board of India (SEBI) in terms
+of SEBI Act, 1992 (SEBI Act) and various SEBI regulations/ circulars/ guidelines/ directives.
+SEBI was established on April 12, 1992 in accordance with the provisions of the SEBI Act. The
+mandate of SEBI is to protect the interests of investors in securities and to promote the
+development of, and to regulate the securities market and for matters connected therewith or
+incidental thereto.
+At present, the four main legislations governing “the securities market” are:
+A) The SEBI Act, 1992, which empowers SEBI with statutory powers for (i) protecting the
+interests of investors in securities, (ii) promoting development of the securities market,
+and (iii) regulating the securities market.
+B) The Companies Act, 2013, which provides regulations for issuance, allotment and
+transfer of securities, and related matters in public issues of securities;
+C) The Securities Contracts (Regulation) Act, 1956, which provides for recognition and
+regulation of transactions in securities in a Stock Exchange.
+D) The Depositories Act, 1996, which provides for electronic maintenance and transfer of
+ownership of dematerialized (demat) shares.
+Page 02
+--- PAGE 7 ---
+2
+What are Securities and Securities Market?
+A. Equity Shares or commonly called as shares, represent a
+share of ownership in a company. An investor who invests in
+shares of a company is called a shareholder, and is entitled to
+receive all corporate benefits, like dividends, out of the profits of
+the company. The investor is also entitled to receive the right to
+cast a vote with regard to the decision making process of the
+company at General meeting of the company.
+B. Debt Securities represent money that is borrowed by the
+company / institution from an investor and must be repaid to the
+investor. Debt securities are also called as debentures or bonds.
+An investor who invests in debt securities is entitled to receive
+payment of interest/coupons and repayment of principal (i.e. the
+money invested). Debt Securities are issued for a fixed term, at
+the end of which the securities can be redeemed by the issuer of
+securities. Debt securities can be secured (backed by collateral)
+or unsecured.
+C. Derivatives are financial instruments whose value depends
+upon the value of another asset such as shares, debt securities,
+commodities, etc. The main types of exchange traded derivatives
+are futures and options.
+D. Mutual Funds are type of financial instruments made up of a
+pool of money collected from many investors. These funds/
+mutual funds, then, invest in securities such as shares, bonds,
+money market instruments and other assets.
+Page 03
+--- PAGE 8 ---
+Securities Market is a place where companies
+can raise funds by issuing securities such as
+equity shares, debt securities, etc. to the
+investors (public) and also is a place where
+investors can buy or sell various securities
+(shares, bonds, etc.). Once the shares (or
+securities) are issued to the public, the
+company is required to list the shares (or
+securities) on the recognized stock exchanges.
+Securities Market is thus a part of the Capital
+Market.
+The primary function of the securities market is
+to enable allocation of savings from investors
+to those who need it. This is done when
+investors make investments in securities of
+companies / entities which are in need of
+funds. The investors are entitled to get benefits
+like interest, dividend, capital appreciation,
+bonus shares, etc. Such investments
+contribute to the economic development of the
+country.
+Securities market has two interdependent and inseparable segments, which are mentioned as
+below:
+01 0101Objective: To raise funds
+010101
+Primary Market
+02 0202Includes issuance of new
+Securities through IPO, i.e.
+Initial Public Offer.
+Securities 01 0101Objective: Capital
+020202
+Appreciation
+Market
+Secondary Market
+01 0201Includes the further trading
+Of securities already offered
+To the public.
+Page 04
+--- PAGE 9 ---
+3
+Primary Market and Secondary Market
+Primary Market
+Secondary Market
+Primary Market: This market is also called as the new issues market where company / institutions
+raise funds (capital) from public by issuing new securities (shares, debentures, bonds, etc.).
+There are two major types of issuers of securities:
+Corporate Entities (companies) which mainly issue equity instruments (shares) and debt
+instruments (bonds, debentures, etc.)
+Government (Central as well as State) which issues debt securities (dated securities and
+treasury bills).
+The types of issues made in Primary Market are:
+1 Public Issue
+Securities are issued to general public and anyone can ` `
+subscribe to them. Public issue of equity shares can be
+categorized as follows: ` ` `
+`
+i. Initial Public Offer (IPO): ` ` ` `` ` ` `
+An IPO is where first public offer of shares is made by a company. An IPO can be in the following
+forms:
+Page 05
+--- PAGE 10 ---
+- Fresh Issue of shares where new shares are issued by the company to the public investors. In
+this kind of an issue, the funds of investors will go to the company to be used for the purpose for
+which the issue is made.
+- Offer for Sale where existing shareholders such as promoters or financial institutions or any
+other person offer their holding to the public. In this kind of an issue, the funds of the investors will
+go to such sellers of the shares and not to the company.
+ii. Follow on Public Offer (FPO):
+It is made by an issuer/ company that has already done an IPO in the past and is making a fresh
+issue of securities to the public.
+2 Preferential Issue
+Contract
+In this mode of issue, securities are issued to an identified set
+of investors like promoters, strategic investors, employees, etc.
+3 Rights Issue
+When the Company gives its existing shareholders the right to
+subscribe to newly issued shares, in proportion to their existing
+shareholding, it is called a rights issue.
+4 Bonus Issue
+When the existing shareholders of a company are issued
+additional shares, in proportion to their existing shareholding
+and without any additional cost, then it is called a bonus
+issue.
+In order to raise funds from public, companies need to file an offer document with SEBI which is
+called as the draft red herring prospectus or the draft prospectus. The prospectus contains details
+like the history of the company, details of the promoters, business model, financial history of the
+company, risks in that business, purpose for which the money is being raised, terms of issue and
+such other information that will help an investor to make an informed decision on investment in
+the shares of that company. The securities which are issued in primary market are listed on a
+recognized Stock Exchange in less than six (06) working days from the date of the closure of the
+issue. The shares are then listed on the recognized stock exchanges, where further trading of the
+shares takes place.
+The shares allotted by the company are credited in the
+Demat account of the investor which is maintained with a
+Depository through a SEBI registered Depository
+Participant (DP). An investor can sell the shares on the
+stock exchanges through a SEBI registered Stock broker
+and receive the money.
+Secondary market: Once the securities are issued in the primary market, they get listed on the
+Stock Exchanges and the investors can buy or sell these listed securities through those Stock
+Exchanges. Stock Exchanges have two main segments - Cash Market segment and the Derivatives
+Market segment.
+Page 06
+--- PAGE 11 ---
+Market Infrastructure Institutions: The infrastructure to
+facilitate the transactions in securities market (viz. issue,
+purchase and sale of securities) is provided by Stock
+Exchanges, Depositories and Clearing Corporations.
+These institutions are known as Market Infrastructure
+Institutions (MIIs). A list of SEBI registered market
+infrastructure institutions (MIIs) is available on the link:
+https://www.sebi.gov.in/intermediaries.html.
+The Stock Exchanges provide a nation-wide computerized
+screen based trading platform to facilitate buying and
+selling of securities, through their registered stock
+brokers and at market determined prices, in a fair
+manner. The list of SEBI recognized stock exchanges in
+India is available on the link:
+https://www.sebi.gov.in/stock-exchanges.html.
+The major nation-wide stock exchanges are BSE Limited
+(BSE), National Stock Exchange of India Limited (NSE)
+and Metropolitan Stock Exchange of India Limited (MSE).
+Clearing Corporations: The main function of Clearing
+Corporations is to guarantee the settlement of trades
+executed on the Stock Exchanges. In other words,
+Clearing corporations guarantee that every buyer will get
+the securities which are bought by him and every seller of
+securities will get money for the securities sold by him.
+LLES
+BUY
+4
+Who are the Market Infrastructure Institutions and Market
+Intermediaries in the securities market?
+Page 07
+--- PAGE 12 ---
+Depositories: Depositories are institutions that hold
+securities of investors in dematerialized / electronic form
+and provide demat services to the investors through their
+Depository Participants (DP). There are two depositories
+in our country namely, National Securities Depository
+Limited (NSDL) and Central Depository Services (India)
+Limited (CDSL). Under each Depository, there are
+registered Depository Participants (DPs) (like branches of
+banks), which provide various services to the investors
+like opening and maintaining of a Demat account,
+dematerialization of shares, etc.
+Market Intermediaries are important participants in the
+smooth functioning of the primary and the secondary
+markets. These market intermediaries support the
+process of executing orders for buying or selling of
+securities, dealing in securities and providing information
+relevant to the trading of securities. Some important
+intermediaries are stock brokers, depository participants,
+merchant bankers, share and transfer agents, registrars,
+etc. All such intermediaries are registered with SEBI and
+are required to abide by the prescribed norms to protect
+the investors. A list of SEBI recognized market
+intermediaries may be accessed on the following link:
+https://www.sebi.gov.in.
+Basics of Investing
+Before you start investing in securities market, you need
+to understand and identify your investment goals,
+objectives and risk appetite (the extent up to which you
+are willing to take risk). Every investment decision should
+reflect your needs and requirements and should be as
+per your desired preferences. For example, whether you
+are willing to invest in safe products which give steady
+returns or if you want to take slightly higher risk and invest
+in products which may give you higher returns. Every
+investment comes with the risk of change in the inherent
+`
+value of that investment. For example, investment in
+shares of automobile industry will attract the risk
+attached with the automobile industry (sales may go up or
+down or one brand of cars may be sold more than other
+brand, etc.)
+Once you have decided your goals and identified your risk
+appetite, please decide the amount you want to invest
+and the time period over which you want to invest. The
+ability to take risk differs from investor to investor and
+could be dependent on the goals as well as the age of the
+investor.
+Page 08
+--- PAGE 13 ---
+The investors should also be well informed about their
+rights, responsibilities, Do’s and Don’ts of investing and
+these documents are available on the website/s of SEBI
+and stock exchanges and depositories. The Do’s and
+Don’ts of investing in securities market are also attached
+in the Annexure-I of this booklet. In addition to the same,
+the rights and obligations of investors are attached in the
+Annexure-II of this booklet.
+Investors should make informed decision before investing
+in the shares of a company. They should carefully read all
+the information related to the company such as
+disclosures related to the company, its promoters, the
+project details, financial details, etc. These details can be
+found on the websites of the stock exchanges.
+For investing in securities market, investors may also
+approach any SEBI registered Investment Adviser. A list of
+SEBI registered Investment Adviser(s) may be found on
+the following link:
+https://www.sebi.gov.in.
+However, investors should exercise caution against unsolicited investment advice from
+unregistered investment advisers. For details, you may refer Annexure-III of this booklet.
+5
+Key Risks in Investing in Securities Market
+Market risk or Systematic Risk: It refers to the risk faced by investments due to
+factors affecting the overall performance of securities and general economy of the
+country.
+Unsystematic Risk: Unsystematic risk can be described as the risk attached with a
+particular company or industry.
+Inflation risk: Inflation risk is also called as purchasing power risk. It is defined as
+the chance that the cash flows from an investment would lose their value in future
+because of a decline in its purchasing power due to inflation.
+Liquidity risk: Liquidity risk arises when an investment can’t be bought or sold
+quickly enough.
+Business Risk: It refers to the risk that a business of a company might be affected
+or may stop its operations due to any unfavorable operational, market or financial
+situation.
+Page 09
+--- PAGE 14 ---
+Volatility Risk: Volatility risk arises as the Companies’ stock prices may fluctuate
+over time.
+Currency Risk: It refers to the potential risk of loss from fluctuating foreign
+exchange rates that an investor may face when he has invested in foreign currency
+or made foreign-currency-traded investments.
+6
+How to Mitigate the Risk?
+The investors can try to mitigate risk by different means. Asset allocation is one strategy through
+which an investor can mitigate risk by diversifying their investments into various companies and
+asset classes.
+Account Opening Process
+7
+Pre-requisites for Investing in Securities Market
+In order to invest in equity shares, an investor needs to open three accounts namely:
+BANK ACCOUNT TRADING ACCOUNT DEMAT ACCOUNT
+A) Bank account.
+B) Trading account or broking account with a SEBI registered stock broker of a recognized Stock
+Exchange. This account is used to buy and sell securities on the Stock Exchanges. To open a
+trading account, you have to fill ACCOUNT OPENING FORM and submit the signed Know Your Client
+(KYC) documents.
+Page 10
+--- PAGE 15 ---
+Take the following precautions while filling up the account opening form:
+You should put your signatures while indicating preferences for trading in different
+exchanges.
+You should carefully note all the charges/ fees/ brokerage that are applicable on your
+accounts and keep a record of the same.
+Identify the segments in which you would like to trade (cash, F&O, Currency Derivative or
+any other segments). Trading in derivatives requires understanding of the derivative
+products.
+In case you want to avail additional facilities namely Running Account facility, execution of
+Power of Attorney, etc., you will have to give specific authorization to the stock broker in
+order to avoid any dispute in the future.
+You should provide your email address and mobile number in the account opening form.
+The broker and stock exchanges use these contact details to keep you updated on the
+trading updates that are important for you to know.
+You should always demand and take a copy of the account opening form for your records.
+8
+Procedure for opening an account: Know Your Client (KYC) process
+While opening of Demat/ Trading/ Bank Account, you have to submit Know Your Client (KYC)
+documents. Let us understand what KYC means and why is it compulsory?
+KYC is mandatory under the Prevention of Money
+Laundering Act, 2002 and Rules framed thereunder.
+While opening of Demat / Trading/ Bank account, client
+IDENTITY CARD
+have to submit Officially Valid Documents (OVDs) as
+ID: 12345678912345678
+Name:
+proof of identity and proof of address and these AN dA rM esE s S : URNAME
+123 ANYWERE STREET
+CITY, 12345-875.
+documents form a part of the KYC requirements. An Phone: Expedition Date:
++5581487898 00/00/00
+investor can establish his identity and address through
+relevant supporting prescribed documents such as PAN
+card / UIDAI-Aadhar/ Passport/ Voter ID card/ Driving Proof of Address
+license, etc. Once the KYC form is submitted, a unique ID N LE a aN m sT e tI NFI aC mAT eION NUMBR
+Address
+KYC Identification Number (KIN) is generated and Birthdate Gender
+communicated to the client by SMS/ Email. KYC is a
+one-time process and is valid across all the
+intermediaries. You need not undergo the same process
+again while opening an account with another
+intermediary in securities market.
+Page 11
+--- PAGE 16 ---
+e-KYC
+Investors can complete KYC process using e-KYC facility using UIDAI - Aadhaar/ Digi Locker.
+Fill the account opening details/ form online in the Stock Broker’s website.
+Submit scanned images of the mandatory documents/POA (Proof of address) /
+POI(Proof of Identity).
+Complete IPV (In Person Verification) process over video call.
+Digitally Sign the document.
+Account gets activated.
+Tips
+- Ensure that you read and understand all the documents before signing.
+- Do not sign any blank document.
+- Always refer to the Do’s and Don’ts mentioned in the Annexure of the account opening kit.
+- Ensure to register YOUR mobile number and email address with the bank, depository
+participant and stock broker to receive SMS and email alerts regarding transactions in your
+account.
+9
+Basic Services Demat Account (BSDA)
+Basic Services Demat Account (BSDA):
+Basic Services Demat Account is the demat account facility which is provided to individuals who
+have only one demat account (across all depositories) and the value of the holdings doesn’t
+exceed Rs.2 lakhs each for non-debt securities (like equities) and debt securities, at any point of
+time.
+The Annual Maintenance charges (AMC) structure for BSDA is as mentioned below:
+Security Type Slabs Value of Holdings Charges
+For Non - Up to Rs. 50,000/- No AMC
+Debt Securities
+Rs. 50,001 to Rs. 2,00,000/- Up to Rs. 100/-
+Up to Rs. 1,00,000/- No AMC
+For Debt Securities
+Rs. 1,00,001 to Rs. 2,00,000/- Up to Rs. 100/-
+Page 12
+--- PAGE 17 ---
+Please check the website of SEBI or the respective Depository for the latest rules in this regard.
+A combination of the above mentioned three accounts (i.e. a bank account, a demat account and
+a trading account) is often referred to as the “3-in-1” account. The investors may either open the
+above mentioned three accounts separately with different depository participant/ broker/
+institution or they may also approach a single depository participant/ broker / institution who
+provides the facility of opening of all the three accounts together.
+The list of SEBI registered stock brokers and depository participants may be obtained from SEBI’s
+official website (www.sebi.gov.in) or from the websites of the respective Stock Exchanges or
+depositories.
+10
+Power of Attorney
+Power of Attorney is a document of high
+importance as it is capable of giving your rights
+and access over your accounts and money to POA
+somebody else. In securities market, a client may
+execute the power of attorney (PoA) in favour of
+the stock broker and/or depository participant to
+authorize them to operate his demat and bank
+account to facilitate the delivery of shares and
+pay-in/ pay-out of funds. A specific Power of
+Attorney (PoA), as per the guidelines of SEBI, may
+be executed by the client in favour of the stock
+broker / depository participant.
+As per SEBI guidelines, it is not mandatory to sign and issue a power of attorney. Signing of Power
+of Attorney is purely optional and voluntary – if you find that signing power of attorney is useful for
+you, you may sign it. You can also revoke the Power of Attorney at any point of time.
+In case any transfer of shares is done by your stock broker in your account, for any reason other
+than those that are authorized by you under POA, you should immediately take up the matter with
+your stock broker. In case no response is received from them or you are not satisfied with the
+response, you should immediately take up the matter with the Depository/Exchange.
+In case you wish to execute a Power of
+Attorney (PoA) in favour of the Stock Broker /
+Guidelines
+Depository Participant, please refer to the
+guidelines issued by SEBI/ Stock Exchanges/ https://www.sebi.gov.in/
+Depositories available at their respective
+official websites.
+Page 13
+--- PAGE 18 ---
+11
+Nomination
+Nomination is a facility that enables an individual investor
+to nominate a person, who can claim the securities held
+by him/ her in their demat accounts or the redemption
+proceeds thereof (in respect of mutual fund units) in the
+event of death of the investor.
+How do I invest in Securities Market?
+12
+Investment through Primary Market
+When an issuer company issues shares to the general
+public through public offer, you can apply for the shares
+by submitting the necessary application form. For
+issuance of securities, the issuer company has to follow
+certain rules, regulations, etc. Shares will be allotted as
+per the prescribed Rules & regulations. The shares
+allotted will be credited in the applicant’s Demat Account
+maintained with DP. Allotment of securities will be made
+in demat form and investors have a choice of
+subsequently getting them converted to physical shares.
+On closure of public issue, within six (06) working days of
+closure of the issue, shares allotted are listed on the
+recognized Stock Exchanges where further trading of the
+shares takes place.
+Please Note:
+As per latest SEBI guidelines, you can opt to hold securities such as share certificates in
+physical form or Demat form. However, with effect from April 01, 2019, securities can be
+transferred only if the same are held in Demat form. It is therefore advisable to open a demat
+account and hold all the securities in demat form. This rule is not applicable if the shares are
+to be transmitted to their legal heirs by way of inheritance or succession.
+Page 14
+--- PAGE 19 ---
+13
+Process of investing in Primary Market
+You can buy shares of a Company directly from
+the company during the public offer/ issue by
+filling up an application form and making
+payment during the period when the public issue
+is open for issue to the public. In the application
+form, you have to fill your details such as name,
+address, number of shares applied for, bank Application Form
+account details, demat account in which shares
+are to be credited, etc.
+Investors who are interested in investing in that
+IPO may then apply for the same through
+Application Supported by Blocked Amount (ASBA)
+and also by using Unified Payment Interface (UPI)
+as a payment mechanism (mentioned later in the
+booklet in detail). Investors will then have to fill
+up the application form and apply for allocation
+of shares to them as per their preference. The
+money for the shares for which the investor has
+applied, then gets blocked in the bank account of
+the investor. The entire process of listing of an
+IPO takes six (06) working days after the closure 6 Days
+of the issue. The investors to whom the shares
+are issued, get the shares in their demat account
+and the funds for the same get debited from their
+bank account. In case the shares aren’t
+allocated, the funds blocked in the applicant
+investor’s bank account gets released for further
+utilization.
+Word of caution:
+- Read carefully the prospectus/ red herring prospectus/ offer document of the company
+before making investment in shares of a company.
+- Take due care about the price and quantity of shares while applying for the shares in the
+public issue.
+- Keep a note of the price at which you applied for shares.
+- Don’t invest on the basis of market sentiments, rather analyze about the company and its
+financials and invest smartly.
+Page 15
+--- PAGE 20 ---
+14
+Application Supported by Blocked Amount (ASBA)
+Investors can now apply for securities in IPOs
+through ASBA. In ASBA, money to the extent of
+price of the shares for which the investor has
+applied, is blocked, but it remains in your
+account till allotment. Upon allotment of shares,
+etc., requisite amount is debited from your
+account. Blocked amount continues to earn
+interest and there is no requirement of refund in
+case of non-allotment. Thus, instead of actually
+sending a cheque for applying in IPOs you can
+now apply through Application Supported by
+Blocked Amount (ASBA) which is facilitated by
+certain branches of collecting banks. List of
+these banks is available on the website of SEBI.
+Investors can now invest in IPOs by using Unified
+Payment Interface (UPI) as a payment
+mechanism. The process of investing using UPI is
+explained at Annexure-IV.
+15
+Investment through Secondary Market
+Once you have opened a trading/ broking
+`
+account with a stock broker of a recognized Stock
+Exchange, you can buy or sell shares of a `
+company through the stock broker at the stock
+`
+exchange. You can place the order for purchase
+`
+or sale of securities through your broker using the
+`
+online trading account by visiting broker’s
+website, mobile trading app of broker, through
+the phone using Call & Trade facility, by physically
+visiting the broker’s office or through Authorized ` ` `
+Persons of stock brokers.
+Page 16
+--- PAGE 21 ---
+Modes of placement of Order:
+Mobile Trading Online Trading
+App App
+Buy Stocks at
+Place orders on the Exchange Physical Order
+Phone with Broker
+Word of caution:
+- Buying or selling of shares should be done only through a SEBI registered stock broker or
+Authorized Person.
+- Always keep a record of the orders placed by you to the broker, while trading in secondary
+market.
+16
+Trading days and Trading & Settlement Cycle
+Trading on the Stock Exchanges takes place on
+all days of the week (except Saturdays, Sundays
+and holidays declared by the Stock Exchanges).
+In case of purchase of shares, you are required to
+make payment to the bank account of your stock
+broker prior to the pay-in day for the relevant
+settlement (preferably immediately after
+receiving confirmation from the broker that your
+purchase order is successfully executed).
+Similarly, in case of sale of shares, you are
+required to deliver the shares to the demat
+account of broker prior to the pay-in day for the
+relevant settlement.
+What is the pay-in day and pay-out day? Pay-in day is the day when the brokers shall make
+payment or delivery of securities to the clearing corporation of the exchange. Pay-out day is the day
+when the clearing corporation makes payment or delivery of securities to the broker. Settlement
+cycle is on a T+2 rolling settlement basis w.e.f. April 01, 2003 (where T stands for the trade day).
+For example, the trades executed on a Monday are typically settled on the following Wednesday
+Page 17
+--- PAGE 22 ---
+(considering 2 working days from the trade day). Stock Exchanges ensure that the pay-in and
+pay-out of funds and securities are carried out on T+2 day.
+Pay-in of funds/ securities refers to the transfer of funds/
+securities from brokers account to the exchange’s account.
+Pay-out: Pay-out of funds/securities refers to transfer of
+funds/securities from Exchange account to Broker account.
+Word of caution:
+- Always ensure that you keep adequate funds/ securities in your bank/ demat account,
+respectively, before the date of pay-in of the settlement cycle of the trade.
+- Non-availability of sufficient funds/ securities for settlement may lead to levy of penalty
+and further losses for the investor.
+17
+Contract Note
+A Contract Note is an evidence of the trade done
+by the stock broker. It is a legal document which
+contains details of the transaction such as
+securities bought/ sold, traded price, time of
+trade, brokerage, etc. Contract Notes can be
+issued in physical form or in electronic form. In
+case you opt for an electronic contract note, a
+specific authorization needs to be given to the
+stock broker along with the details of your email
+ID. Such electronic contract notes shall be
+digitally signed, encrypted and can’t be
+tampered. Such contract notes should be
+Page 18
+--- PAGE 23 ---
+preserved by the investor for future references. These have huge importance, especially if any
+dispute arises later.
+Word of caution:
+- Contract note shall be issued by the stock broker within 24 hours of the execution of the
+trade. In case of any discrepancy in the contract note, investor should immediately take up
+the matter with the stock broker.
+- Always cross check the records maintained by you, while placing orders in the market, with
+the details mentioned in the Contract Note. In case of any discrepancy, contact your broker
+immediately.
+Record of client order:
+Stock brokers are required to execute trades of clients only after
+keeping evidence of the client placing such order, which could
+be, inter alia, in the form of:
+a. Physical record written and signed by client,
+b. Telephone recording,
+c. Email from authorized email ID,
+d. Log for internet transactions,
+e. Record of messages through mobile phones,
+f. Any other legally verifiable record.
+18
+SMS and Email Alerts to Investors
+Investors can opt for SMS and email alerts facility
+through which they shall receive free of cost SMS
+and email alerts for any trading/ transaction
+activity that would happen in their trading and
+demat account. In order to avail this facility,
+investors should ensure that their mobile
+numbers and email IDs are shared and regularly
+updated with their stock brokers and depository
+participants.
+Page 19
+--- PAGE 24 ---
+19
+Running Account Authorization
+In normal course, settlement of a transaction
+(buy/sell) by a broker has to be done within 24
+hours of pay-out of funds / securities. However, if
+you regularly trade in shares on the stock
+exchange, you may specifically authorize the
+stock broker to maintain a Running Account
+whereby your shares or funds, as the case may
+be, would be kept in a separate account with the
+stock broker.
+Running Account facilitates ease of carrying out
+transactions in securities whereby the shares or
+funds kept in the running account with the stock
+broker are adjusted towards the settlement
+obligations of the future transactions.
+Running Account authorization is voluntary and useful for the investors who frequently buy
+and sell securities. Running Account authorization shall be dated and revocable at any time.
+The actual settlement of the funds and securities shall be done by the broker, at least once in
+30 days / 90 days as opted by the investors (client).
+20
+Trade Verification
+Trade Verification module on the websites of
+exchanges is a very simple tool to verify the
+trades executed in your account. The data on the
+trades would be available on T+1 day.
+Page 20
+--- PAGE 25 ---
+21
+What is Margin money?
+The margin money is prescribed by exchanges /
+Clearing Corporations and collected from
+investors by brokers before executing a trade on
+their behalf. The margin money is collected to
+mitigate the risk of non- payment of funds for buy
+trades or non-delivery of securities for sell trades
+by an investor. Margin can be provide in the form
+of cash or securities or cash equivalent i.e. fixed
+deposits, bank guarantee, units of mutual funds,
+government securities, and treasury bills in
+demat form etc.
+With effect from September 01, 2020 investors (client) can provide margin in the form of
+“securities” only by pledging the securities in favour of specially designated demat account of
+stock broker.
+Early Pay-in: In case investor wants to avail exemption from payment of margin, investor may use
+“early pay-in” facility where payment of funds / delivery of shares shall be made to the broker
+before the pay-in date or as per time/date specified by the broker.
+22
+Statement of Account from Stock Broker and Depository Participants
+You are entitled to receive reports such as
+monthly report, quarterly report, etc., free of cost,
+on a regular basis from brokers and depositories
+regarding the transactions done by you.
+Depositories and Stock Exchanges, will inform
+you on your registered mobile number or email id
+regarding the transactions in your accounts.
+If you do not understand the message, clarify the matter with the Bank, Depository, Depository
+Participant, your Stock Exchange, broker, or call SEBI’s toll free helpline for guidance. Always keep
+your contact details updated with the intermediaries so that you receive alerts and account
+statements on a timely basis. In case you do not receive such a report, you must raise the matter
+with relevant entities.
+You are entitled to receive a statement of balance of Funds and Securities as on 31st March
+of every year from your stock broker.
+Page 21
+--- PAGE 26 ---
+23
+Consolidated Account Statement (CAS)
+Consolidated Account Statement (CAS) is a
+single/ combined account statement which IIA1CP+NND 52D hIdaA: T53o rmM1eY8 nA2E ,seE 1e 13s:N 4: S :4 2N Y 8U5 3W76 4R 8ET7 5N 9R8 -A 889 EI M7 1 ST 52ET.3 R 4Y E5 E6 TE7C x8 p e0A d0i/t0io0R n/0 D0D ate:
+shows the details of transactions made by an CSA
+investor during a month across all Mutual Funds
+and also other securities held in the demat
+account(s). In order to get your CAS, you should
+update your PAN card number with your stock
+broker/ depository participant.
+24
+Derivatives Market
+Derivatives refers to the financial instruments
+which derive their value from an underlying
+security or financial instrument. The underlying
+products can be equity, commodity, currency, etc.
+Derivatives are primarily used by investors for
+hedging their position and minimizing the price
+risk. Hedging is basically a risk management
+strategy in which the investors invest in the
+`
+instruments strategically to offset the risk of any
+adverse price movements.
+The players in derivatives may be hedgers, speculators and arbitrageurs and different roles may
+be played in different situations.
+Futures and Options, or commonly called as F&O segment, are an essential part of the derivatives
+segment of the securities market. Futures and options are two different types of derivatives.
+A futures contract is a standardized exchange traded contract to buy or sell an underlying product
+at a predetermined price on a future date.
+An options contract refers to the financial instrument which gives the buyer of the option the right
+but not the obligation to exercise the option at a pre-determined date and price. A call option gives
+one the right to buy the underlying security and a put option gives one the right to sell the
+underlying security. Investors are charged a premium when they buy an options contract.
+Page 22
+--- PAGE 27 ---
+Please note that derivatives are high risk products and mainly used for hedging purposes. This
+is not recommended for retail investors.
+Mutual Funds and ETFs
+25
+Mutual Funds
+A mutual fund pools in money from many
+investors and invests the money in stocks,
+bonds, short-term money-market instruments,
+other securities or assets, or some combination
+of these investments. All mutual funds are
+required to be registered with SEBI before they
+launch any scheme. Mutual funds can also be
+segregated in different categories based on the
+objectives of the mutual fund scheme. The
+schemes are designed to keep in mind the needs
+of various types of investors - risk averse
+investors (basically a conservative Investor who
+does not want to take high risk), moderate
+investors (investors who can take some amount
+of risk) and aggressive investors (investors who
+are willing to take higher risk in search of higher
+returns).
+Categorization of mutual funds: Mutual funds are now broadly categorized into five types of schemes
+mentioned as below:
+A Equity Schemes: Mutual funds which principally invest in stocks/ equities.
+Debt Schemes: Mutual funds which principally invest in fixed income securities like
+B
+bonds and treasury bills.
+Hybrid Schemes: Mutual funds which invest in two or more asset classes such as
+C
+equities, fixed income, cash, etc.
+Solution Oriented Schemes: Mutual fund schemes which make their investments as
+D
+per the goals of individuals like retirement and child planning, etc.
+E Other Schemes: All other schemes like Index Funds, Sectoral funds, etc.
+Page 23
+--- PAGE 28 ---
+26
+How to invest in Mutual Funds?
+Mutual funds normally come out with an advertisement in newspapers publishing the date of
+launch of the new schemes. Investors can also contact the agents and distributors of mutual funds
+who are spread all over the country for necessary information and application forms. While
+investing in mutual funds, the investors will first have to complete their KYC process. An investor
+can either do a physical KYC at the branch of the fund or at the registrar office. Alternatively, an
+individual can also do e-KYC using his Aadhaar card and his PAN card number.
+Once the KYC process is complete, the investor then has to decide upon the scheme that he wants
+to invest in. This decision is based on the risk appetite and financial goals. When the investor has
+shortlisted the mutual fund scheme, he will have to fill up the necessary application forms for
+investing in those respective schemes. Forms can be deposited with mutual funds through the
+agents and distributors who provide such services or directly with the MF. While filling up the
+application form, an investor must mention clearly his name, address, number of units applied for
+and such other information as required in the application form. He must give his bank account
+number so as to avoid any fraudulent encashment of any cheque/ draft issued by the mutual fund
+at a later date for the purpose of dividend or repurchase. Any changes in the address, bank
+account number, etc. at a later date should be informed to the mutual fund immediately. In order
+to further ease out the investment procedure for the investors, Mutual Funds offer the following
+options in addition to the lumpsum investment:
+Systematic Investment Plans: Facility to invest fixed amounts in a particular
+scheme at regular intervals.
+Systematic Withdrawal Plans: Facility to withdraw fixed amounts from a particular
+scheme at regular intervals.
+Systematic Transfer Plans: Facility to transfer funds from one scheme to another at
+regular intervals.
+27
+Product Labelling of Mutual Funds
+As per SEBI guidelines, mutual fund schemes are to be labelled
+according to the level of risk involved and the same is to be
+depicted on the risk-o-meter. The risk-o-meter with different
+labels of risk is depicted as below:
+Page 24
+--- PAGE 29 ---
+a) Low: Principal at low risk
+b) Low to Moderate: Principal at moderately low risk
+c) Moderate: Principal at moderate risk
+d) Moderately High: Principal at moderately high risk
+e) High: Principal at high risk
+f) Very High: Principal at very high risk
+- Risk-o-meter is evaluated on a monthly basis.
+- Mutual Funds/ AMCs shall disclose the Risk-o-meter along with portfolio disclosure for all their
+schemes on their respective websites and on AMFI website within 10 days from close of each
+month.
+Investors should not be carried away by commission/gifts given by agents/distributors for
+investing in a particular scheme. On the other hand they must consider the track record of the
+mutual fund and should take objective and informed decisions.
+28
+Exchange Traded Funds (ETF)
+An Exchange traded fund (ETF) is a security that
+tracks an index, commodity, bonds, or a basket of
+assets like an index fund and is traded in the
+securities market. In simple words, ETFs are
+funds that track indices such as Sensex, Nifty,
+etc. When you buy units of an ETF, you actually
+buy units of a portfolio that tracks the
+performance of the index. ETFs just reflect the
+performance of the index they track.
+Unlike regular mutual funds, ETFs trade like a common stock on the stock exchange and the price
+of an ETF changes as per the trading in the market takes place. The trading value of an ETF
+depends on the net asset value of the underlying asstes that it represents. ETFs, generally, have
+higher daily liquidity and lower fees than mutual fund schemes.
+Page 25
+--- PAGE 30 ---
+Grievance Redressal in Securities Market
+29
+SEBI Complaints Redress System (SCORES)
+In case of any complaint related to the securities market, you may first approach the concerned
+intermediary or company. The concerned intermediary or company shall facilitate your complaint
+redressal. In case the grievance remains unresolved, you may approach the concerned Stock
+Exchange or Depository against your stock broker or listed company.
+If you are still not satisfied with the redressal, you
+may lodge a complaint with SEBI through a web
+based centralized grievance redressal called
+SCORES (SEBI Complaints Redress System). The
+address of the SCORES portal is COMPLAINT
+http://scores.gov.in. Investors can also lodge
+their complaints using the SCORES mobile App
+while is available on Android and iOS platforms.
+To know more about SCORES, you may call SEBI
+Toll-Free helpline numbers - 1800 22 7575,
+1800 266 7575. SCORES enables you to lodge
+your complaint, follow up and track the status of
+redressal of the complaint(s) online, at any time
+and from anywhere.
+30
+Investor Services Cell of Stock Exchange
+Investor Services Cells cater to the needs of
+investors by resolving the queries of investors,
+resolution of investor complaints and by
+providing the Arbitration mechanism for
+quasi-judicial settlement of disputes.
+The Stock Exchanges facilitate the redressal of the grievances of the investors through Investor
+Grievance Resolution Panel (IGRP) at NSE and Investor Grievance Redressal Committee (IGRC) at
+BSE Ltd and MSE.
+In order to facilitate the convenience to the investors in redressing their grievances, these
+Exchanges have their Investor Service Centers at the various regions spread across the
+country. The detailed lists of these centers are available on the websites of these
+Exchanges.
+Page 26
+--- PAGE 31 ---
+31
+Arbitration Mechanism
+Arbitration refers to a quasi-judicial process of
+settlement of disputes between Stock Broker and
+investor. When one of the parties feels that the
+complaint has not been resolved satisfactorily
+either by the other party or through the complaint
+resolution process of the Exchange, the parties
+may choose the route of arbitration process
+available with Stock Exchange.
+For further information regarding the list of
+investor service centres, process of arbitration
+and fees and charges involved, you may visit the
+websites of respective stock exchanges.
+Information about Unclaimed Shares/ Unpaid Dividend Amount - IEPF
+Investor Education and Protection Fund (IEPF)
+has been established under Section 125 of
+`
+Companies Act, 2013 and for promotion of
+`
+investors’ awareness and protection of the
+interests of investors. IEPF Authority is a statutory
+body, constituted under the provisions of
+Companies Act, 2013.
+All dividends and Shares which remain unpaid or
+unclaimed for seven consecutive years, are
+transferred by respective companies to Investor
+Education and Protection Fund Authority (IEPF).
+Investor or his representatives need to submit
+their claim to IEPF Authority to receive unpaid
+dividend and/or unclaimed shares.
+For more details, investors can visit
+http://www.iepf.gov.in/IEPF/refund.html
+Page 27
+--- PAGE 32 ---
+Annexures
+32
+ANNEXURE – I
+(Do's and Don'ts for investing / trading in securities market)
+You may consult with a SEBI registered Investment Advisor for your investment needs in
+securities market
+Invest in a scheme/product depending upon your investment objective and risk appetite.
+Insist on a valid contract note/ confirmation memo for trades done within 24 hours of the
+transaction. Keep track of your portfolio in your demat account on a regular basis.
+Read all the documents carefully before signing them.
+You should carefully note all the charges/ fees/ brokerage that are applicable on your accounts
+and keep a record of the same.
+Keep a record of documents signed, account statements, contract notes received and
+payments made.
+Periodically review your financial needs / goals and review the portfolio to ensure that the same
+are possible to achieve.
+Always pay for your transactions using banking channel, i.e. no dealing in cash.
+Always keep your information updated. Inform your stock broker / depository participant
+whenever there is change in your address or bank details or email ID or mobile number. Since
+SIM cards now have the feature of getting ported to different service providers, investors may
+keep single mobile numbers attached with their respective accounts. (Mobile number is the key
+to all important transactions.)
+Avail nomination facility for all your investments. Multiple nominations are allowed in demat
+account.
+Get your running accounts settled periodically (once in 30 / 90 days, as opted by you).
+Page 28
+--- PAGE 33 ---
+Keep a regular check of your running account.
+Examine and review your trading account periodically.
+Regular checking of daily SMS and email from Exchange regarding trades done on that day.
+Regular checking of Monthly SMS and email from Exchange regarding funds and securities
+balances of the investors maintained with the Trading Member.
+Don’t borrow money for investment.
+Don't deal with unregistered brokers / other unregistered intermediaries.
+Don’t pay more than the agreed brokerage/charges to the intermediary.
+Don't execute any document with any intermediary without fully understanding its terms and
+conditions.
+Don’t sign any blank form or Delivery Instruction Slips.
+Don’t issue general power of attorney (PoA) in favour of the Stock Broker/ Depository
+Participant. Exercise due diligence by issuing a very specific one, if you want to issue a PoA.
+In case of disputes, file written complaint to intermediary/ Stock Exchange/SEBI within a
+reasonable time.
+Dabba Trading is illegal. Even if it appears that you are saving on costs, do not indulge in Dabba
+Trading as it offers no benefits of safe and guaranteed trades done on Stock Exchanges.
+Do not rely on making your investment decisions on hot tips as a person who wants to offload
+securities which may not be marketable may be indulging in it. Disseminating hot tips is also an
+illegal activity which should be reported to SEBI.
+Never share your password for online account with anyone. Do change the passwords
+frequently.
+Don’t fall prey to Ponzi schemes, unregistered chit funds, unregistered collective investment or
+unregistered deposit schemes.
+Don't forget to strike off blank spaces in your KYC documents.
+Don't opt for digital contracts, if you're not familiar with computers.
+Page 29
+--- PAGE 34 ---
+33
+ANNEXURE - II
+(Rights and Obligations of Investors)
+(cid:31)(cid:30)(cid:29)(cid:28)(cid:27)(cid:26)
+(cid:25)
+(cid:24)(cid:23)(cid:22)(cid:30)(cid:29)(cid:21)(cid:27)(cid:30)(cid:20)(cid:19)(cid:26)
+Rights of Investors
+Get Unique Client Code (UCC) allotted from broker.
+Get a copy of KYC and other documents executed from intermediary.
+Get trades executed in only your UCC.
+Place order on meeting the norms agreed to with the Member.
+Get best price.
+Get the contract note for trades executed.
+Ask the details of charges levied.
+Receive funds and securities on time.
+Receive statement of accounts from trading member.
+Ask for settlement of accounts.
+Get statements as per agreed schedule.
+Obligations of Investors
+Execute Know Your Client (KYC) documents and provide supporting documents.
+Understand the voluntary conditions being agreed with the trading member.
+Page 30
+--- PAGE 35 ---
+Understand the rights given to the Trading Members.
+Read Risk Disclosure Document.
+Understand the product and operational framework and deadlines.
+Pay margins in time.
+Pay funds and securities for settlement in time.
+Verify details of trades.
+Verify bank account and DP account for funds and securities movement.
+Review contract notes and statement of account.
+34
+ANNEXURE - III
+(Caution against Unregistered Investment Advisers)
+Caution against Unregistered Investment
+Advisers
+SEBI registers Investment Advisers under SEBI
+(Investment Advisers) Regulations, 2013 [Last
+amended on July 03, 2020]. "Investment
+Adviser" means any person, who for
+consideration, is engaged in the business of
+providing investment advice to clients or other
+persons or group of persons and includes any
+person who holds out himself as an investment
+adviser, by whatever name called.
+The aim of the Regulation is to regulate "investment advice" which refers to advice relating to
+investing in, purchasing, selling or otherwise dealing in securities or investment products, and
+advice on investment portfolio containing securities or investment products, whether written, oral
+or through any other means of communication for the benefit of the client and shall include
+financial planning: Provided that investment advice given through newspaper, magazines, any
+electronic or broadcasting or telecommunications medium, which is widely available to the public
+shall not be considered as investment advice for the purpose of these regulations. Investment
+Advisers are supposed to obtain registration from SEBI and follow the Code of Conduct.
+It is illegal to act as Investment Adviser without SEBI registration. SEBI is making concerted efforts
+to stop such illegal activity. Some unscrupulous and ignorant entities may not get themselves
+registered and, or, may not follow the Code of Conduct. Investment Advisers have to limit
+themselves to giving advice and they do not handle cash or securities.
+Page 31
+--- PAGE 36 ---
+Some of the malpractices in connection with the activities of registered and unregistered entities
+acting as Investment Advisers (IA) reported to SEBI comprise of the following:
+X
+Assured returns being offered by the investment advisers to the clients.
+X Charging exorbitant fees from client with a false promise of handsome
+returns.
+Mis-selling by IA without adhering to the risk profile of the client to earn
+X higher fees. On receiving complaints for refund of fees from client for
+loss incurred, IA offer higher risk products to clients with a promise that
+they will recover their losses.
+X
+Trading on behalf of the clients.
+Automatically upgrading or changing the service to higher risk
+X
+products, not matching with the client profile and without the consent
+of the client.
+X Poor service by the IA causing loss of money to the clients. - Refund
+related issues.
+Investors therefore need to be aware and guard themselves against above mentioned practices
+present in the market and deal with caution with entities claiming expertise in capital markets.
+Investors are advised to take advice for investment only from entities registered under SEBI
+(Investment Adviser) Regulations, 2013 [Last amended on July 03, 2020].
+The list of such entities is available at the following website: https://www.sebi.gov.in.
+Do’s and Don’ts while dealing with Investment Advisers
+Do’s Don’ts
+Always deal with SEBI registered Investment Do not deal with unregistered entities.
+Advisers.
+Check for SEBI registration number. The list Don't fall for stock tips offered under the
+of all SEBI registered Investment Advisers is pretext of investment advice.
+Page 32
+--- PAGE 37 ---
+available on SEBI website. Do not give your money for investment to the
+(https://www.sebi.gov.in) Investment Adviser.
+Ensure that the Investment Adviser has a Don't fall for the promise of assured returns.
+valid registration certificate.
+Pay only advisory fees to your Investment Don't let greed overcome rational investment
+Adviser. decisions.
+Make payments of advisory fees through Don't get carried away by luring
+banking channels only and maintain duly advertisements or market rumours.
+signed receipts mentioning the details of
+your payments.
+Always ask for your risk profiling before Avoid doing transactions only on the basis of
+accepting investment advice. phone calls or messages from any
+Investment Adviser or its representatives.
+Insist that Investment Adviser provides Don't take decisions just because of
+advisory strictly on the basis of your risk repeated messages and calls by Investment
+profiling and take into account available Advisers.
+investment alternatives.
+Ask all relevant questions and clear your Do not fall prey to limited period discount or
+doubts with your Investment Adviser before other incentive, gifts, etc. offered by
+acting on advice. Investment Advisers.
+Assess the risk—return profile of the Don't rush into making investments that do
+investment as well as the liquidity and safety not match your risk taking appetite and
+aspects before making investments. investment goals.
+Insist on getting the terms and conditions in
+writing, duly signed and stamped. Read
+these terms and conditions carefully,
+particularly regarding advisory fees, advisory
+plans, category of recommendations etc.
+before dealing with any Investment Adviser.
+Be vigilant in your transactions.
+Approach the appropriate authorities for
+redressal of your doubts / grievances.
+Inform SEBI about Investment Advisers
+offering assured or guaranteed returns.
+Page 33
+--- PAGE 38 ---
+35
+ANNEXURE – IV
+(Unified Payment Interface (UPI) in ASBA)
+Investors can now invest in IPOs by using Unified
+Payment Interface (UPI) as a payment
+mechanism. UPI is a system that powers multiple
+bank accounts into a single mobile application
+(of any participating bank), merging several
+banking features, seamless fund transfers &
+merchant payments into one single mechanism.
+How to invest using UPI:
+The process of investing in IPO through UPI involves 3 major steps as mentioned below:
+A
+Bidding through UPI: Investors should fill the bid details in the application form
+along with their UPI ID. The applications may be submitted with the intermediary
+who will upload the bid details along with UPI ID in the stock exchange bidding
+platform. The stock exchange will electronically share the bid details, along with
+investors UPI ID with the Escrow/ Sponsor bank appointed by the issuer company.
+B
+Blocking of funds: The Escrow/ sponsor bank will request the investor to authorize
+blocking of funds equivalent to applicant amount and subsequent debit of funds
+in case of allotment. Upon validation of block request by the investor, the funds
+would then be blocked in the investors account and the investors will be informed
+of the same.
+C
+Payment for shares post allocation process: Once the shares are allocated, the
+process of debiting of funds from investors account would take place and excess
+money would be unblocked. This process would take place on the basis of the
+authorization given by investor using UPI PIN at the time of blocking of funds.
+Page 34
+--- PAGE 39 ---
+Points to remember while using UPI for investing in IPO:
+- Create your UPI ID with a bank whose name is mentioned in the ‘List of Self-Certified
+Syndicate Banks (SCSBs) eligible to act as an Issuer Bank, available on website of SEBI.
+- Use only those mobile applications and UPI handles that are mentioned in the ‘List of
+mobile applications for using UPI in public issues available on website of SEBI.
+- Submit your application forms with UPI as a payment mechanism only to a Syndicate
+Member, or a Registered Stock Broker, or a Registrar and Transfer Agent or a Depository
+Participant.
+- The limit for IPO application is Rs.2 Lakhs per transaction on UPI and is available only for
+retail individual investors.
+- Third party UPI ID or investors using a third party bank account will not be considered for
+allocation.
+36
+ANNEXURE - V
+(GLOSSARY)
+Sr No A b b r e v i ation Full Form
+1. AMC Annual Maintenance Charges
+2. ASBA Application Supported by Blocked Amount
+3. BSDA Basic Services Demat Account
+4. CAS Consolidated Account Statement
+5. CDSL Central Depository Services (India) Limited
+6. Demat Dematerialized
+7. DP Depository Participant
+8. IA Investment Advisers
+9. IGRC Investor Grievance Redressal Committee
+10. IGRP Investor Grievance Resolution Panel
+11. IPO Initial Public Offer
+12. KIN KYC Identification Number
+13. KYC Know Your Client
+14. MII Market Infrastructure Institutions
+15. MSE Metropolitan Stock Exchange of India Limited
+16. NSDL National Securities Depository Limited
+17. NSE Ltd. National Stock Exchange of India Limited
+18. PAN Permanent Account Number
+19. PoA Power of Attorney
+20. SCORES SEBI Complaints Redress System
+21. SEBI Securities and Exchange Board of India
+22. SMS Short Message Service
+23. UCC Unique Client Code
+24. UID Unique Identification
+Page 35
+--- PAGE 40 ---
+Investor Awareness Initiatives of SEBI
+A. Resource Persons Programs :
+Financial education programs conducted by SEBI empanelled Resource Persons in tier II/ tier
+III cities/ towns and in their local languages for various target groups like retired persons,
+home makers, self-help groups, working executives, etc.
+B. Visit to SEBI Programs :
+Investor awareness programs conducted for students from college, schools and professional
+institutes who visit SEBI offices for these programs.
+C. Regional Seminars :
+Investor Education programs conducted by SEBI in coordination with Stock Exchanges,
+Depositories, AMFI, Commodities Derivatives Exchanges etc.
+D. Investor Awareness Programs through Investors Associations (IAs) :
+Investor education programs in securities market conducted by SEBI recognised Investors
+Associations (IAs) in tier II/ tier III cities/ towns.
+E. Investor Awareness Programs through Commodities Derivatives Trainers (CoTs) :
+Investor education programs in commodities derivatives conducted by SEBI recognised
+Commodities Derivative Trainers (CoTs) in tier II/ tier III cities/ towns.
+F. Investor Awareness Programs through Securities Market Trainers (SMARTs) :
+Investor education programs in Securities Market conducted by SEBI recognised Securities
+Market Trainers (SMARTs) in tier II/ tier III cities/ towns.
+Details of these Investors awareness programs can be found at SEBI Investor website:
+http://investor.sebi.gov.in
+Page 36
+--- PAGE 41 ---
+FAQs and online resources available at websites of :
+Website: www.sebi.gov.in
+Investor website: http://investor.sebi.gov.in
+Website : www.bseindia.com
+Website : www.nseindia.com
+Website: www.nsdl.co.in
+Website : www.cdslindia.com
+Website: www.msei.in
+Page 37
+--- PAGE 42 ---
+Securities and Exchange Board of India
+SEBI Bhavan
+Plot No.C4-A,'G' Block, Bandra Kurla Complex, Bandra (East), Mumbai - 400 051
+Tel: +91-22-26449000 / 40459000 l Website: www.sebi.gov.in
+Investor website: http://investor.sebi.gov.in
+Interactive Voice Response System (IVRS): Tel : +91-22-26449950 / 40459950
+Toll Free Investor Helpline: 1800 22 7575 and 1800 266 7575
+For Investor complaints: https://scores.gov.in
+BSE Ltd.
+25th Floor, P. J. Towers, Dalal Street, Fort, Mumbai - 400 001
+Tel. : 022 22721233/34
+Website: www.bseindia.com
+E-mail Id: is@bseindia.com
+National Securities Depository Limited
+Trade World, ‘A’ Wing, 4th & 5th Floors, Kamala Mills Compound,
+Lower Parel, Mumbai - 400 013
+Tel.: (022) 2499 4200 | Fax: (022) 2497 6351
+Investor Helpline No. 1800 1020 990 / 1800 224 430
+Website: www.nsdl.co.in
+National Stock Exchange of India Ltd.
+Exchange Plaza, C-1, Block G, Bandra Kurla Complex,
+Bandra (E), Mumbai - 400 051
+Tel No: (022) 26598100 - 8114
+Fax No: (022) 26598120
+Central Depository Services (India) Limited
+Marathon Futurex, A Wing, 25th Floor, Mafatlal Mills Compound,
+N. M. Joshi Marg, Lower Parel (E), Mumbai - 400 013.
+Toll free help line: 1800-200-5533
+Website: www.cdslindia.com
+Metropolitan Stock Exchange of India Limited
+205 A, 2nd floor, Piramal Agastya Corporate Park, Sunder Bung Lane,
+Kamani Junction, L.B.S. Road, Kurla-West, Mumbai - 400 070.
+Office: +91 22 6112 9000
+For Free Circulation

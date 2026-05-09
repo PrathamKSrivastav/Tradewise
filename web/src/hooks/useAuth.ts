@@ -1,12 +1,13 @@
 // web/src/hooks/useAuth.ts
 "use client"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useUserStore } from "../store/userStore"
 import { loginUser, registerUser } from "../lib/api"
 export function useAuth() {
   const { token, username, user_id, setAuth, logout } = useUserStore()
   const router = useRouter()
+  const [isHydrated, setIsHydrated] = useState(false)
   // rehydrate token from localStorage on first mount
   useEffect(() => {
     if (!token && typeof window !== "undefined") {
@@ -21,6 +22,7 @@ export function useAuth() {
         }
       }
     }
+    setIsHydrated(true)
   }, [])
   const login = async (email: string, password: string) => {
     const res = await loginUser(email, password)
@@ -36,5 +38,5 @@ export function useAuth() {
     logout()
     router.push("/login")
   }
-  return { token, username, user_id, isAuthed: !!token, login, register, signOut }
+  return { token, username, user_id, isAuthed: !!token, isHydrated, login, register, signOut }
 }

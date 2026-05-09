@@ -28,7 +28,7 @@ const STOCK_META: Record<string, { name: string; risk: string }> = {
 const TIMEFRAMES = ["1m", "5m", "15m", "1h", "1D", "1W"]
 
 export default function TradePage() {
-  const { isAuthed } = useAuth()
+  const { isAuthed, isHydrated } = useAuth()
   const { refresh } = useWallet()
   const router = useRouter()
   const params = useParams()
@@ -51,8 +51,11 @@ export default function TradePage() {
     return aggregateCandles(candles, tfToMinutes[tf] ?? 1)
   }, [candles, tf])
 
-  useEffect(() => { if (!isAuthed) router.push("/login") }, [isAuthed])
-  if (!isAuthed) return null
+  useEffect(() => { 
+    if (isHydrated && !isAuthed) router.push("/login") 
+  }, [isAuthed, isHydrated])
+
+  if (!isHydrated || !isAuthed) return null
 
   const meta = STOCK_META[symbol] ?? { name: symbol, risk: "LOW" }
   const prevClose = candles.length > 1 ? candles[candles.length - 2].close : null
