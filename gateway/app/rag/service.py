@@ -11,6 +11,10 @@ def get_embedder():
         _model = SentenceTransformer('all-MiniLM-L6-v2')
     return _model
 
+def preload_embedder():
+    """Initializes the model in memory."""
+    get_embedder()
+
 async def get_relevant_context(question: str) -> str:
     """Fetches relevant chunks from Qdrant based on the question."""
     try:

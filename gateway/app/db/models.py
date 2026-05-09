@@ -33,7 +33,7 @@ class User(Base):
 class Wallet(Base):
     __tablename__ = "wallets"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), unique=True, nullable=False)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), unique=True, nullable=False, index=True)
     balance: Mapped[float] = mapped_column(Float, nullable=False, default=100000.0)
     user: Mapped["User"] = relationship("User", back_populates="wallet")
 class Trade(Base):
@@ -94,7 +94,7 @@ class ExamAttempt(Base):
 class Certificate(Base):
     __tablename__ = "certificates"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False, index=True)
     score: Mapped[int] = mapped_column(Integer, nullable=False)
     issued_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     certificate_url: Mapped[str] = mapped_column(String(500), nullable=False)

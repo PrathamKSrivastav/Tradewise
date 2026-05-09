@@ -16,6 +16,7 @@ from app.wallet.router import router as wallet_router
 from app.leaderboard.router import router as leaderboard_router  # now at /api/leaderboard
 from app.stocks.symbols import SYMBOLS
 from app.rag.router import router as rag_router
+from app.rag.service import preload_embedder
 from app.xp.router import router as xp_router
 from app.streak.router import router as streak_router
 from app.quiz.router import router as quiz_router
@@ -36,6 +37,7 @@ async def lifespan(app: FastAPI):
     redis = get_redis()
     tasks = await start_relay(redis)
     _relay_tasks.extend(tasks)
+    preload_embedder()
     log.info("gateway ready")
     yield
     for t in _relay_tasks:
@@ -49,7 +51,10 @@ app = FastAPI(
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

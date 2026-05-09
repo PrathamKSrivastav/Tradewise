@@ -26,17 +26,19 @@ export const useUserStore = create<UserState>((set, get) => ({
   setWallet: (wallet) => set({ wallet }),
   setPositions: (positions) => set({ positions }),
   updatePositionPrice: (symbol, price) =>
-    set((state) => ({
-      positions: state.positions.map((p) =>
-        p.symbol === symbol
-          ? {
-              ...p,
-              current_price: price,
-              unrealised_pnl: Number(((price - p.avg_buy_price) * p.quantity).toFixed(2)),
-            }
-          : p
-      ),
-    })),
+    set((state) => {
+      const idx = state.positions.findIndex(p => p.symbol === symbol)
+      if (idx === -1) return state
+      
+      const newPositions = [...state.positions]
+      const p = newPositions[idx]
+      newPositions[idx] = {
+        ...p,
+        current_price: price,
+        unrealised_pnl: Number(((price - p.avg_buy_price) * p.quantity).toFixed(2)),
+      }
+      return { positions: newPositions }
+    }),
   logout: () => {
     if (typeof window !== "undefined") localStorage.removeItem("tw_token")
     set({ user_id: null, username: null, token: null, wallet: null, positions: [] })

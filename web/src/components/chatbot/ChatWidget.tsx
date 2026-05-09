@@ -104,7 +104,7 @@ export function ChatWidget(props: Props) {
 
       {/* Slide-in panel */}
       <div className={clsx(
-        "fixed top-0 right-0 bottom-0 z-50 w-[480px] flex flex-col bg-[#0d1120] border-l border-stroke1 shadow-2xl transition-transform duration-300",
+        "fixed top-0 right-0 bottom-0 z-50 w-[520px] flex flex-col bg-[#0d1120] border-l border-stroke1 shadow-2xl transition-transform duration-300",
         open ? "translate-x-0" : "translate-x-full"
       )}>
         {/* Header */}

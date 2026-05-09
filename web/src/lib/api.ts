@@ -5,7 +5,7 @@ import type {
   ExamStatusResponse, StartExamResponse, SubmitExamResponse, PendingOrder,
 } from "./types"
 
-const BASE = process.env.NEXT_PUBLIC_GATEWAY_URL ?? "http://localhost:8000"
+const BASE = (process.env.NEXT_PUBLIC_GATEWAY_URL || "http://localhost:8000").replace(/\/$/, "")
 
 async function request<T>(path: string, options: RequestInit = {}, token?: string): Promise<T> {
   const headers: Record<string, string> = { "Content-Type": "application/json" }
