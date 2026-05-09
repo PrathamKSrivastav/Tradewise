@@ -65,7 +65,14 @@ export function ChatWidget(props: Props) {
         body = { question, mode: "lesson", lesson_snapshot: lessonSnapshotToPrompt(snap), lesson_title: props.lesson.title, chart_prompt: "" }
       } else {
         const ctx = buildChartContext(props.symbol, props.candles)
-        body = { question, mode: "simulator", chart_prompt: ctx ? chartContextToPrompt(ctx) : "No chart data available yet.", lesson_snapshot: "", lesson_title: "" }
+        body = { 
+          question, 
+          mode: "simulator", 
+          symbol: props.symbol,
+          chart_prompt: ctx ? chartContextToPrompt(ctx) : "No chart data available yet.", 
+          lesson_snapshot: "", 
+          lesson_title: "" 
+        }
       }
 
       const res = await fetch(`${GATEWAY}/rag/chat`, {

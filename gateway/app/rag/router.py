@@ -1,14 +1,18 @@
 # gateway/app/rag/router.py
 import asyncio
+import json
 from typing import AsyncIterator, Optional
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from groq import AsyncGroq
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth.deps import get_current_user
 from app.db.models import User
 from app.config import settings
+from app.db.session import get_session
+from app.market.service import get_candle_history
 
 router = APIRouter(prefix="/rag", tags=["rag"])
 
@@ -29,6 +33,7 @@ MAX_MESSAGES_PER_SESSION = 20
 
 class ChatRequest(BaseModel):
     question: str
+    symbol: Optional[str] = None
     chart_prompt: str = ""
     mode: str = "simulator"
     lesson_snapshot: str = ""
@@ -41,41 +46,62 @@ class ChatResponse(BaseModel):
     messages_used: int
 
 
-def _simulator_system_prompt(chart_prompt: str) -> str:
-    return f"""You are a chart analysis assistant for Tradewise, an Indian paper-trading simulator.
-You help retail investors understand candlestick charts and price action.
+def _simulator_system_prompt(chart_prompt: str, market_context: str) -> str:
+    return f"""You are a patient and encouraging financial tutor for Tradewise, an Indian paper-trading simulator.
+Your goal is to teach the user how to analyze the market and suggest logical "next steps" for their learning or trading.
 
-STRICT RULES:
-- You may ONLY discuss the chart data provided below. Do NOT discuss any other stocks, portfolios, or market data.
-- Keep every response under 200 words.
-- Never give buy/sell advice as absolute instructions — frame as analysis ("the chart suggests…").
-- Do not discuss the Market Server, order execution, or backend systems.
-- If you cannot answer from the chart data alone, say so clearly.
+STRICT GUARD-RAILS:
+- You may ONLY answer questions related to: trading, stock markets, personal finance, technical analysis, and wealth management.
+- For any other topics (coding, history, sports, casual chatter), politely say: "I'm here to help you master the markets! Let's stay focused on finance and trading."
+- Never give absolute financial advice. Frame suggestions as: "One thing a trader might consider here is..." or "Technical analysis suggests..."
 
-CHART DATA (what the user currently sees):
-{chart_prompt or "No chart data available yet."}"""
+INSTRUCTIONS:
+- Explain concepts step-by-step as if teaching a beginner.
+- Use the recent market data provided below to ground your analysis.
+- Keep responses under 200 words.
+
+RECENT MARKET DATA (Last 10 Ticks):
+{market_context or "No live data available yet."}
+
+CHART SNAPSHOT (Visual Context):
+{chart_prompt or "No visual snapshot provided."}"""
 
 
 def _lesson_system_prompt(lesson_snapshot: str, lesson_title: str) -> str:
-    return f"""You are a financial education tutor for Tradewise Academy.
-You help Indian retail investors understand the lesson they are currently reading.
+    return f"""You are a patient financial education tutor for Tradewise Academy.
+Your goal is to help the user understand the lesson they are reading and explain concepts step-by-step.
 
-STRICT RULES:
-- Ground every answer in the lesson facts provided below. Do NOT invent data, figures, or citations.
-- Keep every response under 200 words.
-- If the user asks something not covered by this lesson, say: "That's outside this lesson — explore Level X for that topic."
-- Never discuss stock trading execution, the simulator, or make buy/sell recommendations.
+STRICT GUARD-RAILS:
+- Ground every answer strictly in the provided Lesson Context. If a question is outside the scope of this lesson, say: "That's a great question, but it's covered in a later level of the Academy. For now, let's focus on {lesson_title}."
+- Only discuss trade, money, and personal finance.
 - Label every response start with: "📚 Grounded to: {lesson_title}"
 
 LESSON CONTEXT:
 {lesson_snapshot or "No lesson context provided."}"""
 
 
+async def _get_market_context(db: AsyncSession, symbol: str) -> str:
+    try:
+        # Fetch last 10 candles
+        candles = await get_candle_history(db, symbol, limit=10)
+        if not candles:
+            return ""
+        
+        ctx = []
+        for c in candles:
+            # Format: [Time] Price: XXX (Vol: YYY)
+            ctx.append(f"Price: ₹{c['close']:.2f} (H: {c['high']:.2f} L: {c['low']:.2f})")
+        
+        return "\n".join(ctx)
+    except Exception:
+        return ""
+
+
 async def _call_groq(system: str, question: str) -> str:
     client = _get_client()
     response = await client.chat.completions.create(
         model="llama-3.3-70b-versatile",
-        max_completion_tokens=400,
+        max_completion_tokens=500,
         messages=[
             {"role": "system", "content": system},
             {"role": "user", "content": question},
@@ -88,7 +114,7 @@ async def _stream_groq(system: str, question: str) -> AsyncIterator[str]:
     client = _get_client()
     stream = await client.chat.completions.create(
         model="llama-3.3-70b-versatile",
-        max_completion_tokens=400,
+        max_completion_tokens=500,
         messages=[
             {"role": "system", "content": system},
             {"role": "user", "content": question},
@@ -105,6 +131,7 @@ async def _stream_groq(system: str, question: str) -> AsyncIterator[str]:
 async def chat(
     body: ChatRequest,
     current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_session),
 ):
     user_id = current_user.id
 
@@ -122,7 +149,10 @@ async def chat(
         system = _lesson_system_prompt(body.lesson_snapshot, body.lesson_title)
         grounding = f"📚 {body.lesson_title}" if body.lesson_title else "lesson"
     else:
-        system = _simulator_system_prompt(body.chart_prompt)
+        market_ctx = ""
+        if body.symbol:
+            market_ctx = await _get_market_context(db, body.symbol)
+        system = _simulator_system_prompt(body.chart_prompt, market_ctx)
         grounding = "chart"
 
     answer = await _call_groq(system, body.question)
@@ -140,6 +170,7 @@ async def chat(
 async def chat_stream(
     body: ChatRequest,
     current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_session),
 ):
     """SSE streaming endpoint — returns text/event-stream."""
     user_id = current_user.id
@@ -155,7 +186,10 @@ async def chat_stream(
     if body.mode == "lesson":
         system = _lesson_system_prompt(body.lesson_snapshot, body.lesson_title)
     else:
-        system = _simulator_system_prompt(body.chart_prompt)
+        market_ctx = ""
+        if body.symbol:
+            market_ctx = await _get_market_context(db, body.symbol)
+        system = _simulator_system_prompt(body.chart_prompt, market_ctx)
 
     async def _generate():
         async for text in _stream_groq(system, body.question):
