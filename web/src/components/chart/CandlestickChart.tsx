@@ -43,6 +43,9 @@ export function CandlestickChart({ candles, symbol }: Props) {
         vertLines: { color: "rgba(255,255,255,0.04)" },
         horzLines: { color: "rgba(255,255,255,0.04)" },
       },
+      localization: {
+        locale: "en-IN",
+      },
       crosshair: { mode: CrosshairMode.Normal },
       rightPriceScale: { borderColor: "rgba(255,255,255,0.08)" },
       leftPriceScale: {
@@ -90,9 +93,14 @@ export function CandlestickChart({ candles, symbol }: Props) {
 
     // Sanitization & Deduplication (by second-timestamp)
     const seen = new Map<number, any>()
+    const localOffsetSeconds = new Date().getTimezoneOffset() * 60
+
     for (const c of candles) {
       if (!c || !c.timestamp) continue
-      const t = c.timestamp > 1e11 ? Math.floor(c.timestamp / 1000) : c.timestamp
+      // Convert to seconds and apply local offset to force local time display on scale
+      const utcSeconds = c.timestamp > 1e11 ? Math.floor(c.timestamp / 1000) : c.timestamp
+      const t = utcSeconds - localOffsetSeconds
+      
       const o = Number(c.open), h = Number(c.high), l = Number(c.low), cl = Number(c.close);
 
       if (isNaN(o) || isNaN(h) || isNaN(l) || isNaN(cl)) continue;

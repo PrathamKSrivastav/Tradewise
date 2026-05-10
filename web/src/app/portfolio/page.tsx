@@ -61,12 +61,23 @@ export default function PortfolioPage() {
     })
 
     let currentBalance = 100000
-    const data = [{ time: (trades[0].timestamp - 3600) as any, value: 100000 }]
+    const timeMap = new Map<number, number>()
+    const localOffsetSeconds = new Date().getTimezoneOffset() * 60
+    
+    // Initial data point: 1 hour before first trade
+    const startTime = (trades[0].timestamp - 3600) - localOffsetSeconds
+    timeMap.set(startTime, 100000)
+
     trades.forEach(t => {
       if (t.side === "buy") currentBalance -= t.total
       else currentBalance += t.total
-      data.push({ time: t.timestamp as any, value: currentBalance })
+      // Shift to local time for chart scale
+      timeMap.set(t.timestamp - localOffsetSeconds, currentBalance)
     })
+
+    const data = Array.from(timeMap.entries())
+      .sort((a, b) => a[0] - b[0])
+      .map(([time, value]) => ({ time: time as any, value }))
 
     lineSeries.setData(data)
     chart.timeScale().fitContent()
