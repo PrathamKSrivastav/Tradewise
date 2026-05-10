@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/useAuth"
 import { fetchUserProgress, fetchBadges } from "../../lib/api"
 import { AppLayout } from "../../components/layout/AppLayout"
 import { BadgeShelf } from "../../components/academy/BadgeShelf"
-import { getLessonById } from "../../content/curriculum"
+import { getLessonById, curriculum } from "../../content/curriculum"
 import type { UserProgress, BadgesResponse } from "../../lib/types"
 import clsx from "clsx"
 
@@ -165,8 +165,10 @@ export default function ProfilePage() {
                 ) : (
                   <div className="space-y-3.5">
                     {MASTERY_GROUPS.map(({ label, levels, color }) => {
-                      const unlocked = levels.filter(lv => unlockedLevels.includes(lv)).length
-                      const pct = Math.round((unlocked / levels.length) * 100)
+                      const groupLessons = levels.flatMap(lv => curriculum[lv] || [])
+                      const totalInGroup = groupLessons.length
+                      const completedInGroup = groupLessons.filter(l => progress?.completedLessons.includes(l.id)).length
+                      const pct = totalInGroup > 0 ? Math.round((completedInGroup / totalInGroup) * 100) : 0
                       return <MasteryItem key={label} label={label} pct={pct} color={color} />
                     })}
                   </div>

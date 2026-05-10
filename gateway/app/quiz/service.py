@@ -243,7 +243,7 @@ async def submit_quiz(
             new_badges = await check_badges(xp_result["user"], db)
 
             # Award bonus XP for each newly earned badge
-            BADGE_XP = 50
+            BADGE_XP = 10
             if new_badges:
                 badge_bonus = len(new_badges) * BADGE_XP
                 await db.execute(

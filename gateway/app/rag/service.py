@@ -21,11 +21,18 @@ async def get_relevant_context(question: str) -> str:
         model = get_embedder()
         query_vector = model.encode(question).tolist()
         
-        chunks = await search_knowledge(query_vector)
+        # Increased limit slightly but we will rely on prompt grounding
+        chunks = await search_knowledge(query_vector, limit=4)
         if not chunks:
             return ""
         
-        return "\n---\n".join(chunks)
+        # Filter out very short/noise chunks if any
+        valid_chunks = [c.strip() for c in chunks if len(c.strip()) > 50]
+        if not valid_chunks:
+            return ""
+
+        context_header = "--- EDUCATIONAL KNOWLEDGE BASE (SEBI CERTIFICATION) ---\n"
+        return context_header + "\n\n---\n\n".join(valid_chunks)
     except Exception as e:
         print(f"Error fetching RAG context: {e}")
         return ""

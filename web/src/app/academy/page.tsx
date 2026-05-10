@@ -11,13 +11,16 @@ import { AppLayout } from "@/components/layout/AppLayout"
 import { useQuery } from "@tanstack/react-query"
 import clsx from "clsx"
 
-const BADGE_EMOJI: Record<string, string> = {
-  default: "🏅",
-  streak: "🔥",
-  first: "⭐",
-  master: "👑",
-  speed: "⚡",
-  perfect: "💎",
+const BADGE_CONFIG: Record<string, { emoji: string; label: string }> = {
+  "first-lesson": { emoji: "⭐", label: "Novice" },
+  "first-trade": { emoji: "📈", label: "Trader" },
+  "streak-7": { emoji: "🔥", label: "7 Day" },
+  "streak-30": { emoji: "🚀", label: "Monthly" },
+  "quiz-perfect": { emoji: "💎", label: "Perfect" },
+  "level-3-complete": { emoji: "🎓", label: "Analyst" },
+  "portfolio-10": { emoji: "💰", label: "Pro" },
+  "market-ready": { emoji: "👑", label: "Master" },
+  default: { emoji: "🏅", label: "Badge" },
 }
 
 export default function AcademyPage() {
@@ -95,16 +98,19 @@ export default function AcademyPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-3 gap-2">
-                  {displayBadges.map((b, idx) => (
-                    <div key={idx} className="flex flex-col items-center gap-1">
-                      <div className="w-10 h-10 rounded-xl bg-white/[0.06] ring-1 ring-white/[0.09] flex items-center justify-center text-xl">
-                        {BADGE_EMOJI[b.id] ?? BADGE_EMOJI.default}
+                  {displayBadges.map((b, idx) => {
+                    const config = BADGE_CONFIG[b.id] ?? BADGE_CONFIG.default
+                    return (
+                      <div key={idx} className="flex flex-col items-center gap-1">
+                        <div className="w-10 h-10 rounded-xl bg-white/[0.06] ring-1 ring-white/[0.09] flex items-center justify-center text-xl">
+                          {config.emoji}
+                        </div>
+                        <span className="text-[9px] text-ink3 text-center leading-tight truncate w-full capitalize">
+                          {config.label}
+                        </span>
                       </div>
-                      <span className="text-[9px] text-ink3 text-center leading-tight truncate w-full capitalize">
-                        {b.label}
-                      </span>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>

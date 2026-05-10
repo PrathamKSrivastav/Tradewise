@@ -14,6 +14,7 @@ from app.config import settings
 from app.db.session import get_session
 from app.market.service import get_candle_history
 from app.rag.service import get_relevant_context
+from app.rag.chart_context import get_technical_summary
 
 router = APIRouter(prefix="/rag", tags=["rag"])
 
@@ -47,7 +48,7 @@ class ChatResponse(BaseModel):
     messages_used: int
 
 
-def _simulator_system_prompt(chart_prompt: str, market_context: str, rag_context: str) -> str:
+def _simulator_system_prompt(chart_prompt: str, technical_summary: str, rag_context: str) -> str:
     return f"""You are a highly skilled and patient financial tutor for Tradewise, an Indian paper-trading simulator.
 Your goal is to guide the user through a professional market analysis process, teaching them how to "read" the situation instead of just giving answers.
 
@@ -55,22 +56,23 @@ STRICT GUARD-RAILS:
 - You may ONLY answer questions related to: trading, stock markets, personal finance, technical analysis, and wealth management.
 - For any other topics, politely decline and steer back to finance.
 - Frame all suggestions as educational analysis, not absolute financial advice.
+- DO NOT USE EMOJIS in your response.
 
 INSTRUCTIONS (TEACHING BY GUIDING):
 1. USE MARKDOWN: Always use clear Markdown formatting (bullet points, bold text, numbered lists) for better readability.
-2. ANALYZE DATA: Look at the RECENT MARKET DATA and CHART SNAPSHOT. Identify current trends, support/resistance levels, or momentum.
+2. ANALYZE DATA: Use the MARKET SNAPSHOT provided by the backend as your source of truth. It contains pre-calculated indicators like RSI, MACD, and SMAs.
 3. ENCOURAGE CHART TOOLS: Explicitly ask the user to turn on specific technical overlays available in the simulator (e.g., "Try turning on the **SMA 20** and **EMA 9**...") and explain exactly what they should look for in those lines to confirm your analysis.
-4. REFERENCE RISK: Point out relevant risk metrics (Volatility, Sharpe Ratio, VaR, Max Drawdown, Beta) to explain why a move is risky or stable.
-5. ACTIONABLE GUIDANCE: Conclude with a clear recommendation (**Buy, Sell, Hold, or Staged Entry** at specific rates). 
+4. REFERENCE RISK: Point out relevant risk metrics (Volatility, RSI extremes, MACD crossovers) to explain why a move is risky or stable.
+5. ACTIONABLE GUIDANCE: Conclude with a clear recommendation (**Buy, Sell, Hold, or Staged Entry**) based on the technical convergence.
 6. EXPLAIN THE "WHY": Step-by-step, explain the logic behind your recommendation so the user learns how to perform this analysis themselves next time.
+
+MARKET SNAPSHOT (Backend Verified):
+{technical_summary or "No pre-calculated technical data available."}
 
 EXTRACTED KNOWLEDGE (RAG):
 {rag_context or "No additional technical documents found for this query."}
 
-RECENT MARKET DATA (Last 10 Ticks):
-{market_context or "No live data available yet."}
-
-CHART SNAPSHOT (Visual Context):
+VISUAL CONTEXT (User's Current View):
 {chart_prompt or "No visual snapshot provided."}"""
 
 
@@ -81,7 +83,8 @@ Your goal is to help the user understand the lesson they are reading and explain
 STRICT GUARD-RAILS:
 - Ground every answer strictly in the provided Lesson Context. If a question is outside the scope of this lesson, say: "That's a great question, but it's covered in a later level of the Academy. For now, let's focus on {lesson_title}."
 - Only discuss trade, money, and personal finance.
-- Label every response start with: "📚 Grounded to: {lesson_title}"
+- Label every response start with: "Grounded to: {lesson_title}"
+- DO NOT USE EMOJIS in your response.
 
 LESSON CONTEXT:
 {lesson_snapshot or "No lesson context provided."}"""
@@ -89,18 +92,14 @@ LESSON CONTEXT:
 
 async def _get_market_context(db: AsyncSession, symbol: str) -> str:
     try:
-        # Fetch last 10 candles
-        candles = await get_candle_history(db, symbol, limit=10)
+        # Fetch last 60 candles to support SMA(50) and MACD(26) calculation
+        candles = await get_candle_history(db, symbol, limit=60)
         if not candles:
             return ""
         
-        ctx = []
-        for c in candles:
-            # Format: [Time] Price: XXX (Vol: YYY)
-            ctx.append(f"Price: ₹{c['close']:.2f} (H: {c['high']:.2f} L: {c['low']:.2f})")
-        
-        return "\n".join(ctx)
-    except Exception:
+        return get_technical_summary(candles)
+    except Exception as e:
+        print(f"Error getting market context: {e}")
         return ""
 
 
@@ -154,7 +153,7 @@ async def chat(
 
     if body.mode == "lesson":
         system = _lesson_system_prompt(body.lesson_snapshot, body.lesson_title)
-        grounding = f"📚 {body.lesson_title}" if body.lesson_title else "lesson"
+        grounding = f"lesson: {body.lesson_title}" if body.lesson_title else "lesson"
     else:
         market_ctx = ""
         rag_ctx = await get_relevant_context(body.question)

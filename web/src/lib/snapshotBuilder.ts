@@ -74,6 +74,7 @@ export interface LessonSnapshot {
   visibleSection: string
   keyTermsSummary: string
   factsSummary: string
+  lessonBody: string
   lastQuizScore?: number
 }
 
@@ -86,7 +87,6 @@ export function buildLessonSnapshot(
     .map(kt => `${kt.term}: ${kt.definition}`)
     .join("\n")
 
-  // Include only the fact statements (no citations) for the prompt
   const factsSummary = lesson.facts
     .map(f => f.statement)
     .join("\n")
@@ -98,6 +98,7 @@ export function buildLessonSnapshot(
     visibleSection,
     keyTermsSummary,
     factsSummary,
+    lessonBody: lesson.body,
     lastQuizScore,
   }
 }
@@ -105,9 +106,10 @@ export function buildLessonSnapshot(
 export function lessonSnapshotToPrompt(snap: LessonSnapshot): string {
   const lines = [
     `Lesson: "${snap.lessonTitle}" (Level ${snap.lessonLevel})`,
-    `Section the user is reading: ${snap.visibleSection || "Introduction"}`,
-    `\nKey terms defined in this lesson:\n${snap.keyTermsSummary}`,
-    `\nVerified facts from this lesson:\n${snap.factsSummary}`,
+    `Section the user is reading: ${snap.visibleSection || "Full Article"}`,
+    `\n--- FULL LESSON CONTENT ---\n${snap.lessonBody}`,
+    `\n--- KEY TERMS ---\n${snap.keyTermsSummary}`,
+    `\n--- VERIFIED FACTS ---\n${snap.factsSummary}`,
   ]
   if (snap.lastQuizScore !== undefined) {
     lines.push(`\nUser's last quiz score on this lesson: ${snap.lastQuizScore}%`)

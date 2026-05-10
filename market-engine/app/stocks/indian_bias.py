@@ -10,8 +10,8 @@ _LUNCH_END = time(13, 30)
 _CLOSE_APPROACH = time(15, 0)
 _MARKET_CLOSE = time(15, 30)
 def is_market_open(now: datetime | None = None) -> bool:
-    t = (now or datetime.now(IST)).time()
-    return _MARKET_OPEN <= t < _MARKET_CLOSE
+    # Simulator mode: always open for 24/7 trading
+    return True
 def get_bias_drift(now: datetime | None = None) -> float:
     dt = now or datetime.now(IST)
     t = dt.time()
@@ -38,8 +38,7 @@ def get_bias_drift(now: datetime | None = None) -> float:
 def get_volatility_multiplier(now: datetime | None = None) -> float:
     dt = now or datetime.now(IST)
     t = dt.time()
-    if not is_market_open(dt):
-        return 0.0
+    # Opening volatility surge (9:15–9:30)
     if t < time(9, 30):
         return 1.8
     if _LUNCH_START <= t < _LUNCH_END:
