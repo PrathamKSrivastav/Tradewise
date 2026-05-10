@@ -1,6 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation"
 import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 import type { LessonObject } from "@/types/lesson"
 import { Button } from "@/components/ui/Button"
 import { SIPCalculator } from "./SIPCalculator"
@@ -78,7 +79,7 @@ export function LessonReader({ lesson, totalLessons, completedIds }: Props) {
             prose-a:text-indigo-400 prose-a:no-underline hover:prose-a:underline
             prose-th:text-ink prose-td:text-ink2
           ">
-            <ReactMarkdown>{lesson.body}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{lesson.body}</ReactMarkdown>
           </div>
 
           {lesson.id === '05-compound-interest-and-sip' && <SIPCalculator />}

@@ -1,15 +1,13 @@
-// web/src/app/certificate/page.tsx
 "use client"
-import { AppNav } from "../../components/layout/AppNav"
+import { AppLayout } from "../../components/layout/AppLayout"
 import { CertificateView } from "../../components/academy/CertificateView"
 
 export default function CertificatePage() {
   return (
-    <div className="min-h-screen bg-canvas">
-      <AppNav />
-      <div className="pt-20">
+    <AppLayout>
+      <div className="flex-1 overflow-y-auto scrollbar-none">
         <CertificateView />
       </div>
-    </div>
+    </AppLayout>
   )
 }

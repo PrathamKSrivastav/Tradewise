@@ -25,7 +25,14 @@ const STOCK_META: Record<string, { name: string; risk: string }> = {
   SPECULATIVE: { name: "RocketEdge Ventures",     risk: "EXTREME" },
 }
 
-const TIMEFRAMES = ["1m", "5m", "15m", "1h", "1D", "1W"]
+const TIMEFRAMES: { label: string; desc: string }[] = [
+  { label: "1m",  desc: "Scalping · micro moves" },
+  { label: "5m",  desc: "Short-term momentum" },
+  { label: "15m", desc: "Intraday setups" },
+  { label: "1h",  desc: "Swing entry signals" },
+  { label: "1D",  desc: "Trend confirmation" },
+  { label: "1W",  desc: "Low-volatility overview" },
+]
 
 export default function TradePage() {
   const { isAuthed, isHydrated } = useAuth()
@@ -134,6 +141,37 @@ export default function TradePage() {
             "flex-1 flex flex-col min-w-0 border-r border-stroke1",
             mobileTab !== "chart" && "hidden lg:flex"
           )}>
+            {/* Timeframe selector */}
+            <div className="flex-none border-b border-stroke1 bg-canvas/60">
+              <div className="flex items-center gap-0.5 px-3 pt-2 pb-1 overflow-x-auto scrollbar-none">
+                {TIMEFRAMES.map(({ label, desc }) => {
+                  const active = tf === label
+                  return (
+                    <button
+                      key={label}
+                      onClick={() => setTf(label)}
+                      title={desc}
+                      className={clsx(
+                        "flex flex-col items-center px-2.5 py-1.5 rounded-lg transition-all flex-none min-w-[44px]",
+                        active
+                          ? "bg-indigo-500/15 ring-1 ring-indigo-500/30"
+                          : "hover:bg-white/5"
+                      )}
+                    >
+                      <span className={clsx("text-[12px] font-bold tabular-nums leading-none", active ? "text-indigo-300" : "text-ink2")}>{label}</span>
+                    </button>
+                  )
+                })}
+              </div>
+              {/* Active timeframe description strip */}
+              <div className="px-3 pb-2 flex items-center gap-1.5 min-h-[18px]">
+                <div className="w-1 h-1 rounded-full bg-indigo-400 flex-none" />
+                <span className="text-[10.5px] text-indigo-300/70 font-medium leading-none">
+                  {TIMEFRAMES.find(t => t.label === tf)?.desc}
+                </span>
+              </div>
+            </div>
+
             <div className="flex-1 relative chart-grid overflow-hidden bg-black/20">
               <CandlestickChart candles={displayCandles} symbol={symbol} />
               {labId && <LabOverlay lessonId={labId} candles={displayCandles} symbol={symbol} />}

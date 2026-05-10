@@ -242,6 +242,18 @@ async def submit_quiz(
             xp_earned = xp_result["xpEarned"]
             new_badges = await check_badges(xp_result["user"], db)
 
+            # Award bonus XP for each newly earned badge
+            BADGE_XP = 50
+            if new_badges:
+                badge_bonus = len(new_badges) * BADGE_XP
+                await db.execute(
+                    update(User)
+                    .where(User.id == user_id)
+                    .values(total_xp=User.total_xp + badge_bonus)
+                )
+                await db.commit()
+                xp_earned += badge_bonus
+
     multiplier_result = await db.execute(select(User.streak_multiplier).where(User.id == user_id))
     multiplier = float(multiplier_result.scalar_one_or_none() or 1.0)
 

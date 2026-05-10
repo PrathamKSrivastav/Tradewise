@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useAuth } from "../hooks/useAuth"
 import { StockSelector } from "../components/StockSelector"
 import { Leaderboard } from "../components/Leaderboard"
+import { PortfolioSnapshot } from "../components/PortfolioSnapshot"
 import { AppLayout } from "../components/layout/AppLayout"
 
 export default function HomePage() {
@@ -41,25 +42,35 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Leaderboard sidebar — 1/3 */}
-        <aside className="flex-1 flex flex-col min-h-0 border-t lg:border-t-0 lg:border-l border-white/5 pt-6 lg:pt-0 lg:pl-6">
-          <div className="flex items-end justify-between mb-4">
-            <div>
-              <div className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.2em] text-white/30 mb-1.5">
-                Rankings
+        {/* Right sidebar — portfolio snapshot + leaderboard */}
+        <aside className="flex-1 flex flex-col min-h-0 border-t lg:border-t-0 lg:border-l border-white/5 pt-6 lg:pt-0 lg:pl-6 gap-4">
+
+          {/* Top: Portfolio allocation — natural height */}
+          <div className="flex-none bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden">
+            <PortfolioSnapshot />
+          </div>
+
+          {/* Bottom: Leaderboard — 2 parts */}
+          <div className="flex-[2] flex flex-col min-h-0">
+            <div className="flex items-end justify-between mb-4">
+              <div>
+                <div className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.2em] text-white/30 mb-1.5">
+                  Rankings
+                </div>
+                <div className="text-[20px] lg:text-[24px] font-black tracking-tight text-white">
+                  This week
+                </div>
               </div>
-              <div className="text-[20px] lg:text-[24px] font-black tracking-tight text-white">
-                This week
-              </div>
+              <Link href="/leaderboard" className="flex items-center gap-1 text-[12px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors no-underline">
+                Full board
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </Link>
             </div>
-            <Link href="/leaderboard" className="flex items-center gap-1 text-[12px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors no-underline">
-              Full board
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </Link>
+            <div className="flex-1 bg-white/[0.03] border border-white/10 rounded-2xl p-2 overflow-y-auto scrollbar-none min-h-[200px]">
+              <Leaderboard compact />
+            </div>
           </div>
-          <div className="flex-1 bg-white/[0.03] border border-white/10 rounded-2xl p-2 overflow-y-auto scrollbar-none min-h-[400px]">
-            <Leaderboard compact />
-          </div>
+
         </aside>
       </div>
     </AppLayout>

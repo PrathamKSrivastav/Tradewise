@@ -62,9 +62,9 @@ export function QuizEngine({ lesson }: { lesson: LessonObject }) {
   }
 
   if (loading) return (
-    <div className="flex flex-col items-center justify-center h-64 gap-3 text-ink2">
-      <div className="h-6 w-6 rounded-full border-2 border-indigo-500/30 border-t-indigo-500 animate-spin" />
-      Generating quiz…
+    <div className="flex flex-col items-center justify-center min-h-screen gap-4 text-ink2 bg-canvas">
+      <div className="h-8 w-8 rounded-full border-2 border-indigo-500/30 border-t-indigo-500 animate-spin" />
+      <span className="text-[14px] font-medium text-ink3">Generating quiz…</span>
     </div>
   )
 
@@ -113,7 +113,7 @@ export function QuizEngine({ lesson }: { lesson: LessonObject }) {
       </header>
 
       {/* Quiz canvas */}
-      <main className="flex-1 w-full max-w-3xl mx-auto px-6 py-12 flex flex-col justify-center">
+      <main className="flex-1 w-full max-w-3xl mx-auto px-6 py-12 flex flex-col justify-start pt-12">
         {/* Question */}
         <div className="mb-8">
           {q.difficulty && (
@@ -158,7 +158,10 @@ export function QuizEngine({ lesson }: { lesson: LessonObject }) {
 
         {/* Footer */}
         <div className="flex items-center justify-between pt-5 border-t border-stroke1">
-          <button className="flex items-center gap-1.5 px-3 h-9 rounded-btn text-[12.5px] text-ink3 hover:text-ink2 hover:bg-white/5 transition">
+          <button
+            title="Coming soon"
+            className="flex items-center gap-1.5 px-3 h-9 rounded-btn text-[12.5px] text-ink3 cursor-not-allowed opacity-50"
+          >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M7 12h10M11 18h2" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
             Review Later
           </button>

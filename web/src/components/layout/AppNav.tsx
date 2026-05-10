@@ -1,75 +1,64 @@
 "use client"
+import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 import { useWallet } from "@/hooks/useWallet"
+import clsx from "clsx"
 
 const NAV = [
-  { href: "/",            label: "Simulator"   },
-  { href: "/academy",     label: "Academy"     },
-  { href: "/leaderboard", label: "Leaderboard" },
-  { href: "/portfolio",   label: "Portfolio"   },
-  { href: "/profile",     label: "Profile"     },
-  { href: "/certificate", label: "Certificate" },
+  { href: "/",            label: "Simulator",   icon: "M3 12l9-9 9 9M5 10v10h14V10"  },
+  { href: "/academy",     label: "Academy",     icon: "M12 14l9-5-9-5-9 5 9 5zm0 7V9m9-2v10M3 7v10" },
+  { href: "/leaderboard", label: "Leaderboard", icon: "M16 4h2a2 2 0 0 1 2 2v14H4V6a2 2 0 0 1 2-2h2M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1z" },
+  { href: "/portfolio",   label: "Portfolio",   icon: "M3 3v18h18M7 16l4-4 4 4 4-4" },
+  { href: "/profile",     label: "Profile",     icon: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" },
+  { href: "/certificate", label: "Certificate", icon: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 0 0 1.946-.806 3.42 3.42 0 0 1 4.438 0 3.42 3.42 0 0 0 1.946.806 3.42 3.42 0 0 1 3.138 3.138 3.42 3.42 0 0 0 .806 1.946 3.42 3.42 0 0 1 0 4.438 3.42 3.42 0 0 0-.806 1.946 3.42 3.42 0 0 1-3.138 3.138 3.42 3.42 0 0 0-1.946.806 3.42 3.42 0 0 1-4.438 0 3.42 3.42 0 0 0-1.946-.806 3.42 3.42 0 0 1-3.138-3.138 3.42 3.42 0 0 0-.806-1.946 3.42 3.42 0 0 1 0-4.438 3.42 3.42 0 0 0 .806-1.946 3.42 3.42 0 0 1 3.138-3.138z" },
 ]
 
 export function AppNav() {
   const path = usePathname()
   const { username, signOut } = useAuth()
   const { wallet } = useWallet()
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  const walletDotColor =
+    wallet == null ? "" :
+    wallet.balance > 50000 ? "bg-emerald-400" :
+    wallet.balance >= 10000 ? "bg-amber-400" :
+    "bg-rose-500"
 
   return (
-    <header style={{
-      height: 56,
-      padding: "0 24px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      borderBottom: "1px solid rgba(255,255,255,0.08)",
-      background: "rgba(10,15,30,0.92)",
-      backdropFilter: "blur(12px)",
-      position: "sticky",
-      top: 0,
-      zIndex: 50,
-      flexShrink: 0,
-    }}>
-      {/* Left: brand + nav */}
-      <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
-        {/* Wordmark */}
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
-          <div style={{
-            width: 32, height: 32, flexShrink: 0,
-            display: "grid", placeItems: "center",
-            borderRadius: 7, background: "#6366f1",
-          }}>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+    <header className="sticky top-0 z-50 flex-shrink-0 h-14 flex items-center justify-between px-4 lg:px-6 border-b border-white/[0.07] bg-[rgba(10,15,30,0.92)] backdrop-blur-xl">
+      {/* Left: brand + desktop nav */}
+      <div className="flex items-center gap-6">
+        <Link href="/" className="flex items-center gap-2.5 no-underline group">
+          <div className="w-8 h-8 flex-shrink-0 grid place-items-center rounded-[7px] bg-indigo-500 shadow-lg shadow-indigo-500/30 group-hover:bg-indigo-400 transition-colors">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
               <rect x="5" y="5" width="2" height="10" rx="0.5" fill="white" opacity=".95"/>
               <rect x="9" y="3" width="2" height="14" rx="0.5" fill="white" opacity=".7"/>
               <rect x="13" y="7" width="2" height="8" rx="0.5" fill="white" opacity=".95"/>
             </svg>
           </div>
-          <div>
-            <div style={{ fontSize: 17, fontWeight: 600, letterSpacing: "-0.02em", color: "#e7eaf3", lineHeight: 1 }}>Tradewise</div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.35)", letterSpacing: "0.18em", textTransform: "uppercase", marginTop: 2 }}>FinSim Academy</div>
+          <div className="hidden sm:block">
+            <div className="text-[16px] font-semibold tracking-[-0.02em] text-[#e7eaf3] leading-none">Tradewise</div>
+            <div className="text-[9px] text-white/30 tracking-[0.18em] uppercase mt-0.5">FinSim Academy</div>
           </div>
         </Link>
 
-        {/* Nav links */}
-        <nav style={{ display: "flex", alignItems: "center", gap: 4 }}>
+        <nav className="hidden lg:flex items-center gap-0.5">
           {NAV.map(({ href, label }) => {
             const active = href === "/" ? path === "/" : path.startsWith(href)
             return (
-              <Link key={href} href={href} style={{
-                padding: "6px 10px",
-                borderRadius: 8,
-                fontSize: 13,
-                fontWeight: 500,
-                textDecoration: "none",
-                color: active ? "#e7eaf3" : "rgba(255,255,255,0.5)",
-                background: active ? "rgba(255,255,255,0.05)" : "transparent",
-                border: active ? "1px solid rgba(255,255,255,0.08)" : "1px solid transparent",
-                transition: "color 0.15s",
-              }}>
+              <Link
+                key={href}
+                href={href}
+                className={clsx(
+                  "px-3 py-1.5 rounded-lg text-[12.5px] font-medium transition-all duration-150",
+                  active
+                    ? "bg-white/[0.07] text-white ring-1 ring-white/[0.08]"
+                    : "text-white/45 hover:text-white/80 hover:bg-white/[0.04]"
+                )}
+              >
                 {label}
               </Link>
             )
@@ -77,37 +66,99 @@ export function AppNav() {
         </nav>
       </div>
 
-      {/* Right: wallet + user + sign out */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        {wallet && (
-          <div style={{
-            display: "flex", alignItems: "center", gap: 8,
-            padding: "0 12px", height: 36, borderRadius: 8,
-            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)",
-          }}>
-            <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", color: "rgba(255,255,255,0.35)" }}>WALLET</span>
-            <span style={{ fontFamily: "monospace", fontSize: 13, color: "#e7eaf3" }}>
-              ₹{wallet.balance.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+      {/* Right: wallet + user + hamburger */}
+      <div className="flex items-center gap-2">
+        {/* Wallet */}
+        {wallet == null ? (
+          <div className="animate-pulse bg-white/[0.08] rounded w-24 h-4" />
+        ) : (
+          <div className="hidden sm:flex items-center gap-2 h-9 px-3 rounded-lg bg-white/[0.05] ring-1 ring-white/[0.07]">
+            <div className="relative flex items-center gap-1.5">
+              <span className="text-[10.5px] font-semibold tracking-[0.12em] text-white/30 uppercase">Wallet</span>
+              <span className={clsx("w-1.5 h-1.5 rounded-full flex-shrink-0", walletDotColor)} />
+            </div>
+            <span className="font-mono text-[12.5px] text-[#e7eaf3] tabular-nums">
+              ₹{wallet.balance.toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
             </span>
           </div>
         )}
+
+        {/* User chip */}
         {username && (
-          <div style={{
-            display: "flex", alignItems: "center", gap: 8,
-            padding: "0 12px 0 4px", height: 36, borderRadius: 8,
-            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)",
-          }}>
+          <div className="hidden sm:flex items-center gap-2 h-9 pl-1 pr-3 rounded-lg bg-white/[0.05] ring-1 ring-white/[0.07]">
             <UserAvatar name={username} size={28} />
-            <span style={{ fontSize: 12.5, color: "#e7eaf3" }}>{username}</span>
+            <span className="text-[12px] text-[#e7eaf3] font-medium">{username}</span>
           </div>
         )}
-        <button onClick={signOut} style={{
-          fontSize: 12.5, color: "rgba(255,255,255,0.35)",
-          background: "none", border: "none", cursor: "pointer", padding: "0 8px",
-        }}>
+
+        <button
+          onClick={signOut}
+          className="hidden sm:block text-[12px] text-white/30 hover:text-rose-400 transition px-2 py-1.5"
+        >
           Sign out
         </button>
+
+        {/* Hamburger — mobile only */}
+        <button
+          onClick={() => setMobileOpen(o => !o)}
+          className="lg:hidden w-9 h-9 grid place-items-center rounded-lg bg-white/[0.05] ring-1 ring-white/[0.07] text-white/60 hover:text-white transition"
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? (
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+          ) : (
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+          )}
+        </button>
       </div>
+
+      {/* Mobile dropdown */}
+      {mobileOpen && (
+        <div className="lg:hidden absolute top-14 left-0 right-0 bg-[rgba(10,15,30,0.98)] backdrop-blur-xl border-b border-white/[0.07] shadow-2xl z-50 py-3 px-4 flex flex-col gap-1">
+          {/* Mobile wallet row */}
+          {wallet != null && (
+            <div className="flex items-center gap-2 px-3 py-2 mb-1 rounded-lg bg-white/[0.04] ring-1 ring-white/[0.06]">
+              <span className={clsx("w-2 h-2 rounded-full flex-shrink-0", walletDotColor)} />
+              <span className="text-[11px] text-white/30 uppercase tracking-widest font-semibold">Wallet</span>
+              <span className="font-mono text-[13px] text-white ml-auto">
+                ₹{wallet.balance.toLocaleString("en-IN", { minimumFractionDigits: 0 })}
+              </span>
+            </div>
+          )}
+          {NAV.map(({ href, label, icon }) => {
+            const active = href === "/" ? path === "/" : path.startsWith(href)
+            return (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setMobileOpen(false)}
+                className={clsx(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13.5px] font-medium transition-all",
+                  active
+                    ? "bg-indigo-500/15 text-indigo-300 ring-1 ring-indigo-500/20"
+                    : "text-white/55 hover:text-white hover:bg-white/[0.04]"
+                )}
+              >
+                <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                  <path d={icon} stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                {label}
+              </Link>
+            )
+          })}
+          <div className="mt-1 pt-2 border-t border-white/[0.06] flex items-center justify-between">
+            {username && (
+              <div className="flex items-center gap-2">
+                <UserAvatar name={username} size={24} />
+                <span className="text-[12px] text-white/60">{username}</span>
+              </div>
+            )}
+            <button onClick={signOut} className="text-[12px] text-white/30 hover:text-rose-400 transition px-2 py-1">
+              Sign out
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   )
 }
