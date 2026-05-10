@@ -61,6 +61,13 @@ const TIER_CFG: Record<string, {
   },
 }
 
+const RISK_METRICS: Record<string, { vol: string; beta: string }> = {
+  LOW: { vol: "1.5%", beta: "0.85" },
+  MEDIUM: { vol: "3.2%", beta: "1.10" },
+  HIGH: { vol: "5.4%", beta: "1.45" },
+  EXTREME: { vol: "9.1%", beta: "2.10" },
+}
+
 // Smooth SVG sparkline with gradient fill
 function Sparkline({ colorClass, up }: { colorClass: string; up: boolean }) {
   const heights = up
@@ -159,6 +166,12 @@ export function StockSelector() {
                     {/* Sparkline */}
                     <div className="rounded-md overflow-hidden -mx-1">
                       <Sparkline colorClass={cfg.spark} up={tier !== "EXTREME"} />
+                    </div>
+
+                    {/* Risk metrics */}
+                    <div className="flex gap-4 mt-3 text-[10px] font-bold tracking-wider text-ink3 uppercase">
+                      <div>Vol: <span className="text-ink">{RISK_METRICS[tier].vol}</span></div>
+                      <div>Beta: <span className="text-ink">{RISK_METRICS[tier].beta}</span></div>
                     </div>
 
                     {/* Footer row */}

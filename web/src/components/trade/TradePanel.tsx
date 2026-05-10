@@ -21,7 +21,14 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
   const [side, setSide] = useState<"buy" | "sell">("buy")
   const [orderType, setOrderType] = useState("Market")
   const [quantity, setQuantity] = useState(1)
-  const [targetPrice, setTargetPrice] = useState<number>(0)
+  
+  // Independent prices for each combination
+  const [prices, setPrices] = useState<Record<string, number>>({
+    "buy-Limit": 0,
+    "buy-Stop": 0,
+    "sell-Limit": 0,
+    "sell-Stop": 0,
+  })
   
   const [pendingOrders, setPendingOrders] = useState<PendingOrder[]>([])
   const [loading, setLoading] = useState(false)
@@ -29,6 +36,22 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
   const [success, setSuccess] = useState<string | null>(null)
 
   const marketPrice = lastPrice[symbol] ?? 0
+  const priceKey = `${side}-${orderType}`
+  const currentTargetPrice = prices[priceKey] ?? marketPrice
+
+  // Sync initial prices if 0
+  useEffect(() => {
+    if (marketPrice > 0) {
+      setPrices(prev => {
+        const next = { ...prev }
+        if (next["buy-Limit"] === 0) next["buy-Limit"] = marketPrice
+        if (next["buy-Stop"] === 0) next["buy-Stop"] = marketPrice
+        if (next["sell-Limit"] === 0) next["sell-Limit"] = marketPrice
+        if (next["sell-Stop"] === 0) next["sell-Stop"] = marketPrice
+        return next
+      })
+    }
+  }, [marketPrice])
 
   // Fetch pending orders
   const loadPending = async () => {
@@ -48,29 +71,32 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
     if (orderType === "Market") return `Order will execute immediately at the best available price (~₹${marketPrice.toLocaleString()}).`
     if (orderType === "Limit") {
       return side === "buy" 
-        ? `Order will only execute if price falls to ₹${targetPrice.toLocaleString()} or lower.`
-        : `Order will only execute if price rises to ₹${targetPrice.toLocaleString()} or higher.`
+        ? `Order will only execute if price falls to ₹${currentTargetPrice.toLocaleString()} or lower.`
+        : `Order will only execute if price rises to ₹${currentTargetPrice.toLocaleString()} or higher.`
     }
     if (orderType === "Stop") {
       return side === "buy"
-        ? `Order triggers a buy if price breaks above ₹${targetPrice.toLocaleString()}.`
-        : `Order triggers a sell if price drops below ₹${targetPrice.toLocaleString()}.`
+        ? `Order triggers a buy if price breaks above ₹${currentTargetPrice.toLocaleString()}.`
+        : `Order triggers a sell if price drops below ₹${currentTargetPrice.toLocaleString()}.`
     }
     return ""
-  }, [orderType, side, targetPrice, marketPrice])
+  }, [orderType, side, currentTargetPrice, marketPrice])
 
   const handleOrderTypeChange = (type: string) => {
     setOrderType(type)
-    if (targetPrice === 0 || targetPrice === marketPrice) setTargetPrice(marketPrice)
+  }
+
+  const setSpecificPrice = (val: number) => {
+    setPrices(p => ({ ...p, [priceKey]: val }))
   }
 
   const applyOffset = (pct: number) => {
     if (marketPrice === 0) return
     const newPrice = marketPrice * (1 + pct)
-    setTargetPrice(Number(newPrice.toFixed(2)))
+    setSpecificPrice(Number(newPrice.toFixed(2)))
   }
 
-  const effectivePrice = orderType === "Market" ? marketPrice : targetPrice
+  const effectivePrice = orderType === "Market" ? marketPrice : currentTargetPrice
   const total = Number((effectivePrice * quantity).toFixed(2))
   const balance = wallet?.balance ?? 0
   const maxQty = effectivePrice > 0 ? Math.floor(balance / effectivePrice) : 0
@@ -84,13 +110,13 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
       await placeTrade({ 
         symbol, side, quantity, 
         order_type: orderType, 
-        target_price: orderType === "Market" ? undefined : targetPrice 
+        target_price: orderType === "Market" ? undefined : currentTargetPrice 
       }, token)
       
       if (orderType === "Market") {
         setSuccess(`${side.toUpperCase()} order executed.`)
       } else {
-        setSuccess(`${orderType} ${side} order placed at ₹${targetPrice.toLocaleString()}.`)
+        setSuccess(`${orderType} ${side} order placed at ₹${currentTargetPrice.toLocaleString()}.`)
       }
       onTradeSuccess()
       loadPending()
@@ -155,14 +181,14 @@ export function TradePanel({ symbol, onTradeSuccess }: Props) {
                 <div className="relative group">
                   <input
                     type="number"
-                    value={targetPrice}
-                    onChange={e => setTargetPrice(Number(e.target.value))}
+                    value={currentTargetPrice}
+                    onChange={e => setSpecificPrice(Number(e.target.value))}
                     className="w-full h-9 bg-black/40 ring-1 ring-white/10 rounded-lg px-3 mono text-[14px] text-ink focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all"
                   />
                   <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold">
                     {marketPrice > 0 ? (
-                      <span className={clsx(targetPrice > marketPrice ? "text-rose-400" : "text-emerald-400")}>
-                        {(((targetPrice - marketPrice) / marketPrice) * 100).toFixed(1)}%
+                      <span className={clsx(currentTargetPrice > marketPrice ? "text-rose-400" : "text-emerald-400")}>
+                        {(((currentTargetPrice - marketPrice) / marketPrice) * 100).toFixed(1)}%
                       </span>
                     ) : null}
                   </div>

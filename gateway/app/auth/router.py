@@ -32,6 +32,13 @@ async def login(body: LoginRequest, session: AsyncSession = Depends(get_session)
     user = await authenticate_user(session, body.email, body.password)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid credentials")
+
+    # Update daily streak
+    try:
+        await checkin(user.id, session)
+    except Exception as e:
+        print(f"Streak checkin error: {e}")
+
     return TokenResponse(
         access_token=create_token(user.id, user.username),
         username=user.username,

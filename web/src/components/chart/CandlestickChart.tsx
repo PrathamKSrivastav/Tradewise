@@ -18,6 +18,17 @@ export function CandlestickChart({ candles, symbol }: Props) {
   const indicatorsRef = useRef<Map<string, ISeriesApi<any>>>(new Map())
   const [activeIndicators, setActiveIndicators] = useState<IndicatorType[]>([])
 
+  const [currentTime, setCurrentTime] = useState<string>("")
+
+  // Clock Update
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date()
+      setCurrentTime(now.toLocaleTimeString("en-IN", { hour12: false }) + " " + now.toLocaleDateString("en-IN", { day: '2-digit', month: 'short' }))
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
   // 1. Initialize Chart
   useEffect(() => {
     if (!containerRef.current) return
@@ -41,7 +52,7 @@ export function CandlestickChart({ candles, symbol }: Props) {
       timeScale: {
         borderColor: "rgba(255,255,255,0.08)",
         timeVisible: true,
-        secondsVisible: false,
+        secondsVisible: true,
       },
       width: containerRef.current.clientWidth,
       height: 450,
@@ -222,7 +233,10 @@ export function CandlestickChart({ candles, symbol }: Props) {
           <span className="text-xs font-mono text-white/40 tracking-widest uppercase">{symbol} · {getIntervalLabel()}</span>
           <ChartControls activeIndicators={activeIndicators} onToggle={toggleIndicator} />
         </div>
-        <span className="text-xs text-white/30">{candles.length} candles</span>
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] font-mono text-white/40 border-r border-white/10 pr-3">{currentTime}</span>
+          <span className="text-xs text-white/30">{candles.length} candles</span>
+        </div>
       </div>
       <div ref={containerRef} className="w-full" />
     </div>
